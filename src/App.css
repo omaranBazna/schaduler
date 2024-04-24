@@ -36,3 +36,73 @@
     transform: rotate(360deg);
   }
 }
+
+
+.schedule{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap:10px;
+  height: 100%;
+  width:100%;
+}
+.week{
+  position: relative;
+  display:flex;
+  align-items: center;
+  justify-content:flex-start;
+  gap:10px;
+  height:100%;
+  width:100%;
+}
+
+.times,.day{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height:100%;
+  width:100%;
+}
+
+.times{
+  width:fit-content;
+}
+.times >div,.day > div{
+  height:100%;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+.day > div{
+  border-top:1px solid grey;
+  width:100%;
+  cursor: pointer;
+}
+.day>div:hover{
+  background-color:red;
+}
+.events{
+  position: relative;
+  top:0px;
+  left:0px;
+}
+
+.event{
+  position: absolute;
+   background-color: rgba(100,100,255,20);
+   opacity: 80%;
+   width:calc( 100% / 5 - 5px);
+   height:30%;
+   border-radius: 10px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color:white;
+   cursor: pointer;
+   overflow-y: hidden;
+}
+.event:hover{
+  opacity: 100%;
+}

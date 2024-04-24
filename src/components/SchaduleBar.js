@@ -13,17 +13,28 @@ import AdbIcon from '@mui/icons-material/Adb';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-
+import { useState } from 'react';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 
 function SchaduleBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [age, setAge] = React.useState('');
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const labels=["Year","Major","Semester"]
+  const options=[
+    ["Jenior","First","Second","Third","Senior"],
+    ["CS","EE","Robotic"],
+    ["Fall","Winter","Summer"]
+  ]
+  const [state, setState] = useState([
+    "Jenior",
+    "CS",
+    "Winter"
+  ]);
+  
+  const handleChange = (event,index) => {
+    let new_state=state.map(item=>item)
+    new_state[index]=event.target.value
+    setState(new_state);
   };
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -79,21 +90,23 @@ function SchaduleBar() {
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
          
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+          <Box sx={{ flexGrow: 1,gap:2, display: { xs: 'none', md: 'flex' } }}>
+            {labels.map((label,index) => (
                <Box sx={{ minWidth: 120 }}>
                <FormControl fullWidth>
-                 <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                 <InputLabel id="demo-simple-select-label">{label}</InputLabel>
                  <Select
                    labelId="demo-simple-select-label"
                    id="demo-simple-select"
-                   value={age}
-                   label="Age"
-                   onChange={handleChange}
+                   value={state[index]}
+                   label={label}
+                   onChange={(e)=>handleChange(e,index)}
+                   style={{background:"white"}}
                  >
-                   <MenuItem value={10}>Ten</MenuItem>
-                   <MenuItem value={20}>Twenty</MenuItem>
-                   <MenuItem value={30}>Thirty</MenuItem>
+                  {options[index].map((item)=>{
+                    return   <MenuItem value={item}>{item}</MenuItem>
+                  })}
+                  
                  </Select>
                </FormControl>
              </Box>
