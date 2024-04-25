@@ -98,10 +98,21 @@
    border-radius: 10px;
    display: flex;
    align-items: center;
-   justify-content: center;
+   justify-content: space-between;
+   flex-direction: column;
    color:white;
    cursor: pointer;
-   overflow-y: hidden;
+   
+}
+.expand{
+  width:100%;
+  height:40px;
+  background-color: rgba(0, 0, 0, 0.498);
+  opacity: 0;
+  border-radius: 10px;
+}
+.expand:hover{
+  opacity: 1;
 }
 .event:hover{
   opacity: 100%;

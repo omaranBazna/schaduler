@@ -12,7 +12,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {TimePicker} from "@mui/x-date-pickers/TimePicker"
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import {TextField} from "@mui/material";
-
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import dayjs from 'dayjs';
 
 const style = {
@@ -86,11 +87,94 @@ const Day=({setCurrentDay,setOpen,day,setSelectedStart,setSelectedEnd,setDuratio
 }
 
 
-function EventsComp({events}){
+function EventsComp({events,setEvents,weekRef}){
+  
+  const [mouseY,setMouseY]=useState(0)
+  const [markY,setMarkY]=useState(0)
+  const [modifyEnd,setMoidfyEnd]=useState(false)
+  const [modifyStart,setMoidfyStart]=useState(false)
+  const startTime = dayjs().set('hour', 8).startOf('hour');
+  const endTime = dayjs().set('hour', 23).startOf('hour');
+  const [selectedEventIndex,setSelectedEvent]=useState(-1)
+  const [initialEnd,setInitialEnd]=useState(0)
+  const [initialStart,setInitialStart]=useState(0)
+  function drawEvent(event){
+   
+    let selectedStart=dayjs(event.selectedStart)
+    let selectedEnd=dayjs(event.selectedEnd)
+
+    let y = (selectedStart.diff(startTime))/(endTime.add(1,"h").diff(startTime))*100+"%"
+    let x = (event.currentDay/5*100)+"%"
+    let height= (selectedEnd.diff(selectedStart))/(endTime.add(1,"h").diff(startTime))*100+"%"
+    return {x,y,height}
+  }
+
+  useEffect(()=>{
+    const updateMousePosition=(e)=>{
+          setMouseY(e.pageY)
+          if(modifyEnd && weekRef.current && selectedEventIndex>-1){
+            let rect=weekRef.current.getBoundingClientRect()
+            const diff=(e.pageY-markY)/rect.height 
+            let timeRange=endTime.diff(startTime.subtract(1.2,"hour"),"minute")
+            let mins=Math.floor((diff*timeRange)/5)*5
+            
+            let new_events=[...events]
+            new_events[selectedEventIndex].selectedEnd=dayjs(initialEnd).add(mins,"minute")
+            setEvents(new_events)
+          }
+
+          if(modifyStart && weekRef.current && selectedEventIndex>-1){
+            let rect=weekRef.current.getBoundingClientRect()
+            const diff=(e.pageY-markY)/rect.height 
+            let timeRange=endTime.diff(startTime.subtract(1,"hour"),"minute")
+            let mins=Math.floor((diff*timeRange)/5)*5
+            
+            let new_events=[...events]
+            new_events[selectedEventIndex].selectedStart=dayjs(initialStart).add(mins,"minute")
+            setEvents(new_events)
+          }
+         
+    }
+    window.addEventListener("mousemove",updateMousePosition)
+
+    return ()=>{
+      window.removeEventListener("mousemove",updateMousePosition)
+    }
+  },[markY,modifyEnd,modifyStart,initialEnd])
+
+  function startTrackingEnd(){
+    setMoidfyEnd(!modifyEnd);
+    setMarkY(mouseY)
+     
+  }
+
+  function startTrackingStart(){
+    setMoidfyStart(!modifyStart);
+    setMarkY(mouseY)
+     
+  }
     
     return <>
-        {events.map(item=>{
-            return <div className="event" style={{top:item.y,left:item.x,height:item.height}}>  {item.title} </div>
+        {events.map((item,index)=>{
+            const {x,y,height} =drawEvent(item)
+          
+            return <div className="event" style={{top:y,left:x,height:height}}>  
+           <span className="expand" onClick={()=>{
+            
+            startTrackingStart();
+            setInitialStart(dayjs(item.selectedStart))
+            setSelectedEvent(index)
+
+         }}></span>
+            <div>{item.title}</div>
+            <span className="expand" onClick={()=>{
+            
+               startTrackingEnd();
+               setInitialEnd(dayjs(item.selectedEnd))
+               setSelectedEvent(index)
+
+            }}></span>
+             </div>
         })}
     </>
 }
@@ -148,15 +232,13 @@ const handleDurationChange = (event) => {
 
 function addEvent(){
     
-    let y = (selectedStart.diff(startTime))/(endTime.add(1,"h").diff(startTime))*100+"%"
-    
-    let x = (currentDay/5*100)+"%"
-    let height= (selectedEnd.diff(selectedStart))/(endTime.add(1,"h").diff(startTime))*100+"%"
-    setEvents([...events,{
-        x:x,
-        y:y,
-        height:height,
-        title:"new event "
+     setEvents([...events,{
+        id:(Math.floor(Math.random()*100000)),
+       
+        title:"new event ",
+        selectedStart,
+        selectedEnd,
+        currentDay
     }])
     setOpen(false)
 }
@@ -250,7 +332,7 @@ function addEvent(){
                 return  <Day day={day} setOpen={setOpen} setDuration={setDuration} setSelectedStart={setSelectedStart} setSelectedEnd={setSelectedEnd} setCurrentDay={setCurrentDay} />
          
             })}
-           <EventsComp dimensions={dimensions} events={events} />
+           <EventsComp weekRef={weekRef}  setEvents={setEvents} events={events} />
            </div>
             
 
