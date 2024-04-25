@@ -32,6 +32,23 @@ const style = {
   p: 4,
 };
 
+const colors=[
+  {
+    value:0,
+    color:"red",
+    label:"InPerson"
+  },
+  {
+    value:1,
+    color:"blue",
+    label:"Online"
+  },
+  {
+    value:2,
+    color:"orange",
+    label:"Lab"
+  }
+]
 
 let range=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 
@@ -103,6 +120,7 @@ function EventsComp({events,setEvents,weekRef}){
   const [initialEnd,setInitialEnd]=useState(0)
   const [initialStart,setInitialStart]=useState(0)
   function drawEvent(event){
+    
    
     let selectedStart=dayjs(event.selectedStart)
     let selectedEnd=dayjs(event.selectedEnd)
@@ -157,12 +175,13 @@ function EventsComp({events,setEvents,weekRef}){
     setMarkY(mouseY)
      
   }
-    
+
+ 
     return <>
         {events.map((item,index)=>{
             const {x,y,height} =drawEvent(item)
           
-            return <div className="event" style={{top:y,left:x,height:height}}>  
+            return <div className="event" style={{top:y,left:x,height:height ,background:item.color.color}}>  
            <span className="expand" onClick={()=>{
             
             startTrackingStart();
@@ -183,7 +202,7 @@ function EventsComp({events,setEvents,weekRef}){
                   }
                  setEvents(new_events)
               }}></span>
-            <div >{item.title}</div>
+            <div  >{item.title}</div>
             <span className="left-right"
             
             onClick={()=>{
@@ -238,23 +257,7 @@ const Week2=()=>{
     }
 
 
-    const colors=[
-      {
-        value:0,
-        color:"red",
-        label:"InPerson"
-      },
-      {
-        value:1,
-        color:"blue",
-        label:"Online"
-      },
-      {
-        value:2,
-        color:"orange",
-        label:"Lab"
-      }
-    ]
+   
 
     const today = dayjs();
 const startTime = dayjs().set('hour', 8).startOf('hour');
@@ -287,7 +290,8 @@ function addEvent(){
         title:"new event ",
         selectedStart,
         selectedEnd,
-        currentDay
+        currentDay,
+        color:colors[eventColor]
     }])
     setOpen(false)
 }
