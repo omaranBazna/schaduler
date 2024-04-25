@@ -72,6 +72,30 @@ let times={
     16:"11:00p.m"
 }
 
+const professorBusy=[
+  {
+   
+    currentDay:2,
+    selectedStart:dayjs().set('hour', 9).startOf('hour'),
+    selectedEnd:dayjs().set('hour',10).startOf('hour'),
+    professor:true
+  },
+  {
+   
+    currentDay:3,
+    selectedStart:dayjs().set('hour', 11).startOf('hour'),
+    selectedEnd:dayjs().set('hour',13).startOf('hour'),
+    professor:true
+  },
+  {
+   
+    currentDay:0,
+    selectedStart:dayjs().set('hour', 17).startOf('hour'),
+    selectedEnd:dayjs().set('hour',19).startOf('hour'),
+    professor:true
+  },
+]
+
 const initialEvents=[
   {
    
@@ -115,7 +139,8 @@ const initialEvents=[
     selectedStart:dayjs().set('hour', 15).startOf('hour'),
     selectedEnd:dayjs().set('hour',17).startOf('hour'),
     dead:true
-  }
+  },
+  ...professorBusy
 
 ]
 
@@ -202,13 +227,9 @@ function EventsComp({events,setEvents,weekRef}){
   const [initialEnd,setInitialEnd]=useState(0)
   const [initialStart,setInitialStart]=useState(0)
   function drawEvent(event){
-    
-   
     let selectedStart=dayjs(event.selectedStart)
     let selectedEnd=dayjs(event.selectedEnd)
-
     let y = (selectedStart.diff(startTime))/(endTime.add(1,"h").diff(startTime))*100+"%"
-    console.log(event)
     let x = (event.currentDay/5*100)+"%"
     let height= (selectedEnd.diff(selectedStart))/(endTime.add(1,"h").diff(startTime))*100+"%"
     return {x,y,height}
@@ -275,14 +296,32 @@ function EventsComp({events,setEvents,weekRef}){
             if(item.dead){
               return <div className="event" 
               style={
-               {top:y,left:x,height:height ,background:"rgba(200,150,150,0.8)"
-              ,border:"2px dashed red",borderRadius:0
+               {top:y,left:x,height:height 
+              ,border:"2px dashed red",borderRadius:0,
+              backgroundImage:"linear-gradient(45deg, #ffffff 25%, #ffaaaa 25%, #ffaaaa 50%, #ffffff 50%, #ffffff 75%, #ffaaaa 75%, #ffaaaa 100%)",
+              backgroundSize:"8px 8px"
+             
               }
               } 
               >
                 
               </div>
             }
+            if(item.professor){
+              return <div className="event" 
+              style={
+               {top:y,left:x,height:height ,background:"rgba(220,220,10,0.9)"
+              ,border:"1px solid yellow",borderRadius:0,color:"black",
+              display:"flex",alignItems:"center",justifyContent:"center"
+              
+              }
+              } 
+              > 
+              Professor is Busy 
+                
+              </div>
+            }
+
             return <div className="event" style={{top:y,left:x,height:height ,background:item.color.color}}>  
            <span className="expand" onClick={()=>{
             
