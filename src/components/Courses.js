@@ -10,6 +10,14 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -112,10 +120,28 @@ const downArrow=(index)=>{
         <Divider textAlign="left">Courses  </Divider>
        
       <Stack  gap={3}>
-        <Item className="active">Item 1</Item>
-        <Item>Item 2</Item>
-        <Item>Item 3</Item>
+        <Item className="active">Course 1</Item>
+        <Item>Course 2</Item>
+        <Item>Course 3</Item>
       </Stack>
+         
+       
+      <Divider textAlign="left">Course Notes  </Divider>
+       <Box margin={2}>
+          Some course notes
+
+       </Box>
+        
+      <Divider textAlign="left">Done courses </Divider>
+      <Stack  gap={3}>
+        <Item>Course 4</Item>
+        <Item>Course 5</Item>
+       
+      </Stack>
+
+     
+      
+
     </Box>
   );
 }

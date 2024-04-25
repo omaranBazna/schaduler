@@ -116,6 +116,12 @@ const downArrow=(index)=>{
         <Item>Item 2</Item>
         <Item>Item 3</Item>
       </Stack>
+
+      <Divider textAlign="left">Professor Notes  </Divider>
+       <Box margin={2}>
+          Some professor notes
+
+       </Box>
     </Box>
   );
 }
