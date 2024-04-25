@@ -72,7 +72,36 @@ let times={
 }
 
 function updateEvents(setEvents,new_events){
+
+  let copy=[...new_events]
+  copy.sort((event1,event2)=>{
+    
+    if(event1.currentDay == event2.currentDay){
+         return dayjs(event1.selectedStart).diff(dayjs(event2.selectedStart),"minute")
+    }
+    return event1.currentDay - event2.currentDay
+  })
+  let valid=true
+  for(let i=0;i<copy.length-1;i++){
+    let event1=copy[i];
+    let event2=copy[i+1];
+    if(event1.currentDay==event2.currentDay){
+      let time1=dayjs(event1.selectedEnd)
+      let time2=dayjs(event2.selectedStart)
+      if(time2.diff(time1,"minute") <0){
+        valid=false
+      }
+
+     
+    }
+  }
+  
+  if(!valid) {
+    console.log("!valid")
+  }
+  if(valid){
   setEvents(new_events)
+  }
 }
 
 
@@ -144,9 +173,11 @@ function EventsComp({events,setEvents,weekRef}){
             let timeRange=endTime.diff(startTime.subtract(1.2,"hour"),"minute")
             let mins=Math.floor((diff*timeRange)/5)*5
             
-            let new_events=[...events]
+            let new_events=events.map(item=>{
+              return {...item}
+            })
             new_events[selectedEventIndex].selectedEnd=dayjs(initialEnd).add(mins,"minute")
-          
+              
             updateEvents(setEvents,new_events);
           }
 
@@ -156,7 +187,9 @@ function EventsComp({events,setEvents,weekRef}){
             let timeRange=endTime.diff(startTime.subtract(1,"hour"),"minute")
             let mins=Math.floor((diff*timeRange)/5)*5
             
-            let new_events=[...events]
+            let new_events=events.map(item=>{
+              return {...item}
+            })
             new_events[selectedEventIndex].selectedStart=dayjs(initialStart).add(mins,"minute")
             updateEvents(setEvents,new_events);
           }
@@ -180,7 +213,8 @@ function EventsComp({events,setEvents,weekRef}){
     setMarkY(mouseY)
      
   }
-
+  
+  console.log(events)
  
     return <>
         {events.map((item,index)=>{
@@ -200,7 +234,9 @@ function EventsComp({events,setEvents,weekRef}){
               setMoidfyStart(false)
             }}>
               <span className="left-right" onClick={()=>{
-                 let new_events=[...events]
+                 let new_events=events.map(item=>{
+                  return {...item}
+                })
                   let day=new_events[index].currentDay
                   if(day>0){
                     new_events[index].currentDay=day-1
@@ -211,7 +247,10 @@ function EventsComp({events,setEvents,weekRef}){
             <span className="left-right"
             
             onClick={()=>{
-              let new_events=[...events]
+          
+              let new_events=events.map(item=>{
+                return {...item}
+              })
                let day=new_events[index].currentDay
                if(day<5){
                  new_events[index].currentDay=day+1
@@ -289,7 +328,10 @@ const handleDurationChange = (event) => {
 
 function addEvent(){
     
-     let new_events=[...events,{
+  let new_events=events.map(item=>{
+    return {...item}
+  })
+    new_events=[...new_events,{
         id:(Math.floor(Math.random()*100000)),
        
         title:"new event ",
