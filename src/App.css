@@ -106,7 +106,7 @@
 }
 .expand{
   width:100%;
-  height:40px;
+  height:45px;
   background-color: rgba(0, 0, 0, 0.498);
   opacity: 0;
   border-radius: 10px;
@@ -120,4 +120,22 @@
 
 .active{
   background-color: greenyellow;
+}
+
+
+.event-box{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width:100%;
+  height:100%;
+}
+.left-right{
+  width:40px;
+  height:100%;
+  background-color: rgba(0, 0, 0, 0.66);
+  opacity: 0;
+}
+.left-right:hover{
+  opacity: 1;
 }

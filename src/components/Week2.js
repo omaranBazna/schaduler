@@ -166,7 +166,28 @@ function EventsComp({events,setEvents,weekRef}){
             setSelectedEvent(index)
 
          }}></span>
+            <div className="event-box">
+              <span className="left-right" onClick={()=>{
+                 let new_events=[...events]
+                  let day=new_events[index].currentDay
+                  if(day>0){
+                    new_events[index].currentDay=day-1
+                  }
+                 setEvents(new_events)
+              }}></span>
             <div>{item.title}</div>
+            <span className="left-right"
+            
+            onClick={()=>{
+              let new_events=[...events]
+               let day=new_events[index].currentDay
+               if(day<5){
+                 new_events[index].currentDay=day+1
+               }
+              setEvents(new_events)
+           }}
+            ></span>
+           </div>
             <span className="expand" onClick={()=>{
             
                startTrackingEnd();
