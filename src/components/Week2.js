@@ -72,6 +72,53 @@ let times={
     16:"11:00p.m"
 }
 
+const initialEvents=[
+  {
+   
+    currentDay:2,
+    selectedStart:dayjs().set('hour', 8).startOf('hour'),
+    selectedEnd:dayjs().set('hour',9).startOf('hour'),
+    dead:true
+  },
+  {
+   
+    currentDay:3,
+    selectedStart:dayjs().set('hour', 9).startOf('hour'),
+    selectedEnd:dayjs().set('hour',11).startOf('hour'),
+    dead:true
+  },
+  {
+   
+    currentDay:1,
+    selectedStart:dayjs().set('hour', 12).startOf('hour'),
+    selectedEnd:dayjs().set('hour',14).startOf('hour'),
+    dead:true
+  },
+  {
+   
+    currentDay:0,
+    selectedStart:dayjs().set('hour', 12).startOf('hour'),
+    selectedEnd:dayjs().set('hour',16).startOf('hour'),
+    dead:true
+  },
+  {
+   
+    currentDay:4,
+    selectedStart:dayjs().set('hour', 8).startOf('hour'),
+    selectedEnd:dayjs().set('hour',11).startOf('hour'),
+    dead:true
+  }
+  ,
+  {
+   
+    currentDay:3,
+    selectedStart:dayjs().set('hour', 15).startOf('hour'),
+    selectedEnd:dayjs().set('hour',17).startOf('hour'),
+    dead:true
+  }
+
+]
+
 function updateEvents(setEvents,new_events){
 
   let copy=[...new_events]
@@ -161,6 +208,7 @@ function EventsComp({events,setEvents,weekRef}){
     let selectedEnd=dayjs(event.selectedEnd)
 
     let y = (selectedStart.diff(startTime))/(endTime.add(1,"h").diff(startTime))*100+"%"
+    console.log(event)
     let x = (event.currentDay/5*100)+"%"
     let height= (selectedEnd.diff(selectedStart))/(endTime.add(1,"h").diff(startTime))*100+"%"
     return {x,y,height}
@@ -216,12 +264,25 @@ function EventsComp({events,setEvents,weekRef}){
      
   }
   
-  console.log(events)
+  
  
     return <>
         {events.map((item,index)=>{
+         
             const {x,y,height} =drawEvent(item)
           
+            
+            if(item.dead){
+              return <div className="event" 
+              style={
+               {top:y,left:x,height:height ,background:"rgba(200,150,150,0.8)"
+              ,border:"2px dashed red",borderRadius:0
+              }
+              } 
+              >
+                
+              </div>
+            }
             return <div className="event" style={{top:y,left:x,height:height ,background:item.color.color}}>  
            <span className="expand" onClick={()=>{
             
@@ -279,7 +340,7 @@ const Week2=()=>{
     const weekRef=useRef(null)
     const [dimensions,setDimensions]=useState({x:0,y:0,width:0,height:0})
 
-    const [events,setEvents]=useState([])
+    const [events,setEvents]=useState(initialEvents)
     const [open,setOpen]=useState(false)
 
     useEffect(()=>{
