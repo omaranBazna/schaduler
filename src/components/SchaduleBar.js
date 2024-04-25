@@ -93,7 +93,7 @@ function SchaduleBar() {
           <Box sx={{ flexGrow: 1,gap:2, display: { xs: 'none', md: 'flex' } }}>
             {labels.map((label,index) => (
                <Box sx={{ minWidth: 120 }}>
-               <FormControl fullWidth>
+               <FormControl variant='filled' fullWidth>
                  <InputLabel id="demo-simple-select-label">{label}</InputLabel>
                  <Select
                    labelId="demo-simple-select-label"

@@ -106,3 +106,7 @@
 .event:hover{
   opacity: 100%;
 }
+
+.active{
+  background-color: greenyellow;
+}
