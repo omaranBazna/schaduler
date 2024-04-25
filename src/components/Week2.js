@@ -166,7 +166,11 @@ function EventsComp({events,setEvents,weekRef}){
             setSelectedEvent(index)
 
          }}></span>
-            <div className="event-box">
+            <div className="event-box" onClick={()=>{
+            
+              setMoidfyEnd(false)
+              setMoidfyStart(false)
+            }}>
               <span className="left-right" onClick={()=>{
                  let new_events=[...events]
                   let day=new_events[index].currentDay
@@ -175,7 +179,7 @@ function EventsComp({events,setEvents,weekRef}){
                   }
                  setEvents(new_events)
               }}></span>
-            <div>{item.title}</div>
+            <div >{item.title}</div>
             <span className="left-right"
             
             onClick={()=>{

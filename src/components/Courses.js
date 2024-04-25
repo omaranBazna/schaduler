@@ -16,8 +16,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-
-
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -120,9 +120,9 @@ const downArrow=(index)=>{
         <Divider textAlign="left">Courses  </Divider>
        
       <Stack  gap={3}>
-        <Item className="active">Course 1</Item>
-        <Item>Course 2</Item>
-        <Item>Course 3</Item>
+        <Item className="active">Course 1  <CheckCircleIcon/></Item>
+        <Item>Course 2  <CheckCircleIcon/></Item>
+        <Item>Course 3  <CheckCircleIcon/></Item>
       </Stack>
          
        
@@ -134,8 +134,8 @@ const downArrow=(index)=>{
         
       <Divider textAlign="left">Done courses </Divider>
       <Stack  gap={3}>
-        <Item>Course 4</Item>
-        <Item>Course 5</Item>
+        <Item>Course 4 <KeyboardReturnIcon/></Item>
+        <Item>Course 5 <KeyboardReturnIcon/></Item>
        
       </Stack>
 
