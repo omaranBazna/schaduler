@@ -17,6 +17,26 @@ import { useState } from 'react';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 
+
+const colors=[
+  {
+    value:0,
+    color:"red",
+    label:"InPerson"
+  },
+  {
+    value:1,
+    color:"blue",
+    label:"Online"
+  },
+  {
+    value:2,
+    color:"orange",
+    label:"Lab"
+  }
+]
+
+
 function SchaduleBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const labels=["Year","Major","Semester"]
@@ -113,7 +133,9 @@ function SchaduleBar() {
             ))}
           </Box>
 
-         
+         {colors.map(color=>{
+          return <Box sx={{m:2, gap:1, display:'flex',alignItems:"center",justifyContent:"center"}}> <Box sx={{height:30,width:30,borderRadius:"10px",background:color.color}}></Box> <Box>{color.label}</Box></Box>
+         })}
         </Toolbar>
       </Container>
     </AppBar>
