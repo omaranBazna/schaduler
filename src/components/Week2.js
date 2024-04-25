@@ -71,6 +71,10 @@ let times={
     16:"11:00p.m"
 }
 
+function updateEvents(setEvents,new_events){
+  setEvents(new_events)
+}
+
 
 const Times=()=>{
 
@@ -142,7 +146,8 @@ function EventsComp({events,setEvents,weekRef}){
             
             let new_events=[...events]
             new_events[selectedEventIndex].selectedEnd=dayjs(initialEnd).add(mins,"minute")
-            setEvents(new_events)
+          
+            updateEvents(setEvents,new_events);
           }
 
           if(modifyStart && weekRef.current && selectedEventIndex>-1){
@@ -153,7 +158,7 @@ function EventsComp({events,setEvents,weekRef}){
             
             let new_events=[...events]
             new_events[selectedEventIndex].selectedStart=dayjs(initialStart).add(mins,"minute")
-            setEvents(new_events)
+            updateEvents(setEvents,new_events);
           }
          
     }
@@ -200,7 +205,7 @@ function EventsComp({events,setEvents,weekRef}){
                   if(day>0){
                     new_events[index].currentDay=day-1
                   }
-                 setEvents(new_events)
+                  updateEvents(setEvents,new_events);
               }}></span>
             <div  >{item.title}</div>
             <span className="left-right"
@@ -211,7 +216,7 @@ function EventsComp({events,setEvents,weekRef}){
                if(day<5){
                  new_events[index].currentDay=day+1
                }
-              setEvents(new_events)
+               updateEvents(setEvents,new_events);
            }}
             ></span>
            </div>
@@ -284,7 +289,7 @@ const handleDurationChange = (event) => {
 
 function addEvent(){
     
-     setEvents([...events,{
+     let new_events=[...events,{
         id:(Math.floor(Math.random()*100000)),
        
         title:"new event ",
@@ -292,7 +297,8 @@ function addEvent(){
         selectedEnd,
         currentDay,
         color:colors[eventColor]
-    }])
+    }]
+    updateEvents(setEvents,new_events);
     setOpen(false)
 }
     return <div  className="schedule">
