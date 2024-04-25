@@ -14,6 +14,15 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState } from 'react';
+import FlagCircleIcon from '@mui/icons-material/FlagCircle';
+import SearchIcon from '@mui/icons-material/Search';
+import SaveIcon from '@mui/icons-material/Save';
+
+import Input from '@mui/material/Input';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+
 
 const pages = ['Products', 'Pricing', 'Blog'];
 
@@ -133,9 +142,44 @@ function SchaduleBar() {
             ))}
           </Box>
 
+          <FormControl sx={{mr:10}} variant="outlined">
+        <InputLabel htmlFor="input-with-icon-adornment">
+          Save schedule
+        </InputLabel>
+        <Input
+        label="Outlined" variant="outlined" 
+          id="input-with-icon-adornment"
+         endAdornment={
+            <InputAdornment position="end">
+              <SaveIcon onClick={()=>{
+                alert("Save schedule")
+              }} sx={{cursor:"pointer",width:30,height:30,color:"white"}}/>
+            </InputAdornment>
+          }
+        />
+         
+      </FormControl>
+
+
+
+          <FormControl variant="standard">
+        <InputLabel htmlFor="input-with-icon-adornment">
+          Search schedule
+        </InputLabel>
+        <Input
+          id="input-with-icon-adornment"
+          startAdornment={
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+
          {colors.map(color=>{
           return <Box sx={{m:2, gap:1, display:'flex',alignItems:"center",justifyContent:"center"}}> <Box sx={{height:30,width:30,borderRadius:"10px",background:color.color}}></Box> <Box>{color.label}</Box></Box>
          })}
+         <FlagCircleIcon sx={{ml:3,height:40,width:40,cursor:"pointer"}}/>
         </Toolbar>
       </Container>
     </AppBar>
