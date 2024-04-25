@@ -14,6 +14,7 @@ import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import {TextField} from "@mui/material";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import toast,{Toaster} from "react-hot-toast";
 
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -97,10 +98,11 @@ function updateEvents(setEvents,new_events){
   }
   
   if(!valid) {
-    console.log("!valid")
+    return false;
   }
   if(valid){
   setEvents(new_events)
+  return true
   }
 }
 
@@ -340,8 +342,12 @@ function addEvent(){
         currentDay,
         color:colors[eventColor]
     }]
-    updateEvents(setEvents,new_events);
+    if( updateEvents(setEvents,new_events)){
     setOpen(false)
+    toast.success("Added successfully") 
+    }else{
+    toast.error("Unsuitable time")
+    }
 }
     return <div  className="schedule">
            <Times/>
@@ -464,7 +470,7 @@ function addEvent(){
             
 
            
-            
+            <Toaster/>
             
     </div>
 
