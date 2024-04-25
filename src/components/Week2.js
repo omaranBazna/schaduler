@@ -14,6 +14,10 @@ import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import {TextField} from "@mui/material";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 import dayjs from 'dayjs';
 
 const style = {
@@ -233,6 +237,25 @@ const Week2=()=>{
         setOpen(false)
     }
 
+
+    const colors=[
+      {
+        value:0,
+        color:"red",
+        label:"InPerson"
+      },
+      {
+        value:1,
+        color:"blue",
+        label:"Online"
+      },
+      {
+        value:2,
+        color:"orange",
+        label:"Lab"
+      }
+    ]
+
     const today = dayjs();
 const startTime = dayjs().set('hour', 8).startOf('hour');
 const endTime = dayjs().set('hour', 23).startOf('hour');
@@ -241,6 +264,7 @@ const [selectedStart,setSelectedStart]=useState(startTime)
 const [selectedEnd,setSelectedEnd]=useState(endTime)
 const [currentDay,setCurrentDay]=useState(0)
 const [duration, setDuration] = useState('60');
+const [eventColor,setEventColor]=useState(0)
 
 const handleDurationChange = (event) => {
     const inputValue = event.target.value;
@@ -332,6 +356,32 @@ function addEvent(){
 
 
 </FormControl>
+
+<FormControl sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel id="demo-simple-select-helper-label">Color</InputLabel>
+        <Select
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          value={eventColor}
+          label="Color"
+          onChange={(e)=>{
+           
+            setEventColor(e.target.value)
+          }}
+          sx={{p:1 ,display:"flex",gap:2}}
+        >
+          
+          {colors.map(item=>{
+         return <MenuItem value={item.value} sx={{p:1 ,display:"flex",gap:2}}>
+
+          <Box component="section" sx={{borderRadius:"10px", background:item.color,height:30,width:30}}></Box>
+          {item.label}
+            </MenuItem>
+        })}
+          
+        </Select>
+      
+      </FormControl>
 <Typography>
     Duration : 
     {(selectedEnd.diff(selectedStart,"minute"))}
