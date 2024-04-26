@@ -1,48 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
-
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
-
-import Week2 from './components/Week2';
-
-import SchaduleBar from './components/SchaduleBar';
-
-import Courses from './components/Courses';
-import Professors from './components/Professors';
-
-
-const Item = styled(Paper)(({ theme  ,width}) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  height:"100%",
-  width:width
-}));
+import { Routes,Route } from 'react-router-dom';
+import Schedule from './pages/Schedule';
+import AddProfessor from './pages/AddProfessor';
+import AddCourse from './pages/AddCourse';
 
 function App() {
   return (
     <div className="App" style={{height:"100vh",padding:"40px"}}>
-      <Stack height="90%" spacing={5}>
-        <SchaduleBar />
-      
-      <Stack height={"100%"} direction="row" spacing={2}>
-        <Item width={"250px"}>
-          <Courses/>
-        </Item>
-        <Item width={"250px"}><Professors/></Item>
-        <Item width={"100%"}>
-
-      {/*    <Week /> */}
-      <Week2 />
-        </Item>
-      </Stack>
-
-      </Stack>
+      <Routes>
+        <Route path="/schedule" element={<Schedule/>} />
+        <Route path="/addprofessor" element={<AddProfessor/>} />
+        <Route path="/addcourse" element={<AddCourse/>} />
+      </Routes>
        
     </div>
   );
