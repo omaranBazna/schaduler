@@ -1,8 +1,7 @@
-import {TextField ,FormControl,FormControlLabel,Checkbox ,FormHelperText,InputLabel,Input} from '@mui/material';
+import {Button,TextField,Divider ,FormGroup,FormControl,FormControlLabel,Checkbox ,FormHelperText,InputLabel,Input} from '@mui/material';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
 import { useState } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
@@ -35,11 +34,17 @@ const typesMap={
 
 const TagComp=({content,index,array,setArray,map})=>{
  
-   return <div  style={{background:"rgba(200,200,255,0.5)",borderRadius:"30px",padding:"10px"}}>
+   return <div  style={{
+      display:"flex",flexDirection:"row",alignItems:"center",
+      justifyContent:"space-between",padding:"10px",
+      gap:"10px",
+      background:"rgba(80,188,230,0.2)",borderRadius:"30px"}}>
       
       
       {map[content]}
-      <DeleteForeverIcon onClick={()=>{
+      <DeleteForeverIcon 
+      style={{cursor:"pointer"}}
+      onClick={()=>{
          let new_array=array.filter((it,inx)=>inx!=index)
          setArray(new_array)
       }}/>
@@ -88,8 +93,12 @@ const AddCourse=()=>{
    
   }
 
-  return <div style={{height:"100%",width:"100%" }}>
-   <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+  return <div style={{height:"100%",width:"100%" ,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"start"}}>
+   <div style={{border:"2px solid rgb(100,200,255)"
+   ,padding:'20px',borderRadius:"20px",
+   gap:"10px",
+     width:"40%" ,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+ <FormGroup style={{display:'flex' ,flexDirection:"row",gap:"20px",padding:"30px"}}>
  <FormControl>
    <InputLabel htmlFor="my-input">Course name</InputLabel>
    <Input id="my-input" aria-describedby="my-helper-text" />
@@ -101,10 +110,13 @@ const AddCourse=()=>{
    <Input id="my-input" aria-describedby="my-helper-text" />
    <FormHelperText id="my-helper-text">Ex. CSE3213</FormHelperText>
 </FormControl>
+</FormGroup>
 
-<FormControl>
-   <InputLabel htmlFor="my-input">Course major(s)</InputLabel>
-     <Box style={{display:"flex",width:"600px"}}>{majors.map((item,index)=> {
+<Divider textAlign="left">Course major(s) </Divider>
+
+<FormControl style={{display:"flex",flexDirection:"row",gap:"10px",padding:"20px"}}>
+   
+     <Box style={{display:"flex",flexDirection:"row",gap:"20px"}}>{majors.map((item,index)=> {
       return <TagComp map={majorsMap} content={item} index={index} array={majors} setArray={setMajors}/>})
       } </Box>
        <Select
@@ -125,10 +137,11 @@ const AddCourse=()=>{
         
 </FormControl>
 
+<Divider textAlign="left">Course year(s) </Divider>
 
-<FormControl>
-   <InputLabel htmlFor="my-input">Course year(s)</InputLabel>
-   <Box style={{display:"flex",width:"600px"}}>{years.map((item,index)=> {
+<FormControl style={{display:"flex",flexDirection:"row",gap:"10px",padding:"20px"}}>
+   
+   <Box style={{display:"flex",flexDirection:"row",gap:"20px"}}>{years.map((item,index)=> {
       return <TagComp map={yearsMap} content={item} index={index} array={years} setArray={setYears}/>})
       } </Box>
        <Select
@@ -148,9 +161,11 @@ const AddCourse=()=>{
   
 </FormControl>
 
-<FormControl>
-   <InputLabel htmlFor="my-input">Course semester(s)</InputLabel>
-   <Box style={{display:"flex",width:"600px"}}>{semesters.map((item,index)=> {
+<Divider textAlign="left">Course semester(s) </Divider>
+
+<FormControl style={{display:"flex",flexDirection:"row",gap:"10px",padding:"20px"}}>
+   
+<Box style={{display:"flex",flexDirection:"row",gap:"20px"}}>{semesters.map((item,index)=> {
       return <TagComp map={semestersMap} content={item} index={index} array={semesters} setArray={setSemesters}/>})
       } </Box>
        <Select
@@ -170,7 +185,7 @@ const AddCourse=()=>{
   
 </FormControl>
 
-
+<FormGroup style={{display:'flex',alignItems:"center" ,flexDirection:"row",gap:"20px",padding:"30px"}}>
 <FormControl>
 <FormControlLabel control={<Checkbox checked={hasLab} onClick={()=>{
    setHasLab(!hasLab)
@@ -195,8 +210,8 @@ const AddCourse=()=>{
           
         </Select>
 </FormControl>
+</FormGroup>
 
-<FormControl>
    
    <TextField
   placeholder="Course notes"
@@ -207,7 +222,7 @@ const AddCourse=()=>{
   onChange={(e)=>setCourseNotes(e.target.value)}
   maxRows={6}
 />
-</FormControl>
+<Button variant="contained">Add course</Button>
 </div>
   </div>
 }
