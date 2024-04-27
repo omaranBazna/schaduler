@@ -52,8 +52,8 @@ const TagComp=({content,index,array,setArray,map})=>{
 }
 
 const AddCourse=()=>{
-   const [courseName,setCourseName]=useState("")
-   const [courseCode,setCourseCode]=useState("")
+   const [professorName,setProfessorName]=useState("")
+   const [professorMajor,setProfessorMajor]=useState("")
   const [majors,setMajors]=useState([])
   const [years,setYears]=useState([])
   const [semesters,setSemesters]=useState([])
@@ -103,16 +103,16 @@ const AddCourse=()=>{
  <FormGroup style={{display:'flex' ,flexDirection:"row",gap:"20px",padding:"30px"}}>
  <FormControl>
    <InputLabel htmlFor="my-input">Course name</InputLabel>
-   <Input value={courseName} onChange={(e)=>{
-      setCourseName(e.target.value)
+   <Input value={professorName} onChange={(e)=>{
+      setProfessorName(e.target.value)
    }} id="my-input" aria-describedby="my-helper-text" />
    <FormHelperText id="my-helper-text">Please enter the course name.</FormHelperText>
 </FormControl>
 
 <FormControl>
    <InputLabel htmlFor="my-input">Course Code</InputLabel>
-   <Input value={courseCode} onChange={(e)=>{
-      setCourseCode(e.target.value)
+   <Input value={professorMajor} onChange={(e)=>{
+      setProfessorMajor(e.target.value)
    }} id="my-input" aria-describedby="my-helper-text" />
    <FormHelperText id="my-helper-text">Ex. CSE3213</FormHelperText>
 </FormControl>
