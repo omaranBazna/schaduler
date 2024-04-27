@@ -14,7 +14,7 @@ function NavbarCo() {
    
 
   return (
-    <AppBar sx={{background:"rgb(255,160,150"}} position="static"  >
+    <AppBar sx={{bgcolor: "rgb(210,80,80)" }} position="static"  >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
         <MenuItem  onClick={()=>{ navigator("/schedule")}}>
