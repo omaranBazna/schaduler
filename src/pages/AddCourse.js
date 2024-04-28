@@ -5,7 +5,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useState } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { addCourse } from '../API/courses';
-
+import CoursesList from '../components/CoursesList';
 
 const majorsMap={
    "1":"Electrical engineering",
@@ -231,24 +231,15 @@ const AddCourse=()=>{
   maxRows={6}
 />
 <Button  onClick={async()=>{
-  /*   const [courseName,setCourseName]=useState("")
-   const [professorMajor,setProfessorMajor]=useState("")
-  const [majors,setMajors]=useState([])
-  const [years,setYears]=useState([])
-  const [semesters,setSemesters]=useState([])
-  const [hasLab,setHasLab]=useState(false)
-  const [courseType,setCourseType]=useState(1)
-  const [courseNotes,setCourseNotes]=useState("")*/
-
-
-
-   await addCourse(courseName,courseCode,years,semesters,hasLab,courseType,courseNotes)
+   await addCourse(courseName,courseCode,majors,years,semesters,hasLab,courseType,courseNotes)
 }}
 
 
 
 variant="contained">Add course</Button>
 </div>
+
+<CoursesList />
   </div>
 }
 

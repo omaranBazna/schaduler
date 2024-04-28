@@ -1,6 +1,8 @@
-const sqlite3 = require('sqlite3').verbose();
+
+const sqlite3 = require('sqlite3');
+
 // Create a new SQLite3 database instance
-const db = new sqlite3.Database("../database/database.db");
+const db = new sqlite3.Database("./database/database.db");
 
 /*
 course_name TEXT,
@@ -15,16 +17,18 @@ course_name TEXT,
 
 
 function addCourse(req,res){
-    const {course_name,course_major,course_years,course_semesters,has_lab,course_type,course_notes}=req.body;
 
+   const {course_name,course_code,course_majors,course_years,course_semesters,has_lab,course_type,course_notes}=req.body;
+  
     const insertQuery = `
-    INSERT INTO courses (course_name, course_major, course_years, course_semesters, has_lab, course_type, course_notes)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO course (course_name, course_code, course_majors, course_years, course_semesters, has_lab, course_type, course_notes)
+    VALUES (?, ?, ? , ?, ?, ?, ?, ?)
 `;
 
 // Execute the query with parameters
-db.run(insertQuery, [course_name, course_major, course_years, course_semesters, has_lab, course_type, course_notes], function(err) {
+db.run(insertQuery, [course_name, course_code,course_majors.join("-"), course_years.join("-"), course_semesters.join("-"), has_lab, course_type, course_notes], function(err) {
     if (err) {
+        console.log(err)
         res.send(err)
     } else {
        res.send("Course added")
@@ -34,6 +38,14 @@ db.run(insertQuery, [course_name, course_major, course_years, course_semesters, 
 }
 
 function getCourses(req,res){
+
+    const query="select * from course"
+    db.all(query,(err,rows)=>{
+        if(err){
+            return res.send(err)
+        }
+        res.send(rows)
+    })
 
 }
 
