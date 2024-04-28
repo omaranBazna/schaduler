@@ -2,21 +2,16 @@ import {Button,TextField,Divider ,FormGroup,FormControl,FormControlLabel,Checkbo
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-
+import { getCoursesList} from "../API/courses"
 
 import "../App.css"
 import dayjs from 'dayjs';
-const majorsMap={
-   "1":"Electrical engineering",
-   "2":"Robotics",
-   "3":"Computer science"
-}
 
 const daysMap={
    "1":"Monday","2":"Tuesday","3":"Wenesday","4":"Thursday","5":"Friday"
@@ -25,6 +20,8 @@ const startTime = dayjs().set('hour', 8).startOf('hour');
 const endTime = dayjs().set('hour', 23).startOf('hour');
 
 const TagComp=({content,index,array,setArray,map})=>{
+    
+  
  
    return <div  style={{
       display:"flex",flexDirection:"row",alignItems:"center",
@@ -44,23 +41,41 @@ const TagComp=({content,index,array,setArray,map})=>{
 }
 
 const AddProfessor=()=>{
-  const [majors,setMajors]=useState([])
- 
+  const [courses,setCourses]=useState([])
   const [availabilities,setAvailabilities]=useState([])
   const [professorType,setProfessorType]=useState(1)
   const [courseNotes,setCourseNotes]=useState("")
   const [day,setDay]=useState(0)
   const [time,setTime]=useState("8:00a.m.")
   const [duration,setDuration]=useState(60)
-  const handleSelectMajor=(e)=>{
+
+  const [coursesList,setCoursesList]=useState([])
+  const [coursesMap,setCoursesMap]=useState({})
+  const loadCoursesList=async()=>{
+      try{
+        const list=await getCoursesList()
+        setCoursesList(list)
+        let map={}
+        for(let el of list){
+          map[el.id]=el.course_name+" ||| "+el.course_code
+        }
+        setCoursesMap(map)
+      }catch(err){
+
+      }
+  }
+  useEffect(()=>{
+     loadCoursesList()
+  },[])
+  const handleSelectCourse=(e)=>{
    let val=e.target.value
    if(val==0) return;
    
-   for(let i=0;i<majors.length;i++){
-    if(majors[i]==val) return
+   for(let i=0;i<courses.length;i++){
+    if(courses[i]==val) return
    }
 
-   setMajors([...majors,e.target.value])
+   setCourses([...courses,e.target.value])
    
   }
 
@@ -107,21 +122,21 @@ const AddProfessor=()=>{
 
 <FormControl style={{display:"flex",flexDirection:"row",gap:"10px",padding:"20px"}}>
    
-     <Box style={{display:"flex",flexDirection:"row",gap:"20px"}}>{majors.map((item,index)=> {
-      return <TagComp map={majorsMap} content={item} index={index} array={majors} setArray={setMajors}/>})
+     <Box style={{display:"flex",flexWrap:"wrap",flexDirection:"row",gap:"20px"}}>{courses.map((item,index)=> {
+      return <TagComp map={coursesMap} content={item} index={index} array={courses} setArray={setCourses}/>})
       } </Box>
        <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={0}
-          label="Age"
-          onChange={ handleSelectMajor}
+          label="course"
+          onChange={ handleSelectCourse}
         >
-          <MenuItem value={0}><i>Select major</i></MenuItem>
-          <MenuItem value={1}>Electrical engineering</MenuItem>
-          <MenuItem value={2}>Robotics</MenuItem>
-          <MenuItem value={3}>Computer science</MenuItem>
-
+          <MenuItem value={0}><i>Select courses</i></MenuItem>
+    
+          {coursesList.map(course=>{
+            return  <MenuItem value={course.id}>{course.course_name} - {course.course_code}</MenuItem>
+          })}
           
         </Select>
 

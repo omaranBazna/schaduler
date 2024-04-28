@@ -4,16 +4,6 @@ const sqlite3 = require('sqlite3');
 // Create a new SQLite3 database instance
 const db = new sqlite3.Database("./database/database.db");
 
-/*
-course_name TEXT,
-    course_code TEXT,
-    course_majors TEXT,
-    course_years TEXT,
-    course_semesters TEXT,
-    has_lab INTEGER,
-    course_type INTEGER,
-    course_notes TEXT
-    */
 
 
 function addCourse(req,res){
@@ -49,9 +39,23 @@ function getCourses(req,res){
 
 }
 
+function getCoursesList(req,res){
+
+    const query="select  id,course_name,course_code  from course"
+    db.all(query,(err,rows)=>{
+        console.log(err)
+        if(err){
+            return res.send([])
+        }
+        res.send(rows)
+    })
+
+}
+
 
 
 module.exports={
     addCourse,
-    getCourses
+    getCourses,
+    getCoursesList
 }

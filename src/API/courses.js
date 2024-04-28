@@ -29,3 +29,14 @@ export const getCourses=async()=>{
       return []
     }
 }
+
+
+export const getCoursesList=async()=>{
+
+  try{
+    const {data}=await axios.get(serverlURL+"/courses/list")
+    return data
+  }catch(err){
+    return []
+  }
+}
