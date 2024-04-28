@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { getCoursesList} from "../API/courses"
-
+import { addProfessor } from '../API/professors';
 import "../App.css"
 import dayjs from 'dayjs';
 
@@ -40,11 +40,13 @@ const TagComp=({content,index,array,setArray,map})=>{
    </div>
 }
 
-const AddProfessor=()=>{
+const AddProfessorC=()=>{
+  const [name,setName]=useState("")
+  const [major,setMajor]=useState("")
   const [courses,setCourses]=useState([])
   const [availabilities,setAvailabilities]=useState([])
   const [professorType,setProfessorType]=useState(1)
-  const [courseNotes,setCourseNotes]=useState("")
+  const [notes,setNotes]=useState("")
   const [day,setDay]=useState(0)
   const [time,setTime]=useState("8:00a.m.")
   const [duration,setDuration]=useState(60)
@@ -67,6 +69,10 @@ const AddProfessor=()=>{
   useEffect(()=>{
      loadCoursesList()
   },[])
+   const handleAddProfessor=async()=>{
+       await addProfessor(name,major,courses,availabilities,professorType,notes)
+   }
+
   const handleSelectCourse=(e)=>{
    let val=e.target.value
    if(val==0) return;
@@ -107,13 +113,17 @@ const AddProfessor=()=>{
  <FormGroup style={{display:'flex' ,flexDirection:"row",gap:"20px",padding:"30px"}}>
  <FormControl>
    <InputLabel htmlFor="my-input">Professor name</InputLabel>
-   <Input id="my-input" aria-describedby="my-helper-text" />
+   <Input value={name} onChange={(e)=>{
+    setName(e.target.value)
+   }} id="my-input" aria-describedby="my-helper-text" />
    <FormHelperText id="my-helper-text">Please enter the full name.</FormHelperText>
 </FormControl>
 
 <FormControl>
    <InputLabel htmlFor="my-input">Professor major</InputLabel>
-   <Input id="my-input" aria-describedby="my-helper-text" />
+   <Input value={major} onChange={(e)=>{
+    setMajor(e.target.value)
+   }} id="my-input" aria-describedby="my-helper-text" />
    <FormHelperText id="my-helper-text">Ex. Data science</FormHelperText>
 </FormControl>
 </FormGroup>
@@ -214,13 +224,13 @@ const AddProfessor=()=>{
   multiline
   rows={3}
   style={{width:"100%"}}
-  value={courseNotes}
-  onChange={(e)=>setCourseNotes(e.target.value)}
+  value={notes}
+  onChange={(e)=>setNotes(e.target.value)}
   maxRows={6}
 />
-<Button variant="contained">Add professor</Button>
+<Button onClick={handleAddProfessor} variant="contained">Add professor</Button>
 </div>
   </div>
 }
 
-export default AddProfessor
+export default AddProfessorC
