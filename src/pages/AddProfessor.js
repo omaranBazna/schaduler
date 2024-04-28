@@ -10,6 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { getCoursesList} from "../API/courses"
 import { addProfessor } from '../API/professors';
+import ProfessorsList from '../components/ProfessorsList';
 import "../App.css"
 import dayjs from 'dayjs';
 
@@ -230,6 +231,7 @@ const AddProfessorC=()=>{
 />
 <Button onClick={handleAddProfessor} variant="contained">Add professor</Button>
 </div>
+<ProfessorsList/>
   </div>
 }
 

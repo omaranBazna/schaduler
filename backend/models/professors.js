@@ -34,7 +34,7 @@ db.run(insertQuery, [professor_name,
     professor_type ,
     professor_notes], function(err) {
     if (err) {
-        console.log(err)
+        
         res.send(err)
     } else {
        res.send("Course professor")
