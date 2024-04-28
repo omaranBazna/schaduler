@@ -146,7 +146,7 @@ const AddProfessor=()=>{
           <MenuItem value={0}><i>Select day</i></MenuItem>
           <MenuItem value={1}>Monday</MenuItem>
           <MenuItem value={2}>Tuesday</MenuItem>
-          <MenuItem value={3}>Wensday</MenuItem>
+          <MenuItem value={3}>Wednesday</MenuItem>
           <MenuItem value={4}>Thursday</MenuItem>
           <MenuItem value={5}>Friday</MenuItem>
         </Select>
