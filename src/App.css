@@ -139,3 +139,11 @@
 .left-right:hover{
   opacity: 1;
 }
+
+
+
+.availability-comp div{
+  padding:10px;
+  background-color: #3ec9f025;
+  border-radius: 10px;
+}

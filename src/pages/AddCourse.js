@@ -95,7 +95,7 @@ const AddCourse=()=>{
    
   }
 
-  return <div style={{height:"100%",width:"100%" ,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"start"}}>
+  return <div style={{height:"100%",width:"100%",marginTop:"20px" ,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"start"}}>
    <div style={{border:"2px solid rgb(100,200,255)"
    ,padding:'20px',borderRadius:"20px",
    gap:"10px",
