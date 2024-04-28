@@ -4,6 +4,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useState } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { addCourse } from '../API/courses';
+
 
 const majorsMap={
    "1":"Electrical engineering",
@@ -52,8 +54,8 @@ const TagComp=({content,index,array,setArray,map})=>{
 }
 
 const AddCourse=()=>{
-   const [professorName,setProfessorName]=useState("")
-   const [professorMajor,setProfessorMajor]=useState("")
+   const [courseName,setCourseName]=useState("")
+   const [courseCode,setCourseCode]=useState("")
   const [majors,setMajors]=useState([])
   const [years,setYears]=useState([])
   const [semesters,setSemesters]=useState([])
@@ -103,16 +105,16 @@ const AddCourse=()=>{
  <FormGroup style={{display:'flex' ,flexDirection:"row",gap:"20px",padding:"30px"}}>
  <FormControl>
    <InputLabel htmlFor="my-input">Course name</InputLabel>
-   <Input value={professorName} onChange={(e)=>{
-      setProfessorName(e.target.value)
+   <Input value={courseName} onChange={(e)=>{
+      setCourseName(e.target.value)
    }} id="my-input" aria-describedby="my-helper-text" />
    <FormHelperText id="my-helper-text">Please enter the course name.</FormHelperText>
 </FormControl>
 
 <FormControl>
    <InputLabel htmlFor="my-input">Course Code</InputLabel>
-   <Input value={professorMajor} onChange={(e)=>{
-      setProfessorMajor(e.target.value)
+   <Input value={courseCode} onChange={(e)=>{
+      setCourseCode(e.target.value)
    }} id="my-input" aria-describedby="my-helper-text" />
    <FormHelperText id="my-helper-text">Ex. CSE3213</FormHelperText>
 </FormControl>
@@ -228,7 +230,24 @@ const AddCourse=()=>{
   onChange={(e)=>setCourseNotes(e.target.value)}
   maxRows={6}
 />
-<Button variant="contained">Add course</Button>
+<Button  onClick={async()=>{
+  /*   const [courseName,setCourseName]=useState("")
+   const [professorMajor,setProfessorMajor]=useState("")
+  const [majors,setMajors]=useState([])
+  const [years,setYears]=useState([])
+  const [semesters,setSemesters]=useState([])
+  const [hasLab,setHasLab]=useState(false)
+  const [courseType,setCourseType]=useState(1)
+  const [courseNotes,setCourseNotes]=useState("")*/
+
+
+
+   await addCourse(courseName,courseCode,years,semesters,hasLab,courseType,courseNotes)
+}}
+
+
+
+variant="contained">Add course</Button>
 </div>
   </div>
 }
