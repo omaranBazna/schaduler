@@ -22,16 +22,22 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { useState ,useMemo,useEffect} from 'react';
 import { getCourses } from '../API/courses';
-function createData({course_name,course_code,course_majors,course_years,course_semesters,has_lab,course_type,course_notes}) {
+function createData({
+    professor_name,
+    professor_major ,
+    professor_courses ,
+    availabilities ,
+    professor_type ,
+    professor_notes
+
+}) {
   return {
-    name:course_name,
-code:course_code,
-majors:course_majors,
-years:course_years,
-semesters:course_semesters,
-lab:has_lab,
-type:course_type,
-notes:course_notes
+    name:professor_name,
+major: professor_major ,
+courses:professor_courses,
+type:professor_type,
+availabilities,
+notes:professor_notes
   };
 }
 
@@ -120,58 +126,31 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
-/*
-name
-code
-majors
-years
-semesters
-lab
-type
-notes
-*/
+
 const headCells = [
   {
     id: 'name',
     numeric: false,
     disablePadding: true,
-    label: 'Course name',
+    label: 'Professor name',
   },
   {
-    id: 'code',
+    id: 'major',
     numeric: false,
     disablePadding: false,
-    label: 'Course code',
+    label: 'Professor major',
   },
   {
-    id: 'majors',
+    id: 'courses',
     numeric: false,
     disablePadding: false,
-    label: 'Course majors',
+    label: 'Professor courses',
   },
   {
-    id: 'years',
+    id: 'availability',
     numeric:false,
     disablePadding: false,
-    label: 'Course years',
-  },
-  {
-    id: 'semesters',
-    numeric: false,
-    disablePadding: false,
-    label: 'Course semesters',
-  },
-  {
-    id: 'lab',
-    numeric: false,
-    disablePadding: false,
-    label: 'Has lab?',
-  },
-  {
-    id: 'type',
-    numeric: false,
-    disablePadding: false,
-    label: 'Course type',
+    label: 'Professor availability',
   },
   {
     id: 'notes',
@@ -428,14 +407,12 @@ export default function ProfessorsList() {
                     >
                       {row.name}
                     </TableCell>
-
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left">{row.code}</TableCell>
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left"> <RenderMajors majors={row.majors}/></TableCell>
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left"><RenderYears years={row.years}/> </TableCell>
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left"><RenderSemesters semesters={row.semesters}/></TableCell>
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left"><RenderLab lab={row.lab}/></TableCell>
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left"><RenderType type={row.type}/></TableCell>
-                    <TableCell   style={{borderLeft:"1px solid black"}} align="left">{row.notes}</TableCell>
+                    
+                    <TableCell  style={{borderLeft:"1px solid black"}} align="left">{row.major}</TableCell>
+                    <TableCell  style={{borderLeft:"1px solid black"}} align="left"> <RenderMajors majors={row.courses}/></TableCell>
+                    <TableCell  style={{borderLeft:"1px solid black"}} align="left">{row.type} </TableCell>
+                    <TableCell  style={{borderLeft:"1px solid black"}} align="left">Avaibility</TableCell>
+                      <TableCell   style={{borderLeft:"1px solid black"}} align="left">{row.notes}</TableCell>
                   </TableRow>
                 );
               })}
