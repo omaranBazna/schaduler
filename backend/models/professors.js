@@ -43,13 +43,29 @@ db.run(insertQuery, [professor_name,
 
 }
 function getProfessors(req,res){
-    const query="select * from professors"
+    
+
+    if(req.query.all==="true"){
+        const query="select * from professors"
     db.all(query,(err,rows)=>{
         if(err){
             return res.send(err)
         }
         res.send(rows)
     })
+      }else{
+          const {Year,Major,Semester} = req.query
+          
+          const query="select * from professors where  course_majors LIKE (?) and course_years Like (?) and   course_semesters Like (?) ;";
+          db.all(query,[Major,Year,Semester],(err,rows)=>{
+             
+              if(err){
+                  return res.send(err)
+              }
+              res.send(rows)
+          })
+      
+      }
 }
 
 module.exports={

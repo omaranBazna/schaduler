@@ -21,10 +21,10 @@ export const addProfessor=async(professor_name,
 
     }
 }
-export const getProfessors=async()=>{
+export const getProfessors=async(all=true,params)=>{
 
     try{
-      const {data}=await axios.get(serverlURL+"/professors")
+      const {data}=await axios.get(serverlURL+"/professors", { params:{...params,all} })
       return data
     }catch(err){
       return []

@@ -28,14 +28,29 @@ db.run(insertQuery, [course_name, course_code,course_majors.join("-"), course_ye
 }
 
 function getCourses(req,res){
-
-    const query="select * from course"
-    db.all(query,(err,rows)=>{
-        if(err){
-            return res.send(err)
-        }
-        res.send(rows)
-    })
+   
+    if(req.query.all==="true"){
+      const query="select * from course"
+      db.all(query,(err,rows)=>{
+          if(err){
+              return res.send(err)
+          }
+          res.send(rows)
+      })
+    }else{
+        const {Year,Major,Semester} = req.query
+        
+        const query="select * from course where  course_majors LIKE (?) and course_years Like (?) and   course_semesters Like (?) ;";
+        db.all(query,[Major,Year,Semester],(err,rows)=>{
+            console.log(err)
+            console.log(rows)
+            if(err){
+                return res.send(err)
+            }
+            res.send(rows)
+        })
+    
+    }
 
 }
 

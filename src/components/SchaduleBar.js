@@ -46,12 +46,12 @@ const colors=[
 ]
 
 
-function SchaduleBar() {
+function SchaduleBar({params,setParams}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const labels=["Year","Major","Semester"]
   const options=[
     ["First","Second","Third","Fourth","Graduate"],
-    ["CS","EE","Robotic"],
+    ["EE","Robotic","CS"],
     ["Fall","Winter","Summer"]
   ]
   const [state, setState] = useState([
@@ -60,10 +60,8 @@ function SchaduleBar() {
     "Winter"
   ]);
   
-  const handleChange = (event,index) => {
-    let new_state=state.map(item=>item)
-    new_state[index]=event.target.value
-    setState(new_state);
+  const handleChange = (event,label) => {
+    setParams({...params,[label]:event.target.value})
   };
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -80,7 +78,7 @@ function SchaduleBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-
+        
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -117,6 +115,7 @@ function SchaduleBar() {
               ))}
             </Menu>
           </Box>
+         
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
          
           <Box sx={{ flexGrow: 1,gap:2, display: { xs: 'none', md: 'flex' } }}>
@@ -127,13 +126,14 @@ function SchaduleBar() {
                  <Select
                    labelId="demo-simple-select-label"
                    id="demo-simple-select"
-                   value={state[index]}
+                   value={params[label]}
                    label={label}
-                   onChange={(e)=>handleChange(e,index)}
+                   onChange={(e)=>handleChange(e,label)}
                    style={{background:"white"}}
                  >
-                  {options[index].map((item)=>{
-                    return   <MenuItem value={item}>{item}</MenuItem>
+                  {options[index].map((item,index)=>{
+                    
+                    return   <MenuItem value={index+1}>{item}</MenuItem>
                   })}
                   
                  </Select>

@@ -20,10 +20,10 @@ export const addCourse=async(course_name, course_code,course_majors, course_year
 
     }
 }
-export const getCourses=async()=>{
+export const getCourses=async(all=true,params)=>{
 
     try{
-      const {data}=await axios.get(serverlURL+"/courses")
+      const {data}=await axios.get(serverlURL+"/courses/", { params:{...params,all} })
       return data
     }catch(err){
       return []
