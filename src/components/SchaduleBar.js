@@ -50,7 +50,7 @@ function SchaduleBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const labels=["Year","Major","Semester"]
   const options=[
-    ["Jenior","First","Second","Third","Senior"],
+    ["First","Second","Third","Fourth","Graduate"],
     ["CS","EE","Robotic"],
     ["Fall","Winter","Summer"]
   ]
