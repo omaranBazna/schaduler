@@ -22,6 +22,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { useState ,useMemo,useEffect} from 'react';
 import { getCourses } from '../API/courses';
+import { getProfessors } from '../API/professors';
 function createData({
     professor_name,
     professor_major ,
@@ -68,29 +69,15 @@ const majorsMap={
  }
  
 
-function RenderMajors({majors}){
-  return <>{majors.split("-").map(item=>{
-    return <span style={{border:"1px solid rgb(100,100,100)",padding:"5px",margin:"5px"}}> {majorsMap[item]} </span>
-  })}</>
-}
-function RenderYears({years}){
-  return <>{years.split("-").map(item=>{
-    return <span style={{border:"1px solid rgb(100,100,100)",padding:"5px",margin:"5px"}}> {yearsMap[item]} </span>
-  })}</>
-}
+function RenderCourses({profCourses,coursesList}){
+  
 
-function RenderSemesters({semesters}){
-  return <>{semesters.split("-").map(item=>{
-    return <span style={{border:"1px solid rgb(100,100,100)",padding:"5px",margin:"5px"}}> {semestersMap[item]} </span>
+  return <>{profCourses.split("-").map(item=>{
+    let el=coursesList.find(course=>{
+      return course.id==item
+    })
+    return <span style={{border:"1px solid rgb(100,100,100)",padding:"5px",margin:"5px"}}> {el.course_name + "||" +el.course_code} </span>
   })}</>
-}
-
-function RenderLab({lab}){
-  return <>{lab==0?"No":"Yes"}</>
-}
-
-function RenderType({type}){
-    return <>{typesMap[type]}</>
 }
 
 
@@ -147,10 +134,10 @@ const headCells = [
     label: 'Professor courses',
   },
   {
-    id: 'availability',
+    id: 'type',
     numeric:false,
     disablePadding: false,
-    label: 'Professor availability',
+    label: 'Professor type',
   },
   {
     id: 'notes',
@@ -271,7 +258,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function ProfessorsList() {
+export default function ProfessorsList({coursesList}) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');
   const [selected, setSelected] = useState([]);
@@ -281,22 +268,22 @@ export default function ProfessorsList() {
 
   const [rows,setRows]=useState([])
   const [visibleRows,setVisibleRows]=useState([])
-  const loadCourses=async()=>{
-    const courses= await getCourses()
+  const loadProfessors=async()=>{
+    const professors= await getProfessors();
     
-    setRows(courses.map(course=>{
-       return createData(course)
+    setRows(professors.map(prof=>{
+       return createData(prof)
     }))
 
-    setVisibleRows(stableSort(courses.map(course=>{
-        return createData(course)
+    setVisibleRows(stableSort(professors.map(prof=>{
+        return createData(prof)
      }), getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ))
   }
   useEffect(()=>{
-    loadCourses();
+    loadProfessors();
   
   },[order, orderBy, page, rowsPerPage])
 
@@ -407,11 +394,11 @@ export default function ProfessorsList() {
                     >
                       {row.name}
                     </TableCell>
-                    
+
                     <TableCell  style={{borderLeft:"1px solid black"}} align="left">{row.major}</TableCell>
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left"> <RenderMajors majors={row.courses}/></TableCell>
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left">{row.type} </TableCell>
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left">Avaibility</TableCell>
+                    <TableCell  style={{borderLeft:"1px solid black"}} align="left"> <RenderCourses coursesList={coursesList} profCourses={row.courses}/></TableCell>
+                    <TableCell  style={{borderLeft:"1px solid black"}} align="left">{row.type==1?"Full time":"Part time"} </TableCell>
+                   
                       <TableCell   style={{borderLeft:"1px solid black"}} align="left">{row.notes}</TableCell>
                   </TableRow>
                 );

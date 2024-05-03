@@ -43,7 +43,13 @@ db.run(insertQuery, [professor_name,
 
 }
 function getProfessors(req,res){
-
+    const query="select * from professors"
+    db.all(query,(err,rows)=>{
+        if(err){
+            return res.send(err)
+        }
+        res.send(rows)
+    })
 }
 
 module.exports={

@@ -231,7 +231,7 @@ const AddProfessorC=()=>{
 />
 <Button onClick={handleAddProfessor} variant="contained">Add professor</Button>
 </div>
-{/*<ProfessorsList/>*/}
+<ProfessorsList coursesList={coursesList}/>
   </div>
 }
 

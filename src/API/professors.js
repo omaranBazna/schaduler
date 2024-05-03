@@ -21,3 +21,12 @@ export const addProfessor=async(professor_name,
 
     }
 }
+export const getProfessors=async()=>{
+
+    try{
+      const {data}=await axios.get(serverlURL+"/professors")
+      return data
+    }catch(err){
+      return []
+    }
+}
