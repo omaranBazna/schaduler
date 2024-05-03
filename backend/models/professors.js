@@ -54,10 +54,10 @@ function getProfessors(req,res){
         res.send(rows)
     })
       }else{
-          const {Year,Major,Semester} = req.query
+          const {Course} = req.query
           
-          const query="select * from professors where  course_majors LIKE (?) and course_years Like (?) and   course_semesters Like (?) ;";
-          db.all(query,[Major,Year,Semester],(err,rows)=>{
+          const query="select * from professors where  professor_courses  LIKE (?)  ;";
+          db.all(query,[Course],(err,rows)=>{
              
               if(err){
                   return res.send(err)

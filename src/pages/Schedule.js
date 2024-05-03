@@ -27,9 +27,16 @@ const Schedule=()=>{
   })
   const [coursesList,setCoursesList]=useState([])
   const [professorsList,setProfessorsList]=useState([])
+  const [selectedCourse,setSelectedCourse]=useState(0)
   const loadLists=async()=>{  
     const courses=await getCourses(false,params)
-    const professors=await getProfessors(false,params)
+    let professors=[]
+    console.log(courses)
+    if(courses.length>0){
+      professors=await getProfessors(false,{Course:courses[0].id})
+      console.log(professors)
+    }
+    
 
     setCoursesList(courses)
     setProfessorsList(professors)
