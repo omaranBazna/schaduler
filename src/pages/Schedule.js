@@ -8,6 +8,7 @@ import Courses from '../components/Courses';
 import Professors from '../components/Professors';
 import { useState ,useEffect} from 'react';
 import { getCourses } from '../API/courses';
+import { getProfessors } from '../API/professors';
 const Item = styled(Paper)(({ theme  ,width}) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -24,13 +25,15 @@ const Schedule=()=>{
     Major:1,
     Semester:1
   })
-  const [lists,setLists]=useState({
-    courses:[],
-    professors:[]
-  })
+  const [coursesList,setCoursesList]=useState([])
+  const [professorsList,setProfessorsList]=useState([])
   const loadLists=async()=>{  
     const courses=await getCourses(false,params)
-    console.log(courses)
+    const professors=await getProfessors(false,params)
+
+    setCoursesList(courses)
+    setProfessorsList(professors)
+
 
   }
   useEffect(()=>{
@@ -43,9 +46,9 @@ const Schedule=()=>{
       
       <Stack height={"100%"} direction="row" spacing={2}>
         <Item width={"250px"}>
-          <Courses/>
+          <Courses coursesList={coursesList}/>
         </Item>
-        <Item width={"250px"}><Professors/></Item>
+        <Item width={"250px"}><Professors professorsList={professorsList}/></Item>
         <Item width={"100%"}>
 
       {/*    <Week /> */}

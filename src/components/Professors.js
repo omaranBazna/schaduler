@@ -55,7 +55,7 @@ const SortingIcon=styled(SettingsIcon)(({theme})=>({
 }))
 
 
-export default function Professors() {
+export default function Professors({professorsList}) {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -112,9 +112,10 @@ const downArrow=(index)=>{
         <Divider textAlign="left">Professors </Divider>
        
       <Stack  gap={3}>
-        <Item className="active">Item 1</Item>
-        <Item>Item 2</Item>
-        <Item>Item 3</Item>
+       
+        {professorsList.map(prof=>{
+          return   <Item>{prof.professor_name}</Item>
+        })}
       </Stack>
 
       <Divider textAlign="left">Professor Notes  </Divider>
