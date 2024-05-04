@@ -56,12 +56,16 @@ function getProfessors(req,res){
       }else{
           const {Course} = req.query
           
-          const query="select * from professors where  professor_courses  LIKE (?)  ;";
-          db.all(query,[Course],(err,rows)=>{
+          const query="select * from professors";
+          db.all(query,(err,rows)=>{
              
               if(err){
-                  return res.send(err)
+                console.log(err)
+                  return res.send([])
               }
+              rows=rows.filter(item=>{
+                return item.professor_courses.split("-").includes(Course)
+              })
               res.send(rows)
           })
       

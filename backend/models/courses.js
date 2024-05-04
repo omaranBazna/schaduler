@@ -40,14 +40,21 @@ function getCourses(req,res){
     }else{
         const {Year,Major,Semester} = req.query
         
-        const query="select * from course where  course_majors LIKE (?) and course_years Like (?) and   course_semesters Like (?) ;";
-        db.all(query,[Major,Year,Semester],(err,rows)=>{
-            console.log(err)
-            console.log(rows)
+        const query="select * from course";
+        db.all(query,(err,rows)=>{
+            
             if(err){
-                return res.send(err)
+                console.log(err)
+                return res.send([])
             }
+      
+            rows=rows.filter(item=>{
+                return item.course_majors.split("-").includes(Major) && item.course_years.split(
+                    "-"
+                ).includes(Year) && item.course_semesters.split("-").includes(Semester)
+            })
             res.send(rows)
+       
         })
     
     }

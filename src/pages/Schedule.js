@@ -28,13 +28,14 @@ const Schedule=()=>{
   const [coursesList,setCoursesList]=useState([])
   const [professorsList,setProfessorsList]=useState([])
   const [selectedCourse,setSelectedCourse]=useState(0)
+  const [selectedProfessor,setSelectedProfessor]=useState(0)
   const loadLists=async()=>{  
     const courses=await getCourses(false,params)
     let professors=[]
-    console.log(courses)
+  
     if(courses.length>0){
-      professors=await getProfessors(false,{Course:courses[0].id})
-      console.log(professors)
+      professors=await getProfessors(false,{Course:courses[selectedCourse].id})
+    
     }
     
 
@@ -45,7 +46,7 @@ const Schedule=()=>{
   }
   useEffect(()=>{
    loadLists();
-  },[params])
+  },[params,selectedCourse])
   return <div style={{height:"100%",width:"100%"}}>
     
     <Stack height="90%" spacing={5}>
@@ -53,9 +54,9 @@ const Schedule=()=>{
       
       <Stack height={"100%"} direction="row" spacing={2}>
         <Item width={"250px"}>
-          <Courses coursesList={coursesList}/>
+          <Courses  {...{ coursesList, selectedCourse, setSelectedCourse  }}/>
         </Item>
-        <Item width={"250px"}><Professors professorsList={professorsList}/></Item>
+        <Item width={"250px"}><Professors {...{professorsList,selectedProfessor,setSelectedProfessor}}/></Item>
         <Item width={"100%"}>
 
       {/*    <Week /> */}

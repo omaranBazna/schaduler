@@ -55,7 +55,7 @@ const SortingIcon=styled(SettingsIcon)(({theme})=>({
 }))
 
 
-export default function Professors({professorsList}) {
+export default function Professors({professorsList,selectedProfessor,setSelectedProfessor}) {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -113,8 +113,14 @@ const downArrow=(index)=>{
        
       <Stack  gap={3}>
        
-        {professorsList.map(prof=>{
-          return   <Item>{prof.professor_name}</Item>
+        {professorsList.map((prof,index)=>{
+          if(index==selectedProfessor){
+          return   <Item sx={{backgroundColor:"red"}}>{prof.professor_name}</Item>
+          }else{
+            return   <Item onClick={()=>{
+              setSelectedProfessor(index)
+            }}>{prof.professor_name}</Item>
+          }
         })}
       </Stack>
 

@@ -63,7 +63,8 @@ const SortingIcon=styled(SettingsIcon)(({theme})=>({
 }))
 
 
-export default function Courses({coursesList}) {
+export default function Courses({coursesList,selectedCourse,setSelectedCourse}) {
+  console.log(coursesList)
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -120,8 +121,14 @@ const downArrow=(index)=>{
         <Divider textAlign="left">Courses  </Divider>
        
       <Stack  gap={3}>
-        {coursesList.map(course=>{
-          return <Item>{course.course_name} <CheckCircleIcon/></Item>
+        {coursesList.map((course,index)=>{
+          if(index==selectedCourse) {
+           return <Item  sx={{background:"red"}}>{course.course_name} <CheckCircleIcon/></Item>
+          }else{
+            return <Item onClick={()=>{
+              setSelectedCourse(index)
+            }}>{course.course_name} <CheckCircleIcon/></Item>
+          }
         })}
         
       </Stack>
