@@ -40,5 +40,9 @@ CREATE TABLE Events(
    major int,
    year int,
    semester int,
-   type int
+   type int,
+   startDate TEXT,
+   endDate TEXT,
+   day int,
+   schedule_id int
 );

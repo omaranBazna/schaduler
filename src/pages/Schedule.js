@@ -11,6 +11,7 @@ import { getCourses } from '../API/courses';
 import { getProfessors } from '../API/professors';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { getEvents } from '../API/events';
 
 const professorBusy=[
   {
@@ -156,7 +157,14 @@ const Schedule=()=>{
 
   }
   const loadEvents=async()=>{
-
+        console.log("load events")
+         try{
+            const data=await getEvents(params.Major,params.Year,params.Semester,id)
+            console.log("Events:")
+            console.log(data)
+         }catch(err){
+          console.log(err)
+         }
   }
   const loadProfessorEvents=async()=>{
 
@@ -164,6 +172,8 @@ const Schedule=()=>{
   
   useEffect(()=>{
    loadLists();
+   loadEvents();
+   
   },[params,selectedCourse])
   return <div style={{height:"100%",width:"100%"}}>
     

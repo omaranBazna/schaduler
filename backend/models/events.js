@@ -1,55 +1,49 @@
-
 const sqlite3 = require('sqlite3');
-
 // Create a new SQLite3 database instance
 const db = new sqlite3.Database("./database/database.db");
-
-
-
-
-
 function addEvents(req,res){
 const { events } =req.body
 const {major,year,semester,schedule} = req.query
 
-console.log(events)
-console.log(major,"-",year,"-",semester,"-",schedule)
 
 db.serialize(() => {
 
 
     for(let event of events){
-        console.log(event);
+       
     const insertQuery = `
     INSERT INTO events (professor_id ,
         course_id ,
         major ,
        year,
        semester ,
-       type)
-    VALUES (?, ?, ? , ?, ?, ?)
+       type,
+       startDate ,
+       endDate,
+       day ,
+    schedule_id)
+    VALUES (?, ?, ? , ?, ?, ?,?,?,?,?)
 `;
 
 // Execute the query with parameters
-db.run(insertQuery, [event.professor_id,event.coures_id,major,year,semester,event.type], function(err) {
+db.run(insertQuery, [event.event_professor.id,event.event_course.id,major,year,semester,event.color.value,event.selectedStart,event.selectedEnd,event.currentDay,schedule], function(err) {
     if (err) {
         
-        res.send([])
+        console.log(err)
+        return res.send("Error")
     } 
 });
 
 
     }
- res.send("Course professor")
+ res.send("All events added")
 })
 
 }
 function getEvents(req,res){
-    
-
-  
-        const query="select * from events"
-    db.all(query,(err,rows)=>{
+    const {major,year,semester,schedule} = req.query
+    const query=`select * from events where major=(?) and year=(?) and semester=(?) and schedule_id=(?)`
+    db.all(query,[major,year,semester,schedule],(err,rows)=>{
         if(err){
             return res.send([])
         }
