@@ -27,3 +27,18 @@ CREATE TABLE Availability (
     minutes INTEGER,
     duration INTEGER
 );
+
+CREATE TABLE Schedules(
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     name TEXT
+);
+
+CREATE TABLE Events(
+   id INTEGER PRIMARY KEY AUTOINCREMENT,
+   professor_id int,
+   course_id int,
+   major int,
+   year int,
+   semester int,
+   type int
+);

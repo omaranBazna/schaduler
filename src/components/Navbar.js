@@ -17,8 +17,8 @@ function NavbarCo() {
     <AppBar sx={{bgcolor: "rgb(210,80,80)" }} position="static"  >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <MenuItem  onClick={()=>{ navigator("/schedule")}}>
-                  <Typography textAlign="center">{"Schedule"}</Typography>
+        <MenuItem  onClick={()=>{ navigator("/")}}>
+                  <Typography textAlign="center">{"Schedules"}</Typography>
                 </MenuItem>
                 <MenuItem  onClick={()=>{ navigator("/addcourse")}}>
                   <Typography textAlign="center">{"Courses"}</Typography>

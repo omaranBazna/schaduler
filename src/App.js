@@ -2,6 +2,7 @@ import './App.css';
 import * as React from 'react';
 import { Routes,Route } from 'react-router-dom';
 import Schedule from './pages/Schedule';
+import Schedules from './pages/Schedules';
 import AddProfessorC from './pages/AddProfessor';
 import AddCourse from './pages/AddCourse';
 import NavbarCo from './components/Navbar';
@@ -10,8 +11,8 @@ function App() {
     <div className="App" style={{height:"100vh"}}>
       <NavbarCo/>
       <Routes>
-      <Route path="/" element={<Schedule/>} />
-        <Route path="/schedule" element={<Schedule/>} />
+      <Route path="/" element={<Schedules/>} />
+        <Route path="/schedule/:id" element={<Schedule/>} />
         <Route path="/addprofessor" element={<AddProfessorC/>} />
         <Route path="/addcourse" element={<AddCourse/>} />
       </Routes>
