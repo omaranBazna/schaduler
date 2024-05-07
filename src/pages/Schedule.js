@@ -168,7 +168,7 @@ const Schedule=()=>{
   return <div style={{height:"100%",width:"100%"}}>
     
     <Stack height="90%" spacing={5}>
-        <SchaduleBar scheduleId={id} {...{params,setParams}}    />
+        <SchaduleBar events={events} scheduleId={id} {...{params,setParams}}    />
       
       <Stack height={"100%"} direction="row" spacing={2}>
         <Item width={"250px"}>
