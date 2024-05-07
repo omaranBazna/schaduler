@@ -46,7 +46,7 @@ const colors=[
 ]
 
 
-function SchaduleBar({params,setParams}) {
+function SchaduleBar({params,setParams,scheduleId}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const labels=["Year","Major","Semester"]
   const options=[
@@ -148,7 +148,8 @@ function SchaduleBar({params,setParams}) {
         </InputLabel>
         <Input
         label="Outlined" variant="outlined" 
-          id="input-with-icon-adornment"
+          id="input-with-icon-adornment" 
+          value={scheduleId}
          endAdornment={
             <InputAdornment position="end">
               <SaveIcon onClick={()=>{

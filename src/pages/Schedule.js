@@ -9,6 +9,8 @@ import Professors from '../components/Professors';
 import { useState ,useEffect} from 'react';
 import { getCourses } from '../API/courses';
 import { getProfessors } from '../API/professors';
+import { useParams } from 'react-router-dom';
+
 const Item = styled(Paper)(({ theme  ,width}) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -29,6 +31,7 @@ const Schedule=()=>{
   const [professorsList,setProfessorsList]=useState([])
   const [selectedCourse,setSelectedCourse]=useState(0)
   const [selectedProfessor,setSelectedProfessor]=useState(0)
+  const {id}=useParams();
   const loadLists=async()=>{  
     const courses=await getCourses(false,params)
     let professors=[]
@@ -44,13 +47,20 @@ const Schedule=()=>{
 
 
   }
+  const loadEvents=async()=>{
+
+  }
+  const loadProfessorEvents=async()=>{
+
+  }
+  
   useEffect(()=>{
    loadLists();
   },[params,selectedCourse])
   return <div style={{height:"100%",width:"100%"}}>
     
     <Stack height="90%" spacing={5}>
-        <SchaduleBar params={params} setParams={setParams} />
+        <SchaduleBar scheduleId={id} {...{params,setParams}}    />
       
       <Stack height={"100%"} direction="row" spacing={2}>
         <Item width={"250px"}>
