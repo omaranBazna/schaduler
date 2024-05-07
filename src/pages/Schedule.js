@@ -157,11 +157,20 @@ const Schedule=()=>{
 
   }
   const loadEvents=async()=>{
-        console.log("load events")
+       
          try{
-            const data=await getEvents(params.Major,params.Year,params.Semester,id)
-            console.log("Events:")
+            let data=await getEvents(params.Major,params.Year,params.Semester,id)
+            data=data.map(item=>{
+              return {...item,currentDay:item.day,event_professor:{},event_course:{},color:{color:"red"}
+            , selectedStart:dayjs(item.startDate),
+            selectedEnd:dayjs(item.endDate),
+            
+            }
+            })
             console.log(data)
+            console.log(events)
+           
+            setEvents(data)
          }catch(err){
           console.log(err)
          }
