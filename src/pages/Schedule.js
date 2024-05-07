@@ -166,9 +166,7 @@ const Schedule=()=>{
           console.log(err)
          }
   }
-  const loadProfessorEvents=async()=>{
 
-  }
   
   useEffect(()=>{
    loadLists();
