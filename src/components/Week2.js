@@ -74,112 +74,6 @@ let times={
     16:"11:00p.m"
 }
 
-const professorBusy=[
-  {
-   
-    currentDay:2,
-    selectedStart:dayjs().set('hour', 9).startOf('hour'),
-    selectedEnd:dayjs().set('hour',10).startOf('hour'),
-    professor:true
-  },
-  {
-   
-    currentDay:3,
-    selectedStart:dayjs().set('hour', 11).startOf('hour'),
-    selectedEnd:dayjs().set('hour',13).startOf('hour'),
-    professor:true
-  },
-  {
-   
-    currentDay:0,
-    selectedStart:dayjs().set('hour', 17).startOf('hour'),
-    selectedEnd:dayjs().set('hour',19).startOf('hour'),
-    professor:true
-  },
-]
-
-const initialEvents=[
-  {
-   
-    currentDay:2,
-    selectedStart:dayjs().set('hour', 8).startOf('hour'),
-    selectedEnd:dayjs().set('hour',9).startOf('hour'),
-    dead:true
-  },
-  {
-   
-    currentDay:3,
-    selectedStart:dayjs().set('hour', 9).startOf('hour'),
-    selectedEnd:dayjs().set('hour',11).startOf('hour'),
-    dead:true
-  },
-  {
-   
-    currentDay:1,
-    selectedStart:dayjs().set('hour', 12).startOf('hour'),
-    selectedEnd:dayjs().set('hour',14).startOf('hour'),
-    dead:true
-  },
-  {
-   
-    currentDay:0,
-    selectedStart:dayjs().set('hour', 12).startOf('hour'),
-    selectedEnd:dayjs().set('hour',16).startOf('hour'),
-    dead:true
-  },
-  {
-   
-    currentDay:4,
-    selectedStart:dayjs().set('hour', 8).startOf('hour'),
-    selectedEnd:dayjs().set('hour',11).startOf('hour'),
-    dead:true
-  }
-  ,
-  {
-   
-    currentDay:3,
-    selectedStart:dayjs().set('hour', 15).startOf('hour'),
-    selectedEnd:dayjs().set('hour',17).startOf('hour'),
-    dead:true
-  },
-  ...professorBusy
-
-]
-
-function updateEvents(setEvents,new_events){
-
-  let copy=[...new_events]
-  copy.sort((event1,event2)=>{
-    
-    if(event1.currentDay == event2.currentDay){
-         return dayjs(event1.selectedStart).diff(dayjs(event2.selectedStart),"minute")
-    }
-    return event1.currentDay - event2.currentDay
-  })
-  let valid=true
-  for(let i=0;i<copy.length-1;i++){
-    let event1=copy[i];
-    let event2=copy[i+1];
-    if(event1.currentDay==event2.currentDay){
-      let time1=dayjs(event1.selectedEnd)
-      let time2=dayjs(event2.selectedStart)
-      if(time2.diff(time1,"minute") <0){
-        valid=false
-      }
-
-     
-    }
-  }
-  
-  if(!valid) {
-    return false;
-  }
-  if(valid){
-  setEvents(new_events)
-  return true
-  }
-}
-
 
 const Times=()=>{
 
@@ -217,7 +111,7 @@ const Day=({setCurrentDay,setOpen,day,setSelectedStart,setSelectedEnd,setDuratio
 }
 
 
-function EventsComp({events,setEvents,weekRef}){
+function EventsComp({events,setEvents,weekRef,updateEvents}){
   
   const [mouseY,setMouseY]=useState(0)
   const [markY,setMarkY]=useState(0)
@@ -396,12 +290,12 @@ function EventsComp({events,setEvents,weekRef}){
 }
 
 
-const Week2=({selectedCourse,selectedProfessor,coursesList,professorsList})=>{
+const Week2=({setEvents,updateEvents,events,selectedCourse,selectedProfessor,coursesList,professorsList})=>{
 
     const weekRef=useRef(null)
     const [dimensions,setDimensions]=useState({x:0,y:0,width:0,height:0})
 
-    const [events,setEvents]=useState(initialEvents)
+   
     const [open,setOpen]=useState(false)
 
     useEffect(()=>{
@@ -594,7 +488,7 @@ function addEvent(){
                 return  <Day day={day} setOpen={setOpen} setDuration={setDuration} setSelectedStart={setSelectedStart} setSelectedEnd={setSelectedEnd} setCurrentDay={setCurrentDay} />
          
             })}
-           <EventsComp weekRef={weekRef}  setEvents={setEvents} events={events} />
+           <EventsComp updateEvents={updateEvents} weekRef={weekRef}  setEvents={setEvents} events={events} />
            </div>
             
 
