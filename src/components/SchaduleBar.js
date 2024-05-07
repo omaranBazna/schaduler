@@ -20,10 +20,7 @@ import SaveIcon from '@mui/icons-material/Save';
 
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-
-
+import { addEvents } from '../API/events';
 const pages = ['Products', 'Pricing', 'Blog'];
 
 
@@ -46,7 +43,7 @@ const colors=[
 ]
 
 
-function SchaduleBar({params,setParams,scheduleId}) {
+function SchaduleBar({events,params,setParams,scheduleId}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const labels=["Year","Major","Semester"]
   const options=[
@@ -142,24 +139,20 @@ function SchaduleBar({params,setParams,scheduleId}) {
             ))}
           </Box>
 
-          <FormControl sx={{mr:10}} variant="outlined">
-        <InputLabel htmlFor="input-with-icon-adornment">
-          Save schedule
-        </InputLabel>
-        <Input
-        label="Outlined" variant="outlined" 
-          id="input-with-icon-adornment" 
-          value={scheduleId}
-         endAdornment={
-            <InputAdornment position="end">
-              <SaveIcon onClick={()=>{
-                alert("Save schedule")
+        
+          <SaveIcon onClick={async()=>{
+                let uploadedEvents=events.filter(item=>{
+                  return !item.professor && !item.dead
+                })
+                try{
+                    await addEvents(params.Major,params.Year,params.Semester,scheduleId,uploadedEvents)
+                }catch(err){
+                  console.log(err)
+                }
               }} sx={{cursor:"pointer",width:30,height:30,color:"white"}}/>
-            </InputAdornment>
-          }
-        />
+       
          
-      </FormControl>
+    
 
 
 

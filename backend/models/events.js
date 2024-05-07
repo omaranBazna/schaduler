@@ -10,7 +10,11 @@ const db = new sqlite3.Database("./database/database.db");
 
 function addEvents(req,res){
 const { events } =req.body
-const {major,year,semester} = req.query
+const {major,year,semester,schedule} = req.query
+
+console.log(events)
+console.log(major,"-",year,"-",semester,"-",schedule)
+
 db.serialize(() => {
 
 
