@@ -15,12 +15,14 @@ import {TextField} from "@mui/material";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import toast,{Toaster} from "react-hot-toast";
-
+import DeleteIcon from '@mui/icons-material/Delete';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import dayjs from 'dayjs';
-
+import { DeleteForever } from "@mui/icons-material";
+import ModeIcon from '@mui/icons-material/Mode';
+import DatasetLinkedIcon from '@mui/icons-material/DatasetLinked';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -304,6 +306,7 @@ function EventsComp({events,setEvents,weekRef}){
               }
               } 
               >
+
                 
               </div>
             }
@@ -345,7 +348,26 @@ function EventsComp({events,setEvents,weekRef}){
                   }
                   updateEvents(setEvents,new_events);
               }}></span>
-            <div  >{item.title}</div>
+           
+              <div style={{width:"100%",height:"100%", display:"flex",flexDirection:"column",alignItems:"flex-start",justifyContent:"flex-start"}}>
+                <div>
+                <DeleteIcon onClick={()=>{
+                  let new_events=events.filter((_item)=>{
+                       return item !=_item
+                  })
+                  setEvents(new_events)
+                }}/>
+                <ModeIcon/>
+                <DatasetLinkedIcon/>
+                </div>
+                <div>
+                 {item.title}
+                 </div>
+              </div>
+             
+              
+              
+              
             <span className="left-right"
             
             onClick={()=>{
@@ -374,7 +396,7 @@ function EventsComp({events,setEvents,weekRef}){
 }
 
 
-const Week2=()=>{
+const Week2=({selectedCourse,selectedProfessor,coursesList,professorsList})=>{
 
     const weekRef=useRef(null)
     const [dimensions,setDimensions]=useState({x:0,y:0,width:0,height:0})
@@ -435,8 +457,15 @@ function addEvent(){
   })
     new_events=[...new_events,{
         id:(Math.floor(Math.random()*100000)),
-       
-        title:"new event ",
+        event_course:coursesList[selectedCourse],
+        event_professor:professorsList[selectedProfessor],
+        title:`
+        ${coursesList[selectedCourse].course_name}
+        |
+        ${coursesList[selectedCourse].course_code}
+        |
+        ${professorsList[selectedProfessor].professor_name}
+        `,
         selectedStart,
         selectedEnd,
         currentDay,

@@ -60,7 +60,7 @@ const Schedule=()=>{
         <Item width={"100%"}>
 
       {/*    <Week /> */}
-      <Week2 />
+      <Week2 {...{selectedCourse,selectedProfessor,coursesList,professorsList}} />
         </Item>
       </Stack>
 
