@@ -40,7 +40,7 @@ CREATE TABLE Events(
    major int,
    year int,
    semester int,
-   type int,
+   type TEXT,
    startDate TEXT,
    endDate TEXT,
    day int,

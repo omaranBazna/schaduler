@@ -11,9 +11,9 @@ import { getCourses } from '../API/courses';
 import { getProfessors } from '../API/professors';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { getEvents } from '../API/events';
+import { getEvents, getProfessorsEvents } from '../API/events';
 
-const professorBusy=[
+let professorBusy=[
   {
    
     currentDay:2,
@@ -36,6 +36,7 @@ const professorBusy=[
     professor:true
   },
 ]
+professorBusy=[]
 
 const initialEvents=[
   {
@@ -156,32 +157,88 @@ const Schedule=()=>{
 
 
   }
-  const loadEvents=async()=>{
+  const loadProfessors=async()=>{
+   try{
+     let data1=await getProfessorsEvents(params.Semester,id,professorsList[selectedProfessor].id)
+     console.log("busy")
+     console.log(data1)
+     data1=data1.map(item=>{
+      return {...item,professor:true,
+        selectedStart:dayjs().set('hour', dayjs(item.startDate).hour()).startOf('hour'),
+        selectedEnd:dayjs().set('hour',dayjs(item.endDate).hour()).startOf('hour'),
+        currentDay:item.day,
+
+      }
+     }).filter(item=>{
+      return item.year != params.Year || item.major !=params.Major
+     })
+    
+     let data=await getEvents(params.Major,params.Year,params.Semester,id)
+     data=data.map(item=>{
+     
+       return {...item,currentDay:item.day,
+      title:`
+       ${item.event_course.course_name}
+       |
+       ${item.event_course.course_code}
+       |
+       ${item.event_professor.professor_name}
+       `
+     , selectedStart:dayjs().set('hour', dayjs(item.startDate).hour()).startOf('hour'),
+     selectedEnd:dayjs().set('hour',dayjs(item.endDate).hour()).startOf('hour'),
+     
+     }
+     })
+    
+   
+    
+     setEvents([...initialEvents,...data1,...data])
+
+
+   }catch(err){
+
+   }
+  }
+  /*const loadEvents=async()=>{
        
          try{
             let data=await getEvents(params.Major,params.Year,params.Semester,id)
             data=data.map(item=>{
-              return {...item,currentDay:item.day,event_professor:{},event_course:{},color:{color:"red"}
-            , selectedStart:dayjs(item.startDate),
-            selectedEnd:dayjs(item.endDate),
+            
+              return {...item,currentDay:item.day,
+             title:`
+              ${item.event_course.course_name}
+              |
+              ${item.event_course.course_code}
+              |
+              ${item.event_professor.professor_name}
+              `
+            , selectedStart:dayjs().set('hour', dayjs(item.startDate).hour()).startOf('hour'),
+            selectedEnd:dayjs().set('hour',dayjs(item.endDate).hour()).startOf('hour'),
             
             }
             })
-            console.log(data)
-            console.log(events)
            
-            setEvents(data)
+          
+           
+            setEvents([...initialEvents,...data])
          }catch(err){
           console.log(err)
          }
-  }
+  }*/
 
   
   useEffect(()=>{
    loadLists();
-   loadEvents();
+  
    
   },[params,selectedCourse])
+  useEffect(()=>{
+    loadProfessors();
+
+  },[params,selectedProfessor])
+ 
+
   return <div style={{height:"100%",width:"100%"}}>
     
     <Stack height="90%" spacing={5}>

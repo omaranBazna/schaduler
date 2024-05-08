@@ -1,3 +1,4 @@
+import { TrySharp } from "@mui/icons-material";
 import axios from "axios";
 const serverlURL="http://localhost:8080"
 
@@ -21,6 +22,8 @@ export const getEvents=async(major,year,semester,schedule)=>{
 }
 
 export const addEvents=async(major,year,semester,schedule,events)=>{
+    console.log("add")
+    console.log(events)
     try{
         await axios.post(serverlURL+"/events",{
             events
@@ -31,5 +34,19 @@ export const addEvents=async(major,year,semester,schedule,events)=>{
          })
     }catch(err){
         console.log(err)
+    }
+}
+
+export const getProfessorsEvents=async(semester,schedule,professor_id)=>{
+    try{
+        let {data}=await axios.get(serverlURL+"/events/professors/"+professor_id,{
+            params:{
+                semester,schedule
+            }
+        })
+        return data
+    }catch(err){
+        console.log(err)
+        return []
     }
 }
