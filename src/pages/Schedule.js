@@ -199,35 +199,7 @@ const Schedule=()=>{
 
    }
   }
-  /*const loadEvents=async()=>{
-       
-         try{
-            let data=await getEvents(params.Major,params.Year,params.Semester,id)
-            data=data.map(item=>{
-            
-              return {...item,currentDay:item.day,
-             title:`
-              ${item.event_course.course_name}
-              |
-              ${item.event_course.course_code}
-              |
-              ${item.event_professor.professor_name}
-              `
-            , selectedStart:dayjs().set('hour', dayjs(item.startDate).hour()).startOf('hour'),
-            selectedEnd:dayjs().set('hour',dayjs(item.endDate).hour()).startOf('hour'),
-            
-            }
-            })
-           
-          
-           
-            setEvents([...initialEvents,...data])
-         }catch(err){
-          console.log(err)
-         }
-  }*/
-
-  
+ 
   useEffect(()=>{
    loadLists();
   
