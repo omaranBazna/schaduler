@@ -34,7 +34,7 @@ const Item = styled(Paper)(({ theme }) => ({
   display:"flex",
   justifyContent:"space-between",
   "&:hover":{
-     background:"red",
+     background:"#FFB320",
      color:"white"
   },
   "&.active":{
@@ -115,7 +115,7 @@ const downArrow=(index)=>{
        
         {professorsList.map((prof,index)=>{
           if(index==selectedProfessor){
-          return   <Item sx={{backgroundColor:"red"}}>{prof.professor_name}</Item>
+          return   <Item sx={{backgroundColor:"#FFB525"}}>{prof.professor_name}</Item>
           }else{
             return   <Item onClick={()=>{
               setSelectedProfessor(index)

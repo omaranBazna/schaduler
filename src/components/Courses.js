@@ -2,22 +2,15 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import { keyframes, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import Accordion from '@mui/material/Accordion';
-import AccordionActions from '@mui/material/AccordionActions';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -42,7 +35,7 @@ const Item = styled(Paper)(({ theme }) => ({
   display:"flex",
   justifyContent:"space-between",
   "&:hover":{
-     background:"red",
+     background:"#FFB320",
      color:"white"
   },
   "&.active":{
@@ -123,7 +116,7 @@ const downArrow=(index)=>{
       <Stack  gap={3}>
         {coursesList.map((course,index)=>{
           if(index==selectedCourse) {
-           return <Item  sx={{background:"red"}}>{course.course_name} <CheckCircleIcon/></Item>
+           return <Item  sx={{background:"#FFB525"}}>{course.course_name} <CheckCircleIcon/></Item>
           }else{
             return <Item onClick={()=>{
               setSelectedCourse(index)
@@ -139,14 +132,14 @@ const downArrow=(index)=>{
           Some course notes
 
        </Box>
-        
+       {/* 
       <Divider textAlign="left">Done courses </Divider>
       <Stack  gap={3}>
         <Item>Course 4 <KeyboardReturnIcon/></Item>
         <Item>Course 5 <KeyboardReturnIcon/></Item>
-       
+     
       </Stack>
-
+       */}
      
       
 
