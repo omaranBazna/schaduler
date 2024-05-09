@@ -147,8 +147,13 @@ const Schedule=()=>{
     let professors=[]
   
     if(courses.length>0){
+      try{
       professors=await getProfessors(false,{Course:courses[selectedCourse].id})
-    
+      }catch(err){
+        console.log(courses)
+        console.log(selectedCourse)
+        console.log(err)
+      }
     }
     
 
@@ -164,8 +169,8 @@ const Schedule=()=>{
      console.log(data1)
      data1=data1.map(item=>{
       return {...item,professor:true,
-        selectedStart:dayjs().set('hour', dayjs(item.startDate).hour()).startOf('hour'),
-        selectedEnd:dayjs().set('hour',dayjs(item.endDate).hour()).startOf('hour'),
+        selectedStart: dayjs(item.startDate),
+        selectedEnd:dayjs(item.endDate),
         currentDay:item.day,
 
       }
@@ -184,8 +189,8 @@ const Schedule=()=>{
        |
        ${item.event_professor.professor_name}
        `
-     , selectedStart:dayjs().set('hour', dayjs(item.startDate).hour()).startOf('hour'),
-     selectedEnd:dayjs().set('hour',dayjs(item.endDate).hour()).startOf('hour'),
+     , selectedStart: dayjs(item.startDate),
+     selectedEnd:dayjs(item.endDate),
      
      }
      })
@@ -199,17 +204,23 @@ const Schedule=()=>{
 
    }
   }
- 
+ useEffect(()=>{
+setSelectedCourse(0)
+setSelectedProfessor(0)
+
+ },[params])
+
   useEffect(()=>{
    loadLists();
-  
+   
    
   },[params,selectedCourse])
   useEffect(()=>{
     loadProfessors();
-
-  },[params,selectedProfessor])
+    console.table(["event"],["load professors"])
+  },[params,selectedProfessor,selectedCourse])
  
+  
 
   return <div style={{height:"100%",width:"100%"}}>
     
