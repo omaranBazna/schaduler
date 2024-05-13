@@ -227,9 +227,9 @@ const Schedule=()=>{
       
       <Stack height={"100%"} direction="row" spacing={2}>
         <Item width={"250px"}>
-          <Courses  {...{ coursesList, selectedCourse, setSelectedCourse ,loadLists,loadProfessors  }}/>
+          <Courses  {...{ coursesList, selectedCourse, setSelectedCourse ,loadLists,loadProfessors ,setSelectedProfessor }}/>
         </Item>
-        <Item width={"250px"}><Professors {...{professorsList,selectedProfessor,setSelectedProfessor}}/></Item>
+        <Item width={"250px"}><Professors {...{professorsList,selectedProfessor,setSelectedProfessor,setTrigger}}/></Item>
         <Item width={"100%"}>
 
      
