@@ -13,7 +13,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import FlagCircleIcon from '@mui/icons-material/FlagCircle';
 import SearchIcon from '@mui/icons-material/Search';
 import SaveIcon from '@mui/icons-material/Save';
@@ -21,6 +21,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import { addEvents } from '../API/events';
+import { getScheduleTitle } from '../API/schedules';
 const pages = ['Products', 'Pricing', 'Blog'];
 
 
@@ -43,7 +44,8 @@ const colors=[
 ]
 
 
-function SchaduleBar({events,params,setParams,scheduleId}) {
+function SchaduleBar({events,params,setParams,scheduleId,
+  setSelectedCourse,setSelectedProfessor,loadLists}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const labels=["Year","Major","Semester"]
   const options=[
@@ -51,14 +53,28 @@ function SchaduleBar({events,params,setParams,scheduleId}) {
     ["EE","Robotic","CS"],
     ["Fall","Winter","Summer"]
   ]
-  const [state, setState] = useState([
-    "Jenior",
-    "CS",
-    "Winter"
-  ]);
+   const [title,setTitle]=useState("")
+
+  const loadTitle=async()=>{
+    try{
+     const data=await getScheduleTitle(scheduleId)
+     setTitle(data)
+
+    }catch(err){
+      console.log(err)
+    }
+  }
+   useEffect(()=>{
+     loadTitle();
+   })
   
   const handleChange = (event,label) => {
     setParams({...params,[label]:event.target.value})
+    setSelectedCourse(0)
+    setSelectedProfessor(0)
+    loadLists();
+  
+
   };
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -139,7 +155,10 @@ function SchaduleBar({events,params,setParams,scheduleId}) {
             ))}
           </Box>
 
-        
+          <Box sx={{ flexGrow: 1,gap:2, display: { xs: 'none', md: 'flex' } }}>
+            <div>
+              {title}
+            </div>
           <SaveIcon onClick={async()=>{
                 let uploadedEvents=events.filter(item=>{
                   return !item.professor && !item.dead
@@ -151,7 +170,7 @@ function SchaduleBar({events,params,setParams,scheduleId}) {
                 }
               }} sx={{cursor:"pointer",width:30,height:30,color:"white"}}/>
        
-         
+         </Box>
     
 
 

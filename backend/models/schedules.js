@@ -29,9 +29,7 @@ db.run(insertQuery, [title], function(err) {
 
 }
 function getSchedules(req,res){
-    
 
-   
         const query="select * from Schedules"
     db.all(query,(err,rows)=>{
         if(err){
@@ -43,6 +41,27 @@ function getSchedules(req,res){
     
 }
 
+function getScheduleTitle(req,res){
+    let {id}=req.params
+    let query ="select * from schedules where id=(?)"
+    db.all(query,[id],(err,rows)=>{
+        if(err){
+            console.log(err)
+            return res.send("Missid title(Server error)")
+        }
+        res.send(rows[0].name)
+    })
+}
+function deleteSchedule(req,res){
+  const {id}=req.params;
+  let query="delete from schedules where id=(?)"
+  db.run(query,[id],(err)=>{
+    if(err){
+        console.log(err)
+    }
+    res.send("deleted")
+  })
+}
 module.exports={
-   addSchedule,getSchedules
+   addSchedule,getSchedules,getScheduleTitle,deleteSchedule
 }

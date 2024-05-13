@@ -56,8 +56,8 @@ const SortingIcon=styled(SettingsIcon)(({theme})=>({
 }))
 
 
-export default function Courses({coursesList,selectedCourse,setSelectedCourse}) {
-  console.log(coursesList)
+export default function Courses({coursesList,selectedCourse,setSelectedCourse,loadLists}) {
+
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -120,6 +120,8 @@ const downArrow=(index)=>{
           }else{
             return <Item onClick={()=>{
               setSelectedCourse(index)
+              loadLists()
+              
             }}>{course.course_name} <CheckCircleIcon/></Item>
           }
         })}

@@ -142,13 +142,16 @@ const Schedule=()=>{
   const [selectedProfessor,setSelectedProfessor]=useState(0)
   const {id}=useParams();
   const [events,setEvents]=useState(initialEvents)
+  const [prof_list_trigger,setTrigger]=useState(true)
   const loadLists=async()=>{  
+
     const courses=await getCourses(false,params)
     let professors=[]
   
     if(courses.length>0){
       try{
       professors=await getProfessors(false,{Course:courses[selectedCourse].id})
+      setTrigger(!prof_list_trigger)
       }catch(err){
         console.log(courses)
         console.log(selectedCourse)
@@ -164,9 +167,9 @@ const Schedule=()=>{
   }
   const loadProfessors=async()=>{
    try{
+ 
      let data1=await getProfessorsEvents(params.Semester,id,professorsList[selectedProfessor].id)
-     console.log("busy")
-     console.log(data1)
+   
      data1=data1.map(item=>{
       return {...item,professor:true,
         selectedStart: dayjs(item.startDate),
@@ -204,32 +207,27 @@ const Schedule=()=>{
 
    }
   }
- useEffect(()=>{
-setSelectedCourse(0)
-setSelectedProfessor(0)
-
- },[params])
+  
+  useEffect(()=>{
+   loadProfessors()
+  },[prof_list_trigger])
 
   useEffect(()=>{
    loadLists();
    
-   
-  },[params,selectedCourse])
-  useEffect(()=>{
-    loadProfessors();
-    console.table(["event"],["load professors"])
-  },[params,selectedProfessor,selectedCourse])
+  },[])
+  
  
   
 
   return <div style={{height:"100%",width:"100%"}}>
     
     <Stack height="90%" spacing={5}>
-        <SchaduleBar events={events} scheduleId={id} {...{params,setParams}}    />
+        <SchaduleBar  {...{setSelectedCourse,setSelectedProfessor,loadLists,loadProfessors}}   events={events} scheduleId={id} {...{params,setParams}}    />
       
       <Stack height={"100%"} direction="row" spacing={2}>
         <Item width={"250px"}>
-          <Courses  {...{ coursesList, selectedCourse, setSelectedCourse  }}/>
+          <Courses  {...{ coursesList, selectedCourse, setSelectedCourse ,loadLists,loadProfessors  }}/>
         </Item>
         <Item width={"250px"}><Professors {...{professorsList,selectedProfessor,setSelectedProfessor}}/></Item>
         <Item width={"100%"}>

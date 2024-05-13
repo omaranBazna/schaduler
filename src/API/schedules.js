@@ -23,3 +23,23 @@ export const addToSchedule=async(title)=>{
 
     }
 }
+
+export const getScheduleTitle=async(id)=>{
+    try{
+     const {data}=  await axios.get(serverlURL+"/schedules/title/"+id)
+     return data
+    }catch(err){
+        console.log(err)
+        return ""
+    }
+}
+
+export const deleteSchedule=async(id)=>{
+    try{
+      await axios.delete(serverlURL+"/schedules/"+id)
+
+    }catch(err){
+        console.log(err)
+        throw new Error("Error")
+    }
+}

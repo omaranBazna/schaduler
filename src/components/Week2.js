@@ -23,6 +23,7 @@ import dayjs from 'dayjs';
 import { DeleteForever } from "@mui/icons-material";
 import ModeIcon from '@mui/icons-material/Mode';
 import DatasetLinkedIcon from '@mui/icons-material/DatasetLinked';
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -85,10 +86,17 @@ const Times=()=>{
        })}
     </div>
 }
-const Day=({setCurrentDay,setOpen,day,setSelectedStart,setSelectedEnd,setDuration})=>{
+const Day=({setCurrentDay,setOpen,day,setSelectedStart,setSelectedEnd,setDuration,
+  coursesList, selectedCourse,professorsList, selectedProfessor
+
+
+})=>{
 
     function handleClick(item){
-
+      if(!coursesList[selectedCourse] || !professorsList[selectedProfessor]){
+        toast.error("Select course and professor to add an event")
+         return;
+       }
         
     const startTime = dayjs().set('hour', 7+item).startOf('hour');
     const endTime = dayjs().set('hour', 8+item).startOf('hour');
@@ -345,7 +353,9 @@ const handleDurationChange = (event) => {
 
 
 function addEvent(){
-    
+    if(!coursesList[selectedCourse] || !professorsList[selectedProfessor]){
+      return;
+    }
   let new_events=events.map(item=>{
     return {...item}
   })
@@ -479,13 +489,13 @@ function addEvent(){
       }}
     />
 
-<Button onClick={addEvent}>Add course</Button>
+<Button onClick={addEvent}>Add event</Button>
           </Box>
         </Fade>
       </Modal>
            <div ref={weekRef} className="week">
             {[0,1,2,3,4].map(day=>{
-                return  <Day day={day} setOpen={setOpen} setDuration={setDuration} setSelectedStart={setSelectedStart} setSelectedEnd={setSelectedEnd} setCurrentDay={setCurrentDay} />
+                return  <Day coursesList={coursesList} selectedCourse={selectedCourse} professorsList={professorsList} selectedProfessor={selectedProfessor}   day={day} setOpen={setOpen} setDuration={setDuration} setSelectedStart={setSelectedStart} setSelectedEnd={setSelectedEnd} setCurrentDay={setCurrentDay} />
          
             })}
            <EventsComp updateEvents={updateEvents} weekRef={weekRef}  setEvents={setEvents} events={events} />
@@ -500,3 +510,6 @@ function addEvent(){
 }
 
 export default Week2
+
+///Haj Ahmed (Introduction to engineering) First - EE - Fall
+///Haj Ahmed (ELEE) Fourth - EE - Fall

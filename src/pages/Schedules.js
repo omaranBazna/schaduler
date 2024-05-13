@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { useEffect,useState } from 'react';
-import { getSchedules,addToSchedule } from '../API/schedules';
+import { getSchedules,addToSchedule, deleteSchedule } from '../API/schedules';
 import { useNavigate } from 'react-router-dom';
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -65,7 +65,16 @@ const Schedules=()=>{
                      navigator("/schedule/"+item.id)
             }}
             
-            variant='contained'> Open schedule</Button></Item>
+            variant='contained'> Open schedule</Button>
+           <Button
+           onClick={()=>{
+            deleteSchedule(item.id)
+            loadSchedules()
+
+           }}
+           
+           > Delete schedule</Button>
+            </Item>
         })}
         
         
