@@ -55,7 +55,7 @@ const SortingIcon=styled(SettingsIcon)(({theme})=>({
 }))
 
 
-export default function Professors({professorsList,selectedProfessor,setSelectedProfessor,setTrigger}) {
+export default function Professors({professorsList,selectedProfessor,setSelectedProfessor,loadProfessors,params}) {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -119,9 +119,9 @@ const downArrow=(index)=>{
           }else{
             return   <Item onClick={()=>{
               setSelectedProfessor(index)
-              setTrigger((initial)=>{
-                return !initial
-              })
+              console.log("selected professor:")
+              console.log(professorsList[index])
+              loadProfessors(professorsList[index],params.Year,params.Major,params.Semester)
             }}>{prof.professor_name}</Item>
           }
         })}

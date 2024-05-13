@@ -69,10 +69,11 @@ function SchaduleBar({events,params,setParams,scheduleId,
    })
   
   const handleChange = (event,label) => {
-    setParams({...params,[label]:event.target.value})
+    let new_params={...params,[label]:event.target.value}
+    setParams(new_params)
     setSelectedCourse(0)
     setSelectedProfessor(0)
-    loadLists();
+    loadLists(new_params,0,0);
   
 
   };

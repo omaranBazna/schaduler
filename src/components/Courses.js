@@ -56,7 +56,7 @@ const SortingIcon=styled(SettingsIcon)(({theme})=>({
 }))
 
 
-export default function Courses({coursesList,selectedCourse,setSelectedCourse,loadLists
+export default function Courses({params,coursesList,selectedCourse,setSelectedCourse,loadLists
 ,setSelectedProfessor
 
 
@@ -125,7 +125,7 @@ const downArrow=(index)=>{
             return <Item onClick={()=>{
               setSelectedCourse(index)
               setSelectedProfessor(0)
-              loadLists()
+              loadLists(params,index,0)
               
             }}>{course.course_name} <CheckCircleIcon/></Item>
           }

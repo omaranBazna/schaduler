@@ -142,21 +142,25 @@ const Schedule=()=>{
   const [selectedProfessor,setSelectedProfessor]=useState(0)
   const {id}=useParams();
   const [events,setEvents]=useState(initialEvents)
-  const [prof_list_trigger,setTrigger]=useState(true)
-  const loadLists=async()=>{  
 
-    const courses=await getCourses(false,params)
+  const loadLists=async(load_params,course_index,prof_index)=>{  
+
+    const courses=await getCourses(false,load_params)
     let professors=[]
   
     if(courses.length>0){
       try{
-      professors=await getProfessors(false,{Course:courses[selectedCourse].id})
-      setTrigger(!prof_list_trigger)
+      professors=await getProfessors(false,{Course:courses[course_index].id})
+      console.log("selected professor:")
+      console.log(professors[prof_index])
+      loadProfessors(professors[prof_index],load_params.Year,load_params.Major,load_params.Semester)
       }catch(err){
         console.log(courses)
         console.log(selectedCourse)
         console.log(err)
       }
+    }else{
+      loadProfessors(undefined,load_params.Year,load_params.Major,load_params.Semester)
     }
     
 
@@ -165,11 +169,13 @@ const Schedule=()=>{
 
 
   }
-  const loadProfessors=async()=>{
+  const loadProfessors=async(prof,year_p,major_p,semester_p)=>{
    try{
- 
-     let data1=await getProfessorsEvents(params.Semester,id,professorsList[selectedProfessor].id)
-   
+    let data1=[]
+    if(prof){
+     data1=await getProfessorsEvents(semester_p,id,prof.id)
+    console.log("professor events")
+     console.log(data1)
      data1=data1.map(item=>{
       return {...item,professor:true,
         selectedStart: dayjs(item.startDate),
@@ -178,10 +184,12 @@ const Schedule=()=>{
 
       }
      }).filter(item=>{
-      return item.year != params.Year || item.major !=params.Major
+      return item.year !== year_p || item.major !== major_p
      })
+    }
     
-     let data=await getEvents(params.Major,params.Year,params.Semester,id)
+    
+     let data=await getEvents(major_p,year_p,semester_p,id)
      data=data.map(item=>{
      
        return {...item,currentDay:item.day,
@@ -204,16 +212,18 @@ const Schedule=()=>{
 
 
    }catch(err){
-
+     console.log(err)
    }
   }
   
-  useEffect(()=>{
-   loadProfessors()
-  },[prof_list_trigger])
+
 
   useEffect(()=>{
-   loadLists();
+   loadLists({
+    Year:1,
+    Major:1,
+    Semester:1
+  },0,0);
    
   },[])
   
@@ -227,9 +237,9 @@ const Schedule=()=>{
       
       <Stack height={"100%"} direction="row" spacing={2}>
         <Item width={"250px"}>
-          <Courses  {...{ coursesList, selectedCourse, setSelectedCourse ,loadLists,loadProfessors ,setSelectedProfessor }}/>
+          <Courses  {...{params, coursesList, selectedCourse, setSelectedCourse ,loadLists,loadProfessors ,setSelectedProfessor }}/>
         </Item>
-        <Item width={"250px"}><Professors {...{professorsList,selectedProfessor,setSelectedProfessor,setTrigger}}/></Item>
+        <Item width={"250px"}><Professors {...{params,professorsList,selectedProfessor,setSelectedProfessor,loadProfessors}}/></Item>
         <Item width={"100%"}>
 
      
