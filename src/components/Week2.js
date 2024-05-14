@@ -260,7 +260,7 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
     setTimeout(()=>{
       node.classList.add("inactive")
       node.classList.remove("active")
-    },500)
+    },1500)
   }
   
   if(eventBox && eventBox.current){

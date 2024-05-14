@@ -66,7 +66,7 @@ export default function Professors({professorsList,selectedProfessor,setSelected
 
  const upArrow=(index)=>{
  
-  if(index==0) return;
+  if(index===0) return;
   const new_criteria=[...criteria]
   let temp=new_criteria[index]
   new_criteria[index]=new_criteria[index-1]
@@ -74,7 +74,7 @@ export default function Professors({professorsList,selectedProfessor,setSelected
   setCriteria(new_criteria)
 }
 const downArrow=(index)=>{
- if(index==criteria.length-1) return;
+ if(index===criteria.length-1) return;
   const new_criteria=[...criteria]
   let temp=new_criteria[index]
   new_criteria[index]=new_criteria[index+1]
@@ -114,7 +114,7 @@ const downArrow=(index)=>{
       <Stack  gap={3}>
        
         {professorsList.map((prof,index)=>{
-          if(index==selectedProfessor){
+          if(index===selectedProfessor){
           return   <Item sx={{backgroundColor:"#FFB525"}}>{prof.professor_name}</Item>
           }else{
             return   <Item onClick={()=>{

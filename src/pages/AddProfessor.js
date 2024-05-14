@@ -79,7 +79,7 @@ const AddProfessorC=()=>{
    if(val==0) return;
    
    for(let i=0;i<courses.length;i++){
-    if(courses[i]==val) return
+    if(courses[i]===val) return
    }
 
    setCourses([...courses,e.target.value])
@@ -88,7 +88,7 @@ const AddProfessorC=()=>{
 
  
   const handleAddAvailability=()=>{
-   if(day==0) return 
+   if(day===0) return 
    if(duration<60 || duration >180 ) return
    
    setAvailabilities([...availabilities,{

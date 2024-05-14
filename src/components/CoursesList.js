@@ -80,7 +80,7 @@ function RenderSemesters({semesters}){
 }
 
 function RenderLab({lab}){
-  return <>{lab==0?"No":"Yes"}</>
+  return <>{lab===0?"No":"Yes"}</>
 }
 
 function RenderType({type}){

@@ -64,10 +64,10 @@ const AddCourse=()=>{
   const [courseNotes,setCourseNotes]=useState("")
   const handleSelectMajor=(e)=>{
    let val=e.target.value
-   if(val==0) return;
+   if(val===0) return;
    
    for(let i=0;i<majors.length;i++){
-    if(majors[i]==val) return
+    if(majors[i]===val) return
    }
 
    setMajors([...majors,e.target.value])
@@ -76,10 +76,10 @@ const AddCourse=()=>{
 
   const handleSelectYear=(e)=>{
    let val=e.target.value
-   if(val==0) return;
+   if(val===0) return;
    
    for(let i=0;i<years.length;i++){
-    if(years[i]==val) return
+    if(years[i]===val) return
    }
 
    setYears([...years,e.target.value])
@@ -90,7 +90,7 @@ const AddCourse=()=>{
    if(val==0) return;
    
    for(let i=0;i<semesters.length;i++){
-    if(semesters[i]==val) return
+    if(semesters[i]===val) return
    }
 
    setSemesters([...semesters,e.target.value])

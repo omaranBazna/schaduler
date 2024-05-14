@@ -72,7 +72,7 @@ export default function Courses({params,coursesList,selectedCourse,setSelectedCo
 
  const upArrow=(index)=>{
  
-  if(index==0) return;
+  if(index===0) return;
   const new_criteria=[...criteria]
   let temp=new_criteria[index]
   new_criteria[index]=new_criteria[index-1]
@@ -80,7 +80,7 @@ export default function Courses({params,coursesList,selectedCourse,setSelectedCo
   setCriteria(new_criteria)
 }
 const downArrow=(index)=>{
- if(index==criteria.length-1) return;
+ if(index===criteria.length-1) return;
   const new_criteria=[...criteria]
   let temp=new_criteria[index]
   new_criteria[index]=new_criteria[index+1]
@@ -119,7 +119,7 @@ const downArrow=(index)=>{
        
       <Stack  gap={3}>
         {coursesList.map((course,index)=>{
-          if(index==selectedCourse) {
+          if(index===selectedCourse) {
            return <Item  sx={{background:"#FFB525"}}>{course.course_name} <CheckCircleIcon/></Item>
           }else{
             return <Item onClick={()=>{

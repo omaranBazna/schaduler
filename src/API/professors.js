@@ -1,5 +1,5 @@
 import axios from "axios";
-const serverlURL="http://localhost:8080"
+const serverlURL="https://schaduler.onrender.com"
 
 
 export const addProfessor=async(professor_name,

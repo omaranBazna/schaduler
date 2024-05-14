@@ -91,7 +91,7 @@ function updateEvents(setEvents,new_events){
   let copy=[...new_events]
   copy.sort((event1,event2)=>{
     
-    if(event1.currentDay == event2.currentDay){
+    if(event1.currentDay === event2.currentDay){
          return dayjs(event1.selectedStart).diff(dayjs(event2.selectedStart),"minute")
     }
     return event1.currentDay - event2.currentDay
@@ -100,7 +100,7 @@ function updateEvents(setEvents,new_events){
   for(let i=0;i<copy.length-1;i++){
     let event1=copy[i];
     let event2=copy[i+1];
-    if(event1.currentDay==event2.currentDay){
+    if(event1.currentDay===event2.currentDay){
       let time1=dayjs(event1.selectedEnd)
       let time2=dayjs(event2.selectedStart)
       if(time2.diff(time1,"minute") <0){

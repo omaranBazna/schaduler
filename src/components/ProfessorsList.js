@@ -74,7 +74,7 @@ function RenderCourses({profCourses,coursesList}){
 
   return <>{profCourses.split("-").map(item=>{
     let el=coursesList.find(course=>{
-      return course.id==item
+      return course.id===item
     })
     return <span style={{border:"1px solid rgb(100,100,100)",padding:"5px",margin:"5px"}}> {el.course_name + "||" +el.course_code} </span>
   })}</>
