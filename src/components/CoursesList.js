@@ -20,8 +20,8 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { useState ,useEffect} from 'react';
-import { getCourses } from '../API/courses';
+import { useState } from 'react';
+/*
 function createData({course_name,course_code,course_majors,course_years,course_semesters,has_lab,course_type,course_notes}) {
   return {
     name:course_name,
@@ -34,7 +34,7 @@ type:course_type,
 notes:course_notes
   };
 }
-
+*/
 const majorsMap={
     "1":"Electrical engineering",
     "2":"Robotics",
@@ -88,7 +88,7 @@ function RenderType({type}){
 }
 
 
-
+/*
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -97,19 +97,19 @@ function descendingComparator(a, b, orderBy) {
     return 1;
   }
   return 0;
-}
-
+}*/
+/*
 function getComparator(order, orderBy) {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
-}
+}*/
 
 // Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-function stableSort(array, comparator) {
+/*function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -120,7 +120,7 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
-
+*/
 const headCells = [
   {
     id: 'name',
@@ -291,8 +291,8 @@ export default function CoursesList() {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] =useState(5);
 
-  const [rows,setRows]=useState([])
-  const [visibleRows,setVisibleRows]=useState([])
+  const [rows]=useState([])
+  const [visibleRows]=useState([])
   /*const loadCourses=async()=>{
     const courses= await getCourses()
     

@@ -1,7 +1,7 @@
-import {Button,TextField,Divider ,FormGroup,FormControl,FormControlLabel,Checkbox ,FormHelperText,InputLabel,Input} from '@mui/material';
+import {Button,TextField,Divider ,FormGroup,FormControl,FormHelperText,InputLabel,Input} from '@mui/material';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { useState ,useEffect} from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -10,7 +10,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { getCoursesList} from "../API/courses"
 import { addProfessor } from '../API/professors';
-import ProfessorsList from '../components/ProfessorsList';
 import "../App.css"
 import dayjs from 'dayjs';
 
@@ -35,7 +34,7 @@ const TagComp=({content,index,array,setArray,map})=>{
       <DeleteForeverIcon 
       style={{cursor:"pointer"}}
       onClick={()=>{
-         let new_array=array.filter((it,inx)=>inx!=index)
+         let new_array=array.filter((it,inx)=>inx!==index)
          setArray(new_array)
       }}/>
    </div>
@@ -76,7 +75,7 @@ const AddProfessorC=()=>{
 
   const handleSelectCourse=(e)=>{
    let val=e.target.value
-   if(val==0) return;
+   if(val===0) return;
    
    for(let i=0;i<courses.length;i++){
     if(courses[i]===val) return
@@ -101,7 +100,7 @@ const AddProfessorC=()=>{
 
          <div>{daysMap[item.day]}</div> <div> {item.time.format('H-m')} </div> <div>{item.duration} minutes</div> 
          <DeleteForeverIcon style={{cursor:"pointer"}} onClick={()=>{
-             setAvailabilities(availabilities.filter((_,inx)=>inx!=index))
+             setAvailabilities(availabilities.filter((_,inx)=>inx!==index))
          }}/>
        </div>
   }
