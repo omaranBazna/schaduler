@@ -20,7 +20,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { useState ,useMemo,useEffect} from 'react';
+import { useState ,useEffect} from 'react';
 import { getCourses } from '../API/courses';
 function createData({course_name,course_code,course_majors,course_years,course_semesters,has_lab,course_type,course_notes}) {
   return {
@@ -120,16 +120,7 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
-/*
-name
-code
-majors
-years
-semesters
-lab
-type
-notes
-*/
+
 const headCells = [
   {
     id: 'name',
@@ -302,7 +293,7 @@ export default function CoursesList() {
 
   const [rows,setRows]=useState([])
   const [visibleRows,setVisibleRows]=useState([])
-  const loadCourses=async()=>{
+  /*const loadCourses=async()=>{
     const courses= await getCourses()
     
     setRows(courses.map(course=>{
@@ -315,11 +306,12 @@ export default function CoursesList() {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ))
-  }
+  }*/
+  /*
   useEffect(()=>{
     loadCourses();
   
-  },[order, orderBy, page, rowsPerPage])
+  },[order, orderBy, page, rowsPerPage,loadCourses])*/
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';

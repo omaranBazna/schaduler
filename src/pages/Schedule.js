@@ -225,7 +225,7 @@ const Schedule=()=>{
     Semester:1
   },0,0);
    
-  },[])
+  })
   
  
   

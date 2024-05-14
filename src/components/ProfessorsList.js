@@ -20,8 +20,8 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { useState ,useMemo,useEffect} from 'react';
-import { getCourses } from '../API/courses';
+import { useState ,useEffect} from 'react';
+
 import { getProfessors } from '../API/professors';
 function createData({
     professor_name,

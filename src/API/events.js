@@ -1,4 +1,4 @@
-import { TrySharp } from "@mui/icons-material";
+
 import axios from "axios";
 const serverlURL="https://schaduler.onrender.com"
 
@@ -22,8 +22,7 @@ export const getEvents=async(major,year,semester,schedule)=>{
 }
 
 export const addEvents=async(major,year,semester,schedule,events)=>{
-    console.log("add")
-    console.log(events)
+
     try{
         await axios.post(serverlURL+"/events",{
             events
