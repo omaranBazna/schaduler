@@ -130,10 +130,11 @@ function EventsComp({events,setEvents,weekRef,updateEvents}){
   const [selectedEventIndex,setSelectedEvent]=useState(-1)
   const [initialEnd,setInitialEnd]=useState(0)
   const [initialStart,setInitialStart]=useState(0)
+ 
   function drawEvent(event){
     let selectedStart=dayjs(event.selectedStart)
     let selectedEnd=dayjs(event.selectedEnd)
-    let y = (selectedStart.diff(startTime))/(endTime.add(1,"h").diff(startTime))*100+"%"
+    let y = (selectedStart.diff(startTime))/(endTime.add(1,"h").diff(startTime))*100+"% "
     let x = (event.currentDay/5*100)+"%"
     let height= (selectedEnd.diff(selectedStart))/(endTime.add(1,"h").diff(startTime))*100+"%"
     return {x,y,height}
@@ -171,11 +172,14 @@ function EventsComp({events,setEvents,weekRef,updateEvents}){
          
     }
     window.addEventListener("mousemove",updateMousePosition)
+    
 
     return ()=>{
       window.removeEventListener("mousemove",updateMousePosition)
     }
   },[markY,modifyEnd,modifyStart,initialEnd])
+
+  
 
   function startTrackingEnd(){
     setMoidfyEnd(!modifyEnd);
@@ -226,77 +230,121 @@ function EventsComp({events,setEvents,weekRef,updateEvents}){
                 
               </div>
             }
+              
 
-            return <div className="event" style={{top:y,left:x,height:height ,background:item.color.color}}>  
-           <span className="expand" onClick={()=>{
-            
-            startTrackingStart();
-            setInitialStart(dayjs(item.selectedStart))
-            setSelectedEvent(index)
-
-         }}></span>
-            <div className="event-box" onClick={()=>{
-            
-              setMoidfyEnd(false)
-              setMoidfyStart(false)
-            }}>
-              <span className="left-right" onClick={()=>{
-                 let new_events=events.map(item=>{
-                  return {...item}
-                })
-                  let day=new_events[index].currentDay
-                  if(day>0){
-                    new_events[index].currentDay=day-1
-                  }
-                  updateEvents(setEvents,new_events);
-              }}></span>
+            return <EventBoxEl   
+            {...{startTrackingStart,setInitialStart,setSelectedEvent,
+              item,index,setMoidfyEnd,setMoidfyStart,events,x,y,height,updateEvents,setEvents
+             , startTrackingEnd,setInitialEnd}}
+            />
            
-              <div style={{width:"100%",height:"100%", display:"flex",flexDirection:"column",alignItems:"flex-start",justifyContent:"flex-start"}}>
-                <div>
-                <DeleteIcon onClick={()=>{
-                  let new_events=events.filter((_item)=>{
-                       return item !=_item
-                  })
-                  setEvents(new_events)
-                }}/>
-                <ModeIcon/>
-                <DatasetLinkedIcon/>
-                </div>
-                <div>
-                 {item.title}
-                 </div>
-              </div>
-             
-              
-              
-              
-            <span className="left-right"
-            
-            onClick={()=>{
-          
-              let new_events=events.map(item=>{
-                return {...item}
-              })
-               let day=new_events[index].currentDay
-               if(day<5){
-                 new_events[index].currentDay=day+1
-               }
-               updateEvents(setEvents,new_events);
-           }}
-            ></span>
-           </div>
-            <span className="expand" onClick={()=>{
-            
-               startTrackingEnd();
-               setInitialEnd(dayjs(item.selectedEnd))
-               setSelectedEvent(index)
-
-            }}></span>
-             </div>
         })}
     </>
 }
+const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
+ item,index,setMoidfyEnd,setMoidfyStart,events,x,y,height,updateEvents,setEvents
+, startTrackingEnd,setInitialEnd
+})=>{
 
+ const eventBox=useRef(null)
+ useEffect(()=>{
+  let node
+  let enterListener=function(e){
+    if(!node) return 
+    node.classList.add("active")
+    node.classList.remove("inactive")
+
+  }
+  let leaveListener=function(e){
+    if(!node) return 
+    setTimeout(()=>{
+      node.classList.add("inactive")
+      node.classList.remove("active")
+    },500)
+  }
+  
+  if(eventBox && eventBox.current){
+    console.log(eventBox.current)
+    node=eventBox.current
+    node.classList.add("inactive")
+    eventBox.current.addEventListener("mouseover",enterListener)
+    eventBox.current.addEventListener("mouseleave",leaveListener)
+  }
+  return ()=>{
+    if(node){
+      node.removeEventListener("mouseover",enterListener)
+      node.removeEventListener("mouseleave",leaveListener)
+    }
+  }
+ },[])
+
+  return <div ref={eventBox} className="event" style={{top:y,left:x,height:height ,background:item.color.color}}>  
+  <span className="expand top-e" onClick={()=>{
+   
+   startTrackingStart();
+   setInitialStart(dayjs(item.selectedStart))
+   setSelectedEvent(index)
+
+}}></span>
+   <div className="event-box" onClick={()=>{
+   
+     setMoidfyEnd(false)
+     setMoidfyStart(false)
+   }}>
+     <span className="left-right" onClick={()=>{
+        let new_events=events.map(item=>{
+         return {...item}
+       })
+         let day=new_events[index].currentDay
+         if(day>0){
+           new_events[index].currentDay=day-1
+         }
+         updateEvents(setEvents,new_events);
+     }}></span>
+  
+     <div style={{width:"100%",height:"100%", display:"flex",flexDirection:"column",alignItems:"flex-start",justifyContent:"flex-start"}}>
+       <div>
+       <DeleteIcon onClick={()=>{
+         let new_events=events.filter((_item)=>{
+              return item !=_item
+         })
+         setEvents(new_events)
+       }}/>
+       <ModeIcon/>
+       <DatasetLinkedIcon/>
+       </div>
+       <div>
+        {item.title}
+        </div>
+     </div>
+    
+     
+     
+     
+   <span className="left-right"
+   
+   onClick={()=>{
+ 
+     let new_events=events.map(item=>{
+       return {...item}
+     })
+      let day=new_events[index].currentDay
+      if(day<5){
+        new_events[index].currentDay=day+1
+      }
+      updateEvents(setEvents,new_events);
+  }}
+   ></span>
+  </div>
+   <span className="expand bottom-e" onClick={()=>{
+   
+      startTrackingEnd();
+      setInitialEnd(dayjs(item.selectedEnd))
+      setSelectedEvent(index)
+
+   }}></span>
+    </div>
+}
 
 const Week2=({setEvents,updateEvents,events,selectedCourse,selectedProfessor,coursesList,professorsList})=>{
 

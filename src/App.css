@@ -105,14 +105,27 @@
    
 }
 .expand{
-  width:100%;
-  height:45px;
+  width:20%;
+  height:40px;
   background-color: rgba(0, 0, 0, 0.498);
-  opacity: 0;
+  opacity: 0.8;
   border-radius: 10px;
+  border:1px solid rgb(35, 233, 8);
+  position:absolute;
+ z-index:1000;
+}
+.top-e{
+ top:-20px;
+}
+.bottom-e{
+  top:calc( 100% - 20px );
 }
 .expand:hover{
+  border:3px solid rgb(35, 233, 8);
   opacity: 1;
+}
+.inactive .expand{
+  opacity: 0;
 }
 .event:hover{
   opacity: 100%;
@@ -121,6 +134,7 @@
 .active{
   background-color: greenyellow;
 }
+
 
 
 .event-box{
