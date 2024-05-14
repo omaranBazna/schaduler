@@ -49,6 +49,7 @@ function getScheduleTitle(req,res){
             console.log(err)
             return res.send("Missid title(Server error)")
         }
+        if(rows.length===0) return res.send("No title found 404")
         res.send(rows[0].name)
     })
 }
