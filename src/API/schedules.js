@@ -45,3 +45,34 @@ export const deleteSchedule=async(id)=>{
         throw new Error("Error")
     }
 }
+
+export  const handleUpload = async (jsonData,name="uploaded") => {
+    if(name==""){
+        name=(new Date()).toString()
+    }
+    if (!jsonData) {
+      alert("No JSON data to upload");
+      return;
+    }
+    jsonData["name"]=name
+  
+    try {
+      const response = await fetch(serverlURL+'/schedules/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const result = await response.json();
+      console.log("Server response:", result);
+    } catch (error) {
+      console.error("Error uploading JSON data:", error);
+    }
+  };
+  

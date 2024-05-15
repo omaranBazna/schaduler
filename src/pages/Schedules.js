@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { useEffect,useState } from 'react';
-import { getSchedules,addToSchedule, deleteSchedule } from '../API/schedules';
+import { getSchedules,addToSchedule, deleteSchedule, handleUpload } from '../API/schedules';
 import { useNavigate } from 'react-router-dom';
 import { getEventsSchedule } from '../API/events';
 const Item = styled(Paper)(({ theme }) => ({
@@ -22,6 +22,8 @@ const Item = styled(Paper)(({ theme }) => ({
 const Schedules=()=>{
   const [title,setTitle]=useState("")
   const [schedules,setSchedules]=useState([])
+  const [jsonData, setJsonData] = useState(null);
+  const [name,setName]=useState("")
   const navigator=useNavigate();
   const loadSchedules=async()=>{
       const data=await getSchedules();
@@ -50,6 +52,26 @@ const Schedules=()=>{
    URL.revokeObjectURL(url); // Clean up URL.createObjectURL memory
  };
 
+ const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  
+  reader.onload = (e) => {
+    const content = e.target.result;
+    try {
+      const json = JSON.parse(content);
+      setJsonData(json);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+    }
+  };
+
+  if (file) {
+    reader.readAsText(file);
+  }
+};
+
+
    return (
     <div>
      <Box component="form" sx={{ 
@@ -70,7 +92,7 @@ const Schedules=()=>{
     <Box sx={{ width: '100%' }}>
       <Stack spacing={2}>
         {schedules&& schedules.map(item=>{
-            return <Item>{item.name}  <Button
+            return <Item> <h1>{item.name} </h1> <Button
             onClick={()=>{
                      localStorage.setItem("schedules",null)
                      navigator("/schedule/"+item.id)
@@ -79,8 +101,8 @@ const Schedules=()=>{
             variant='contained'> Open schedule</Button>
            <Button
            color="error"
-           onClick={()=>{
-            deleteSchedule(item.id)
+           onClick={async()=>{
+            await deleteSchedule(item.id)
             loadSchedules()
 
            }}
@@ -90,7 +112,7 @@ const Schedules=()=>{
            try{ 
                  const data= await getEventsSchedule(item.id)
                  let saved={schedule:data}
-                 downloadJSON(saved,item.title)
+                 downloadJSON(saved,item.name+".json")
            }catch{
 
            }
@@ -102,7 +124,24 @@ const Schedules=()=>{
         
         
       </Stack>
+      <Box>
+    <input type="text" placeholder='uploade schedule name' value={name} onChange={(e)=>{
+     setName(e.target.value)
+     
+    }}/>
+ <input type="file" accept=".json" onChange={handleFileChange} />
+      <Button onClick={async()=>{
+        await handleUpload(jsonData,name)
+        loadSchedules()
+      } }
+      disabled={!jsonData}>Upload schedule</Button>
+
+      </Box>
+         
     </Box>
+    
+
+   
     </div>
    )
 }

@@ -1,4 +1,3 @@
-const { default: shadows } = require('@mui/material/styles/shadows');
 const sqlite3 = require('sqlite3');
 // Create a new SQLite3 database instance
 const db = new sqlite3.Database("./database/database.db");
