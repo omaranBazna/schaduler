@@ -227,7 +227,7 @@ function EventsComp({searchTerm, setChanged,events,setEvents,weekRef,updateEvent
               }
               } 
               > 
-              Professor is Busy 
+               Busy at  {item.year} year - {item.major} 
                 
               </div>
             }

@@ -86,6 +86,19 @@ const initialEvents=[
 
 ]
 
+const majorsMap={
+  1:"Electrical Eng.",
+  2:"Robotics",
+  3:"Computer Sci"
+}
+const yearsMap={
+  1:"First",
+  2:"Second",
+  3:"Third",
+  4:"Fourth",
+  5:"Grad"
+}
+
 function updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged){
 
   let copy=[...new_events]
@@ -181,6 +194,7 @@ const Schedule=()=>{
     let data1=[]
     if(prof){
      data1=await getProfessorsEvents(semester_p,id,prof.id)
+     data1=data1.filter(item=>item.major != major_p&&item.year!=year_p)
      let localSchedules=localStorage.getItem("schedules")
    
      if(localSchedules && JSON.parse(localSchedules) !=null){
@@ -196,11 +210,14 @@ const Schedule=()=>{
         console.log(event)
         console.log(prof.id)
         if(event.professor_id==prof.id || event.event_professor.id==prof.id){
-           console.log("match")
+           console.log(year+" - "+major+" - "+"wow")
+           console.log(major_p+" - "+year_p)
           data1.push({
             startDate:event.selectedStart,
             endDate:event.selectedEnd,
-            day:event.currentDay
+            day:event.currentDay,
+            year:year,
+            major:major
           })
         }
       }
@@ -208,10 +225,13 @@ const Schedule=()=>{
        }
      }
      data1=data1.map(item=>{
+      
       return {...item,professor:true,
         selectedStart: dayjs(item.startDate),
         selectedEnd:dayjs(item.endDate),
         currentDay:item.day,
+        year:yearsMap[item.year],
+        major:majorsMap[item.major]
 
       }
      }).filter(item=>{
