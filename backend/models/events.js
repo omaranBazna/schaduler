@@ -1,3 +1,4 @@
+const { default: shadows } = require('@mui/material/styles/shadows');
 const sqlite3 = require('sqlite3');
 // Create a new SQLite3 database instance
 const db = new sqlite3.Database("./database/database.db");
@@ -99,7 +100,17 @@ function getProfessorEvents(req,res){
   })
 }
 
-
+function getEventsSchedule(req,res){
+    let {schedule}=req.params
+    let query="select * from events where schedule_id=?"
+    db.all(query,[schedule],(err,rows)=>{
+        if(err){
+            console.log(err)
+           return res.send([])
+        }
+        res.send(rows)
+    })
+}
 module.exports={
-    addEvents,getEvents,getProfessorEvents
+    addEvents,getEvents,getProfessorEvents,getEventsSchedule
 }

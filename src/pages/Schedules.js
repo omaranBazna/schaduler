@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles';
 import { useEffect,useState } from 'react';
 import { getSchedules,addToSchedule, deleteSchedule } from '../API/schedules';
 import { useNavigate } from 'react-router-dom';
+import { getEventsSchedule } from '../API/events';
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -38,7 +39,16 @@ const Schedules=()=>{
   },[])
 
 
-
+  const downloadJSON = (data, filename = 'data.json') => {
+   const jsonString = JSON.stringify(data, null, 2);
+   const blob = new Blob([jsonString], { type: 'application/json' });
+   const url = URL.createObjectURL(blob);
+   const link = document.createElement('a');
+   link.href = url;
+   link.download = filename;
+   link.click();
+   URL.revokeObjectURL(url); // Clean up URL.createObjectURL memory
+ };
 
    return (
     <div>
@@ -68,6 +78,7 @@ const Schedules=()=>{
             
             variant='contained'> Open schedule</Button>
            <Button
+           color="error"
            onClick={()=>{
             deleteSchedule(item.id)
             loadSchedules()
@@ -75,6 +86,17 @@ const Schedules=()=>{
            }}
            
            > Delete schedule</Button>
+           <Button variant='contained' color="info" onClick={async()=>{
+           try{ 
+                 const data= await getEventsSchedule(item.id)
+                 let saved={schedule:data}
+                 downloadJSON(saved,item.title)
+           }catch{
+
+           }
+           }}>
+            Download Schedule
+           </Button>
             </Item>
         })}
         

@@ -45,8 +45,16 @@ export const getEvents=async(major,year,semester,schedule)=>{
 
 }
 
-export const addEvents=async(major,year,semester,schedule,events)=>{
+export const getEventsSchedule=async(schedule)=>{
+    try{
+        const {data}=await axios.get(serverlURL+"/events/"+schedule)
+        return data
+    }catch(err){
 
+    }
+}
+
+export const addEvents=async(major,year,semester,schedule,events)=>{
     try{
         await axios.post(serverlURL+"/events",{
             events
