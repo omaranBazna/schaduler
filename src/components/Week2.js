@@ -119,7 +119,7 @@ const Day=({setCurrentDay,setOpen,day,setSelectedStart,setSelectedEnd,setDuratio
 }
 
 
-function EventsComp({events,setEvents,weekRef,updateEvents,year,major,semester,schedule}){
+function EventsComp({searchTerm, setChanged,events,setEvents,weekRef,updateEvents,year,major,semester,schedule}){
   
   const [mouseY,setMouseY]=useState(0)
   const [markY,setMarkY]=useState(0)
@@ -155,7 +155,7 @@ function EventsComp({events,setEvents,weekRef,updateEvents,year,major,semester,s
             })
             new_events[selectedEventIndex].selectedEnd=dayjs(initialEnd).add(mins,"minute")
               
-            updateEvents(setEvents,new_events,year,major,semester,schedule);
+            updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged);
           }
 
           if(modifyStart && weekRef.current && selectedEventIndex>-1){
@@ -168,7 +168,7 @@ function EventsComp({events,setEvents,weekRef,updateEvents,year,major,semester,s
               return {...item}
             })
             new_events[selectedEventIndex].selectedStart=dayjs(initialStart).add(mins,"minute")
-            updateEvents(setEvents,new_events,year,major,semester,schedule);
+            updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged);
           }
          
     }
@@ -234,7 +234,7 @@ function EventsComp({events,setEvents,weekRef,updateEvents,year,major,semester,s
               
 
             return <EventBoxEl   
-            {...{startTrackingStart,setInitialStart,setSelectedEvent,
+            {...{searchTerm,  setChanged,  startTrackingStart,setInitialStart,setSelectedEvent,
               item,index,setMoidfyEnd,setMoidfyStart,events,x,y,height,updateEvents,setEvents
              , startTrackingEnd,setInitialEnd,year,major,semester,schedule}}
             />
@@ -242,9 +242,9 @@ function EventsComp({events,setEvents,weekRef,updateEvents,year,major,semester,s
         })}
     </>
 }
-const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
+const EventBoxEl=({searchTerm, startTrackingStart,setInitialStart,setSelectedEvent,
  item,index,setMoidfyEnd,setMoidfyStart,events,x,y,height,updateEvents,setEvents
-, startTrackingEnd,setInitialEnd,year,major,semester,schedule
+, startTrackingEnd,setInitialEnd,year,major,semester,schedule,setChanged
 })=>{
 
  const eventBox=useRef(null)
@@ -278,8 +278,29 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
     }
   }
  },[])
+  function test(title,searchTerm){
+    title=title.toLowerCase()
+    searchTerm=searchTerm.toLowerCase()
+    let terms=searchTerm.split(" ")
+    let any=false;
+    for(let term of terms){
+      let subTerms=term.split("+")
+      let all=true
+      for(let el of subTerms){
+        if(!title.includes(el)){
+          all=false
+        }
+      }
+      if(all){
+        any=true
+      }
+    }
+    return any
+  }
+  return <div ref={eventBox} className="event" style={{top:y,left:x,height:height ,background:item.color.color,
+   opacity:searchTerm!=""?(test(item.title,searchTerm))?1:0.1:1
 
-  return <div ref={eventBox} className="event" style={{top:y,left:x,height:height ,background:item.color.color}}>  
+  }}>  
   <span className="expand top-e" onClick={()=>{
    
    startTrackingStart();
@@ -303,7 +324,7 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
            new_events[index].currentDay=day+l
          }
          let schedule=localStorage.getItem("schedule_id")
-         if(updateEvents(setEvents,new_events,year,major,semester,schedule)){
+         if(updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged)){
           break;
          }
         }
@@ -315,7 +336,7 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
          let new_events=events.filter((_item)=>{
               return item !=_item
          })
-         setEvents(new_events)
+         updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged)
        }}/>
        <ModeIcon/>
        <DatasetLinkedIcon/>
@@ -341,7 +362,7 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
         new_events[index].currentDay=day+r
       }
       let schedule=localStorage.getItem("schedule_id")
-      if(updateEvents(setEvents,new_events,year,major,semester,schedule)){
+      if(updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged)){
         break;
       }
     }
@@ -358,7 +379,7 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
     </div>
 }
 
-const Week2=({setEvents,updateEvents,schedule,events,selectedCourse,selectedProfessor,coursesList,professorsList,year,major,semester})=>{
+const Week2=({searchTerm, setEvents,updateEvents,schedule,events,selectedCourse,selectedProfessor,coursesList,professorsList,year,major,semester,setChanged})=>{
 
     const weekRef=useRef(null)
     const [dimensions,setDimensions]=useState({x:0,y:0,width:0,height:0})
@@ -435,7 +456,7 @@ function addEvent(){
         currentDay,
         color:colors[eventColor]
     }]
-    if( updateEvents(setEvents,new_events,year,major,semester,schedule)){
+    if( updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged)){
     setOpen(false)
     toast.success("Added successfully") 
     }else{
@@ -558,7 +579,7 @@ function addEvent(){
                 return  <Day coursesList={coursesList} selectedCourse={selectedCourse} professorsList={professorsList} selectedProfessor={selectedProfessor}   day={day} setOpen={setOpen} setDuration={setDuration} setSelectedStart={setSelectedStart} setSelectedEnd={setSelectedEnd} setCurrentDay={setCurrentDay} />
          
             })}
-           <EventsComp year={year} major={major} semester={semester} updateEvents={updateEvents} weekRef={weekRef}  setEvents={setEvents} events={events} />
+           <EventsComp  searchTerm={searchTerm} setChanged={setChanged} year={year} major={major} semester={semester} updateEvents={updateEvents} weekRef={weekRef}  setEvents={setEvents} events={events} />
            </div>
             
 

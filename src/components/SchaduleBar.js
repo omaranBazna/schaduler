@@ -45,7 +45,7 @@ const colors=[
 
 
 function SchaduleBar({events,params,setParams,scheduleId,
-  setSelectedCourse,setSelectedProfessor,loadLists}) {
+  setSelectedCourse,setSelectedProfessor,loadLists,changed,setChanged,searchTerm,setSearchTerm}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const labels=["Year","Major","Semester"]
   const options=[
@@ -158,7 +158,7 @@ function SchaduleBar({events,params,setParams,scheduleId,
 
           <Box sx={{ flexGrow: 1,gap:2, display: { xs: 'none', md: 'flex' } }}>
             <div>
-              {title}
+              {title}{changed&&<span>*</span>}
             </div>
           <SaveIcon onClick={async()=>{
                 let uploadedEvents=events.filter(item=>{
@@ -166,7 +166,8 @@ function SchaduleBar({events,params,setParams,scheduleId,
                 })
                 try{
                     await addEvents(params.Major,params.Year,params.Semester,scheduleId,uploadedEvents)
-                }catch(err){
+                    setChanged(false)
+                  }catch(err){
                   console.log(err)
                 }
               }} sx={{cursor:"pointer",width:30,height:30,color:"white"}}/>
@@ -187,6 +188,10 @@ function SchaduleBar({events,params,setParams,scheduleId,
               <SearchIcon />
             </InputAdornment>
           }
+          value={searchTerm}
+          onChange={(e)=>{
+            setSearchTerm(e.target.value)
+          }}
         />
       </FormControl>
 

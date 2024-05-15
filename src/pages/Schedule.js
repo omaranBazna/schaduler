@@ -86,7 +86,7 @@ const initialEvents=[
 
 ]
 
-function updateEvents(setEvents,new_events,year,major,semester,schedule){
+function updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged){
 
   let copy=[...new_events]
   copy.sort((event1,event2)=>{
@@ -120,6 +120,7 @@ function updateEvents(setEvents,new_events,year,major,semester,schedule){
   let obj=JSON.parse(localEvents)
   obj[schedule+" "+major+" "+year+" "+semester]=new_events.filter(item=>!item.dead && !item.professor)
   localStorage.setItem("schedules",JSON.stringify(obj))
+  setChanged(true)
   return true
   }
 }
@@ -146,7 +147,8 @@ const Schedule=()=>{
   const [selectedProfessor,setSelectedProfessor]=useState(0)
   const {id}=useParams();
   const [events,setEvents]=useState(initialEvents)
-
+  const [changed,setChanged]=useState(false)
+  const [searchTerm,setSearchTerm]=useState("")
   const loadLists=async(load_params,course_index,prof_index)=>{  
 
     const courses=await getCourses(false,load_params)
@@ -266,7 +268,7 @@ const Schedule=()=>{
   return <div style={{height:"100%",width:"100%"}}>
     
     <Stack height="90%" spacing={5}>
-        <SchaduleBar  {...{setSelectedCourse,setSelectedProfessor,loadLists,loadProfessors}}   events={events} scheduleId={id} {...{params,setParams}}    />
+        <SchaduleBar  {...{searchTerm,setSearchTerm,changed,setChanged,setSelectedCourse,setSelectedProfessor,loadLists,loadProfessors}}   events={events} scheduleId={id} {...{params,setParams}}    />
       
       <Stack height={"100%"} direction="row" spacing={2}>
         <Item width={"250px"}>
@@ -276,7 +278,7 @@ const Schedule=()=>{
         <Item width={"100%"}>
 
      
-      <Week2 schedule={id} year={params.Year} major={params.Major} semester={params.Major} {...{setEvents,updateEvents,events,selectedCourse,selectedProfessor,coursesList,professorsList}} />
+      <Week2 searchTerm={searchTerm} setChanged={setChanged} schedule={id} year={params.Year} major={params.Major} semester={params.Major} {...{setEvents,updateEvents,events,selectedCourse,selectedProfessor,coursesList,professorsList}} />
         </Item>
       </Stack>
 
