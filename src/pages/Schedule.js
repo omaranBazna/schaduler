@@ -117,7 +117,27 @@ function updateEvents(setEvents,new_events,year,major,semester,schedule,setChang
       let time1=dayjs(event1.selectedEnd)
       let time2=dayjs(event2.selectedStart)
       if(time2.diff(time1,"minute") <0){
-        valid=false
+
+        if(event1.professor || event2.professor){
+          valid=false
+
+          let id1,id2
+          if(event1.professor_id){ 
+            id1=event1.professor_id
+          }else id1=event1.event_professor.id
+          if(event2.professor_id){ 
+            id2=event2.professor_id
+          }else id2=event2.event_professor.id
+          
+          valid = id1 !=id2
+         // 
+         /*
+           should add more complex logic to handle the case that only busy professor
+           event prevent the same professor
+         */
+        }else{
+         valid=false
+        }
       }
 
      
@@ -173,14 +193,13 @@ const Schedule=()=>{
 
       loadProfessors(professors[prof_index],load_params.Year,load_params.Major,load_params.Semester)
       }catch(err){
-        console.log(courses)
-        console.log(selectedCourse)
+       
         console.log(err)
       }
     }else{
       loadProfessors(undefined,load_params.Year,load_params.Major,load_params.Semester)
     }
-    console.log(courses)
+   
     courses.sort((a,b)=>{
         return 1
     })
@@ -194,12 +213,14 @@ const Schedule=()=>{
     let data1=[]
     if(prof){
      data1=await getProfessorsEvents(semester_p,id,prof.id)
-     data1=data1.filter(item=>item.major != major_p&&item.year!=year_p)
+    
+     data1=data1.filter(item=>item.major != major_p || item.year!=year_p)
+     
      let localSchedules=localStorage.getItem("schedules")
    
      if(localSchedules && JSON.parse(localSchedules) !=null){
       let obj=JSON.parse(localSchedules) 
-      console.log(obj)
+     
       for(let year of [1,2,3,4,5]){
        for(let major of [1,2,3]){
         if(year==year_p && major==major_p) continue
@@ -207,25 +228,36 @@ const Schedule=()=>{
      
       if(!events) continue
       for(let event of events){
-        console.log(event)
-        console.log(prof.id)
+       
         if(event.professor_id==prof.id || event.event_professor.id==prof.id){
-           console.log(year+" - "+major+" - "+"wow")
-           console.log(major_p+" - "+year_p)
+          if(data1.find(item=>item.id==event.id)) continue
+          if(event.selectedStart){
           data1.push({
             startDate:event.selectedStart,
             endDate:event.selectedEnd,
             day:event.currentDay,
             year:year,
-            major:major
-          })
+            major:major,
+            profssor:event.professor_id
+           })
+          }else{
+            data1.push({
+              startDate:event.startDate,
+              endDate:event.endDate,
+              day:event.day,
+              year:year,
+              major:major,
+              professor_id:event.professor.id
+             })
+          }
         }
       }
     }
        }
      }
+  
      data1=data1.map(item=>{
-      
+    
       return {...item,professor:true,
         selectedStart: dayjs(item.startDate),
         selectedEnd:dayjs(item.endDate),
@@ -241,7 +273,7 @@ const Schedule=()=>{
     
     
      let data=await getEvents(major_p,year_p,semester_p,id)
-     console.log(data)
+
 
    if(data.length>0 && data[0].currentDay==undefined){
      data=data.map(item=>{
@@ -262,7 +294,7 @@ const Schedule=()=>{
     }
     
      //updateEvents(setEvents,[...initialEvents,...data1,...data],params.Year,params.Major,params.Semester,id)
-     console.log(data)
+   
      setEvents([...initialEvents,...data1,...data])
 
 

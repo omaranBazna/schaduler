@@ -265,7 +265,7 @@ const EventBoxEl=({searchTerm, startTrackingStart,setInitialStart,setSelectedEve
   }
   
   if(eventBox && eventBox.current){
-    console.log(eventBox.current)
+
     node=eventBox.current
     node.classList.add("inactive")
     eventBox.current.addEventListener("mouseover",enterListener)

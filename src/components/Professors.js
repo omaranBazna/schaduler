@@ -118,8 +118,7 @@ const downArrow=(index)=>{
           }else{
             return   <Item onClick={()=>{
               setSelectedProfessor(index)
-              console.log("selected professor:")
-              console.log(professorsList[index])
+              
               loadProfessors(professorsList[index],params.Year,params.Major,params.Semester)
             }}>{prof.professor_name}</Item>
           }

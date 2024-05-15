@@ -1,7 +1,7 @@
 
 import axios from "axios";
-//const serverlURL="http://localhost:8080"
-const serverlURL="https://schaduler.onrender.com"
+const serverlURL="http://localhost:8080"
+//const serverlURL="https://schaduler.onrender.com"
 
 
 
@@ -14,8 +14,7 @@ export const getEvents=async(major,year,semester,schedule)=>{
        let obj=JSON.parse(localSchedules)
        if(obj){
        let events= obj[schedule+" "+major+" "+year+" "+semester]
-       console.log("loaded events")
-       console.log(events)
+     
        if(events){
         return events
        } 
@@ -75,6 +74,7 @@ export const getProfessorsEvents=async(semester,schedule,professor_id)=>{
                 semester,schedule
             }
         })
+       
         return data
     }catch(err){
         console.log(err)

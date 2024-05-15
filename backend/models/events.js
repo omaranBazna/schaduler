@@ -25,7 +25,7 @@ db.run(query,[major,year,semester,schedule])
     schedule_id)
     VALUES (?, ?, ? , ?, ?, ?,?,?,?,?)
 `;
-console.log(event.color)
+
 
 // Execute the query with parameters
 db.run(insertQuery, [event.event_professor.id,event.event_course.id,major,year,semester,JSON.stringify(event.color),event.selectedStart,event.selectedEnd,event.currentDay,schedule], function(err) {

@@ -9,7 +9,7 @@ const db = new sqlite3.Database("./database/database.db");
 
 
 function addSchedule(req,res){
-    console.log("request")
+  
 const { title} =req.body
  
     const insertQuery = `

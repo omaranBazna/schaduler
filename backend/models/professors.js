@@ -15,7 +15,7 @@ const { professor_name,
     availabilities ,
     professor_type ,
     professor_notes } =req.body
-   console.log(req.body.professor_courses)
+   
     const insertQuery = `
     INSERT INTO Professors (professor_name,
         professor_major ,

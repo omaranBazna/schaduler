@@ -1,6 +1,6 @@
 import axios from "axios";
-//const serverlURL="http://localhost:8080"
-const serverlURL="https://schaduler.onrender.com"
+const serverlURL="http://localhost:8080"
+//const serverlURL="https://schaduler.onrender.com"
 
 
 
@@ -70,7 +70,7 @@ export  const handleUpload = async (jsonData,name="uploaded") => {
       }
   
       const result = await response.json();
-      console.log("Server response:", result);
+     
     } catch (error) {
       console.error("Error uploading JSON data:", error);
     }
