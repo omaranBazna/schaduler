@@ -67,7 +67,7 @@ export default function Courses({params,coursesList,selectedCourse,setSelectedCo
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [criteria,setCriteria] = React.useState(["length","credits","num available professors","online","has lab"])
+    const [criteria,setCriteria] = React.useState(["other proposed criteria","online","has lab"])
  
 
  const upArrow=(index)=>{

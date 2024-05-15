@@ -98,6 +98,8 @@ function getProfessorEvents(req,res){
     res.send(rows)
   })
 }
+
+
 module.exports={
     addEvents,getEvents,getProfessorEvents
 }

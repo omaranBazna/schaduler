@@ -1,5 +1,7 @@
 import axios from "axios";
-const serverlURL="https://schaduler.onrender.com"
+const serverlURL="http://localhost:8080"
+//const serverlURL="https://schaduler.onrender.com"
+
 
 
 export const getSchedules=async()=>{
@@ -15,7 +17,7 @@ export const getSchedules=async()=>{
 
 export const addToSchedule=async(title)=>{
     try{
-        console.log(title)
+      
         await axios.post(serverlURL+"/schedules",{
             title
         })

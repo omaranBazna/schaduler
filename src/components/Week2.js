@@ -119,7 +119,7 @@ const Day=({setCurrentDay,setOpen,day,setSelectedStart,setSelectedEnd,setDuratio
 }
 
 
-function EventsComp({events,setEvents,weekRef,updateEvents}){
+function EventsComp({events,setEvents,weekRef,updateEvents,year,major,semester,schedule}){
   
   const [mouseY,setMouseY]=useState(0)
   const [markY,setMarkY]=useState(0)
@@ -143,6 +143,7 @@ function EventsComp({events,setEvents,weekRef,updateEvents}){
   useEffect(()=>{
     const updateMousePosition=(e)=>{
           setMouseY(e.pageY)
+          let schedule=localStorage.getItem("schedule_id")
           if(modifyEnd && weekRef.current && selectedEventIndex>-1){
             let rect=weekRef.current.getBoundingClientRect()
             const diff=(e.pageY-markY)/rect.height 
@@ -154,7 +155,7 @@ function EventsComp({events,setEvents,weekRef,updateEvents}){
             })
             new_events[selectedEventIndex].selectedEnd=dayjs(initialEnd).add(mins,"minute")
               
-            updateEvents(setEvents,new_events);
+            updateEvents(setEvents,new_events,year,major,semester,schedule);
           }
 
           if(modifyStart && weekRef.current && selectedEventIndex>-1){
@@ -167,7 +168,7 @@ function EventsComp({events,setEvents,weekRef,updateEvents}){
               return {...item}
             })
             new_events[selectedEventIndex].selectedStart=dayjs(initialStart).add(mins,"minute")
-            updateEvents(setEvents,new_events);
+            updateEvents(setEvents,new_events,year,major,semester,schedule);
           }
          
     }
@@ -235,7 +236,7 @@ function EventsComp({events,setEvents,weekRef,updateEvents}){
             return <EventBoxEl   
             {...{startTrackingStart,setInitialStart,setSelectedEvent,
               item,index,setMoidfyEnd,setMoidfyStart,events,x,y,height,updateEvents,setEvents
-             , startTrackingEnd,setInitialEnd}}
+             , startTrackingEnd,setInitialEnd,year,major,semester,schedule}}
             />
            
         })}
@@ -243,7 +244,7 @@ function EventsComp({events,setEvents,weekRef,updateEvents}){
 }
 const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
  item,index,setMoidfyEnd,setMoidfyStart,events,x,y,height,updateEvents,setEvents
-, startTrackingEnd,setInitialEnd
+, startTrackingEnd,setInitialEnd,year,major,semester,schedule
 })=>{
 
  const eventBox=useRef(null)
@@ -257,10 +258,10 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
   }
   let leaveListener=function(e){
     if(!node) return 
-    setTimeout(()=>{
+  
       node.classList.add("inactive")
       node.classList.remove("active")
-    },1500)
+   
   }
   
   if(eventBox && eventBox.current){
@@ -299,7 +300,8 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
          if(day>0){
            new_events[index].currentDay=day-1
          }
-         updateEvents(setEvents,new_events);
+         let schedule=localStorage.getItem("schedule_id")
+         updateEvents(setEvents,new_events,year,major,semester,schedule);
      }}></span>
   
      <div style={{width:"100%",height:"100%", display:"flex",flexDirection:"column",alignItems:"flex-start",justifyContent:"flex-start"}}>
@@ -332,7 +334,8 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
       if(day<5){
         new_events[index].currentDay=day+1
       }
-      updateEvents(setEvents,new_events);
+      let schedule=localStorage.getItem("schedule_id")
+      updateEvents(setEvents,new_events,year,major,semester,schedule);
   }}
    ></span>
   </div>
@@ -346,7 +349,7 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
     </div>
 }
 
-const Week2=({setEvents,updateEvents,events,selectedCourse,selectedProfessor,coursesList,professorsList})=>{
+const Week2=({setEvents,updateEvents,schedule,events,selectedCourse,selectedProfessor,coursesList,professorsList,year,major,semester})=>{
 
     const weekRef=useRef(null)
     const [dimensions,setDimensions]=useState({x:0,y:0,width:0,height:0})
@@ -423,7 +426,7 @@ function addEvent(){
         currentDay,
         color:colors[eventColor]
     }]
-    if( updateEvents(setEvents,new_events)){
+    if( updateEvents(setEvents,new_events,year,major,semester,schedule)){
     setOpen(false)
     toast.success("Added successfully") 
     }else{
@@ -546,7 +549,7 @@ function addEvent(){
                 return  <Day coursesList={coursesList} selectedCourse={selectedCourse} professorsList={professorsList} selectedProfessor={selectedProfessor}   day={day} setOpen={setOpen} setDuration={setDuration} setSelectedStart={setSelectedStart} setSelectedEnd={setSelectedEnd} setCurrentDay={setCurrentDay} />
          
             })}
-           <EventsComp updateEvents={updateEvents} weekRef={weekRef}  setEvents={setEvents} events={events} />
+           <EventsComp year={year} major={major} semester={semester} updateEvents={updateEvents} weekRef={weekRef}  setEvents={setEvents} events={events} />
            </div>
             
 

@@ -86,7 +86,7 @@ const initialEvents=[
 
 ]
 
-function updateEvents(setEvents,new_events){
+function updateEvents(setEvents,new_events,year,major,semester,schedule){
 
   let copy=[...new_events]
   copy.sort((event1,event2)=>{
@@ -116,6 +116,10 @@ function updateEvents(setEvents,new_events){
   }
   if(valid){
   setEvents(new_events)
+  let localEvents=localStorage.getItem("schedules")
+  let obj=JSON.parse(localEvents)
+  obj[schedule+" "+major+" "+year+" "+semester]=new_events
+  localStorage.setItem("schedules",JSON.stringify(obj))
   return true
   }
 }
@@ -162,8 +166,10 @@ const Schedule=()=>{
     }else{
       loadProfessors(undefined,load_params.Year,load_params.Major,load_params.Semester)
     }
-    
-
+    console.log(courses)
+    courses.sort((a,b)=>{
+        return 1
+    })
     setCoursesList(courses)
     setProfessorsList(professors)
 
@@ -224,7 +230,7 @@ const Schedule=()=>{
     Major:1,
     Semester:1
   },0,0);
-   
+   localStorage.setItem("schedule_id",id)
   },[])
   
  
@@ -243,7 +249,7 @@ const Schedule=()=>{
         <Item width={"100%"}>
 
      
-      <Week2 {...{setEvents,updateEvents,events,selectedCourse,selectedProfessor,coursesList,professorsList}} />
+      <Week2 schedule={id} year={params.Year} major={params.Major} semester={params.Major} {...{setEvents,updateEvents,events,selectedCourse,selectedProfessor,coursesList,professorsList}} />
         </Item>
       </Stack>
 
