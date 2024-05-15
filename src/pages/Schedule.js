@@ -118,7 +118,7 @@ function updateEvents(setEvents,new_events,year,major,semester,schedule){
   setEvents(new_events)
   let localEvents=localStorage.getItem("schedules")
   let obj=JSON.parse(localEvents)
-  obj[schedule+" "+major+" "+year+" "+semester]=new_events
+  obj[schedule+" "+major+" "+year+" "+semester]=new_events.filter(item=>!item.dead && !item.professor)
   localStorage.setItem("schedules",JSON.stringify(obj))
   return true
   }
@@ -155,8 +155,7 @@ const Schedule=()=>{
     if(courses.length>0){
       try{
       professors=await getProfessors(false,{Course:courses[course_index].id})
-      console.log("selected professor:")
-      console.log(professors[prof_index])
+
       loadProfessors(professors[prof_index],load_params.Year,load_params.Major,load_params.Semester)
       }catch(err){
         console.log(courses)
@@ -180,8 +179,32 @@ const Schedule=()=>{
     let data1=[]
     if(prof){
      data1=await getProfessorsEvents(semester_p,id,prof.id)
-    console.log("professor events")
-     console.log(data1)
+     let localSchedules=localStorage.getItem("schedules")
+   
+     if(localSchedules && JSON.parse(localSchedules) !=null){
+      let obj=JSON.parse(localSchedules) 
+      console.log(obj)
+      for(let year of [1,2,3,4,5]){
+       for(let major of [1,2,3]){
+        if(year==year_p && major==major_p) continue
+      let events=obj[id+" "+major+" "+year+" "+semester_p]
+     
+      if(!events) continue
+      for(let event of events){
+        console.log(event)
+        console.log(prof.id)
+        if(event.professor_id==prof.id || event.event_professor.id==prof.id){
+           console.log("match")
+          data1.push({
+            startDate:event.selectedStart,
+            endDate:event.selectedEnd,
+            day:event.currentDay
+          })
+        }
+      }
+    }
+       }
+     }
      data1=data1.map(item=>{
       return {...item,professor:true,
         selectedStart: dayjs(item.startDate),
@@ -196,6 +219,9 @@ const Schedule=()=>{
     
     
      let data=await getEvents(major_p,year_p,semester_p,id)
+     console.log(data)
+
+   if(data.length>0 && data[0].currentDay==undefined){
      data=data.map(item=>{
      
        return {...item,currentDay:item.day,
@@ -211,9 +237,10 @@ const Schedule=()=>{
      
      }
      })
+    }
     
-   
-    
+     //updateEvents(setEvents,[...initialEvents,...data1,...data],params.Year,params.Major,params.Semester,id)
+     console.log(data)
      setEvents([...initialEvents,...data1,...data])
 
 

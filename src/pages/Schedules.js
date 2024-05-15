@@ -62,6 +62,7 @@ const Schedules=()=>{
         {schedules&& schedules.map(item=>{
             return <Item>{item.name}  <Button
             onClick={()=>{
+                     localStorage.setItem("schedules",null)
                      navigator("/schedule/"+item.id)
             }}
             

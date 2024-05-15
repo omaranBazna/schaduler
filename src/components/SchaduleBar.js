@@ -74,7 +74,7 @@ function SchaduleBar({events,params,setParams,scheduleId,
     setSelectedCourse(0)
     setSelectedProfessor(0)
     loadLists(new_params,0,0);
-  
+    
 
   };
   const handleOpenNavMenu = (event) => {

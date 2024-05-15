@@ -293,15 +293,20 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
      setMoidfyStart(false)
    }}>
      <span className="left-right" onClick={()=>{
+        for(let l=-1;l>-5;l--){
         let new_events=events.map(item=>{
          return {...item}
        })
          let day=new_events[index].currentDay
+         if(day+l<0) break;
          if(day>0){
-           new_events[index].currentDay=day-1
+           new_events[index].currentDay=day+l
          }
          let schedule=localStorage.getItem("schedule_id")
-         updateEvents(setEvents,new_events,year,major,semester,schedule);
+         if(updateEvents(setEvents,new_events,year,major,semester,schedule)){
+          break;
+         }
+        }
      }}></span>
   
      <div style={{width:"100%",height:"100%", display:"flex",flexDirection:"column",alignItems:"flex-start",justifyContent:"flex-start"}}>
@@ -326,16 +331,20 @@ const EventBoxEl=({startTrackingStart,setInitialStart,setSelectedEvent,
    <span className="left-right"
    
    onClick={()=>{
- 
+     for(let r=1;r<5;r++){
      let new_events=events.map(item=>{
        return {...item}
      })
       let day=new_events[index].currentDay
+      if(day+r>4) break;
       if(day<5){
-        new_events[index].currentDay=day+1
+        new_events[index].currentDay=day+r
       }
       let schedule=localStorage.getItem("schedule_id")
-      updateEvents(setEvents,new_events,year,major,semester,schedule);
+      if(updateEvents(setEvents,new_events,year,major,semester,schedule)){
+        break;
+      }
+    }
   }}
    ></span>
   </div>

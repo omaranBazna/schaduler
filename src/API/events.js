@@ -7,13 +7,19 @@ const serverlURL="http://localhost:8080"
 
 
 export const getEvents=async(major,year,semester,schedule)=>{
+
     let localSchedules=localStorage.getItem("schedules")
+      
     if(localSchedules){
        let obj=JSON.parse(localSchedules)
+       if(obj){
        let events= obj[schedule+" "+major+" "+year+" "+semester]
+       console.log("loaded events")
+       console.log(events)
        if(events){
         return events
        } 
+    }
 
     }
     try{
@@ -22,7 +28,7 @@ export const getEvents=async(major,year,semester,schedule)=>{
             major,year,semester,schedule
         }
      })
-     if(localSchedules){
+     if(localSchedules && JSON.parse(localSchedules)!=null){
         let obj=JSON.parse(localSchedules)
         obj[schedule+" "+major+" "+year+" "+semester]=data
         localStorage.setItem("schedules",JSON.stringify(obj))
