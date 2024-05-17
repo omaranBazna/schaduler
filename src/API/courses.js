@@ -1,6 +1,6 @@
 import axios from "axios";
-//const serverlURL="http://localhost:8080"
-const serverlURL="https://schaduler.onrender.com"
+const serverlURL="http://localhost:8080"
+//const serverlURL="https://schaduler.onrender.com"
 
 
 
@@ -43,3 +43,14 @@ export const getCoursesList=async()=>{
     return []
   }
 }
+
+export const getCourseDetails=async(course_id)=>{
+  try{
+       let {data}=await axios.get(serverlURL+"/courses/"+course_id)
+       console.log(data)
+       return data[0]
+  }catch(err){
+    return "Wrong loading"
+  }
+}
+

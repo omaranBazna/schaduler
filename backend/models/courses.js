@@ -74,10 +74,21 @@ function getCoursesList(req,res){
 
 }
 
-
+function getCourse(req,res){
+  let {id}=req.params
+  let query="select * from course where id=(?)"
+  db.all(query,[id],(err,rows)=>{
+    if(err){
+        return res.send([])
+    }
+   console.log(rows)
+    res.send(rows)
+  })
+}
 
 module.exports={
     addCourse,
     getCourses,
-    getCoursesList
+    getCoursesList,
+    getCourse
 }

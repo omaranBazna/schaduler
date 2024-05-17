@@ -72,6 +72,17 @@ function getProfessors(req,res){
       }
 }
 
+
+function getProfessor(req,res){
+    let {id}=req.params
+    let query="select * from  professors where id=(?)"
+    db.all(query,[id],(err,rows)=>{
+      if(err){
+          return res.send([])
+      }
+      res.send(rows)
+    })
+  }
 module.exports={
-    addProfessor,getProfessors
+    addProfessor,getProfessors,getProfessor
 }

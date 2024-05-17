@@ -9,6 +9,7 @@ import { useEffect,useState } from 'react';
 import { getSchedules,addToSchedule, deleteSchedule, handleUpload } from '../API/schedules';
 import { useNavigate } from 'react-router-dom';
 import { getEventsSchedule } from '../API/events';
+import { exportToExcelWithStyling } from '../utils/saveExcel';
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -40,9 +41,12 @@ const Schedules=()=>{
      loadSchedules();
   },[])
 
-
+  const downloadExcel=(data,filename="data.xlsx")=>{
+    exportToExcelWithStyling(data,filename);
+  }
   const downloadJSON = (data, filename = 'data.json') => {
    const jsonString = JSON.stringify(data, null, 2);
+   exportToExcelWithStyling(data);
    const blob = new Blob([jsonString], { type: 'application/json' });
    const url = URL.createObjectURL(blob);
    const link = document.createElement('a');
@@ -112,7 +116,8 @@ const Schedules=()=>{
            try{ 
                  const data= await getEventsSchedule(item.id)
                  let saved={schedule:data}
-                 downloadJSON(saved,item.name+".json")
+                // downloadJSON(saved,item.name+".json")
+                downloadExcel(data,item.name)
            }catch{
 
            }
