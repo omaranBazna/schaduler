@@ -117,7 +117,7 @@ const Schedules=()=>{
                  const data= await getEventsSchedule(item.id)
                  let saved={schedule:data}
                 // downloadJSON(saved,item.name+".json")
-                downloadExcel(data,item.name)
+                downloadExcel(data,1,item.name)
            }catch{
 
            }

@@ -40,12 +40,12 @@ const semestersMap={
     "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO"
   ];
   
-export const exportToExcelWithStyling = async (events, fileName) => {
+export const exportToExcelWithStyling = async (events,semester, fileName) => {
  
   const workbook = new ExcelJS.Workbook();
   let sheetsData=[]
   for(let major of [1,2,3]){
-        for(let semester of [1,2,3]){
+        
             let data=["Time/Day"," "]
             let days=["Monday","Tuesday","Wensday","Thursday","Friday"]
             days=days.map(item=>[item," ",item," ",item," ",item," "])
@@ -91,7 +91,7 @@ export const exportToExcelWithStyling = async (events, fileName) => {
                         let professor=await getProfessorDetails(event.professor_id)
                         console.log(course)
                         console.log(professor)
-                      table[row_index][index]=course.course_name+" "+professor.professor_name
+                      table[row_index][index]=course.course_name+" | "+course.course_code+" | "+professor.professor_name
                         if(row_index<minInd) minInd=row_index
                         if(row_index>maxInd) maxInd=row_index
                         
@@ -124,10 +124,7 @@ export const exportToExcelWithStyling = async (events, fileName) => {
                 }
 
             )
-            
-        
     }
-  }
 
 
   
