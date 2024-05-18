@@ -107,10 +107,10 @@
 .expand{
   width:20%;
   height:40px;
-  background-color: rgba(0, 0, 0, 0.498);
+  background-color: rgba(76, 76, 76, 0.917);
   opacity: 0.8;
   border-radius: 10px;
-  border:1px solid rgb(35, 233, 8);
+  border:1px solid rgb(82, 82, 82);
   position:absolute;
  z-index:1000;
 }
@@ -121,7 +121,7 @@
   top:calc( 100% - 20px );
 }
 .expand:hover{
-  border:3px solid rgb(35, 233, 8);
+  border:3px solid rgb(82, 82, 82);
   opacity: 1;
 }
 .inactive .expand{
@@ -160,4 +160,35 @@
   padding:10px;
   background-color: #3ec9f025;
   border-radius: 10px;
+}
+.delete-icon{
+  cursor: pointer;
+}
+.delete-icon:hover{
+  color:red;
+}
+.download-icon{
+  cursor: pointer;
+}
+.download-icon:hover{
+  color:greenyellow;
+}
+.excel-image{
+  cursor: pointer;
+  width:50px;
+}
+.day-lable{
+  display: relative;
+  
+}
+.t-header{
+  width:96%;
+
+}
+.t-header div{
+  width:100%;
+  height:100%;
+background-color: rgba(255, 230, 0, 0.528);
+text-align: center;
+font-weight: bold;
 }

@@ -5,9 +5,6 @@ const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database("./database/database.db");
 
 
-
-
-
 function addProfessor(req,res){
 const { professor_name,
     professor_major ,
@@ -35,9 +32,9 @@ db.run(insertQuery, [professor_name,
     professor_notes], function(err) {
     if (err) {
         
-        res.send(err)
+        res.send({id:"none"})
     } else {
-       res.send("Course professor")
+       res.send({id:this.lastID})
     }
 });
 

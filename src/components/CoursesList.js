@@ -20,9 +20,11 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { useState } from 'react';
-/*
-function createData({course_name,course_code,course_majors,course_years,course_semesters,has_lab,course_type,course_notes}) {
+import { deleteCourse, getCourses } from '../API/courses';
+import { useState ,useEffect} from 'react';
+import { Button,Modal } from '@mui/material';
+
+function createData({course_name,course_code,course_majors,course_years,course_semesters,has_lab,course_type,course_notes,id}) {
   return {
     name:course_name,
 code:course_code,
@@ -31,10 +33,11 @@ years:course_years,
 semesters:course_semesters,
 lab:has_lab,
 type:course_type,
-notes:course_notes
+notes:course_notes,
+id:id
   };
 }
-*/
+
 const majorsMap={
     "1":"Electrical engineering",
     "2":"Robotics",
@@ -42,11 +45,10 @@ const majorsMap={
  }
  
  const yearsMap={
-    "1":"First",
-    "2":"Second",
-    "3":"Third",
-    "4":"Fourth",
-    "5":"Graduate"
+    "1":"Freshman",
+    "2":"Sophemore",
+    "3":"Jenior",
+    "4":"Senior"
  }
  
  const semestersMap={
@@ -88,7 +90,7 @@ function RenderType({type}){
 }
 
 
-/*
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -97,19 +99,19 @@ function descendingComparator(a, b, orderBy) {
     return 1;
   }
   return 0;
-}*/
-/*
+}
+
 function getComparator(order, orderBy) {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
-}*/
+}
 
 // Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-/*function stableSort(array, comparator) {
+function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -120,7 +122,7 @@ function getComparator(order, orderBy) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
-*/
+
 const headCells = [
   {
     id: 'name',
@@ -170,6 +172,11 @@ const headCells = [
     disablePadding: false,
     label: 'Course notes',
   },
+  {
+    id: "Delete",
+    numeric:false,
+    label:"Delete course"  
+  }
 ];
 
 function EnhancedTableHead(props) {
@@ -182,17 +189,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
+        
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -291,9 +288,9 @@ export default function CoursesList() {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] =useState(5);
 
-  const [rows]=useState([])
-  const [visibleRows]=useState([])
-  /*const loadCourses=async()=>{
+  const [rows,setRows]=useState([])
+  const [visibleRows,setVisibleRows]=useState([])
+ const loadCourses=async()=>{
     const courses= await getCourses()
     
     setRows(courses.map(course=>{
@@ -306,29 +303,30 @@ export default function CoursesList() {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ))
-  }*/
-  /*
+  }
+  
   useEffect(()=>{
     loadCourses();
   
-  },[order, orderBy, page, rowsPerPage,loadCourses])*/
+  },[order, orderBy, page, rowsPerPage,loadCourses])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+    setOrderBy(property)
   };
 
   const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
+    /*if (event.target.checked) {
       const newSelected = rows.map((n) => n.id);
       setSelected(newSelected);
       return;
-    }
+    }*/
     setSelected([]);
   };
 
   const handleClick = (event, id) => {
+    return ""
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
@@ -366,12 +364,67 @@ export default function CoursesList() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
- 
-
+  const [open,setOpen]=useState(false)
+  const [selected_id,setSelected_id]=useState(undefined)
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    display:"flex",
+    flexDirection:"column",
+    gap:5
+  };
   return (
     <Box sx={{ width: '100%' }}>
+       <Modal
+        open={open}
+        onClose={()=>{setOpen(false)}}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Are you sure you want to delete the course (this action will delete the 
+            course from any schedule that use it )?
+          </Typography>
+          
+
+           <Button
+           variant='contained'
+           color="error"
+           onClick={
+            async()=>{
+             
+                 try{
+                  await deleteCourse(selected_id)
+                  loadCourses();
+                  
+                 }catch(err){
+                 
+                 }
+                 setOpen(false)
+             }
+
+
+           }
+           >Delete</Button>
+           <Button
+           variant='contained'
+           color="info"
+           onClick={()=>{setOpen(false)}}
+           >Cancel</Button>
+          
+        </Box>
+      </Modal>
+
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={0} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -379,7 +432,7 @@ export default function CoursesList() {
             size={dense ? 'small' : 'medium'}
           >
             <EnhancedTableHead
-              numSelected={selected.length}
+              numSelected={0}
               order={order}
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
@@ -388,7 +441,7 @@ export default function CoursesList() {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
+               
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
@@ -396,21 +449,13 @@ export default function CoursesList() {
                     hover
                     onClick={(event) => handleClick(event, row.id)}
                     role="checkbox"
-                    aria-checked={isItemSelected}
+                 
                     tabIndex={-1}
                     key={row.id}
-                    selected={isItemSelected}
+            
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell style={{borderLeft:"1px solid black"}} padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
+                  
                     <TableCell
                      style={{borderLeft:"1px solid black"}}
                       component="th"
@@ -428,6 +473,14 @@ export default function CoursesList() {
                     <TableCell  style={{borderLeft:"1px solid black"}} align="left"><RenderLab lab={row.lab}/></TableCell>
                     <TableCell  style={{borderLeft:"1px solid black"}} align="left"><RenderType type={row.type}/></TableCell>
                     <TableCell   style={{borderLeft:"1px solid black"}} align="left">{row.notes}</TableCell>
+                    <TableCell   style={{borderLeft:"1px solid black"}} align="left">
+                      
+                     <DeleteIcon onClick={()=>{
+                      setOpen(true)
+                      setSelected_id(row.id)
+                     }} className="delete-icon"/>
+                      
+                      </TableCell>
                   </TableRow>
                 );
               })}

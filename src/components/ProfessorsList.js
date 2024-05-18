@@ -71,12 +71,16 @@ const majorsMap={
 
 function RenderCourses({profCourses,coursesList}){
   
-
+  
   return <>{profCourses.split("-").map(item=>{
     let el=coursesList.find(course=>{
-      return course.id===item
+      return course.id==item
     })
-    return <span style={{border:"1px solid rgb(100,100,100)",padding:"5px",margin:"5px"}}> {el.course_name + "||" +el.course_code} </span>
+
+    if(el){
+      return <span style={{border:"1px solid rgb(100,100,100)",padding:"5px",margin:"5px"}}> {el.course_name + "||" +el.course_code} </span>
+    }
+    return <></>
   })}</>
 }
 
@@ -122,28 +126,16 @@ const headCells = [
     label: 'Professor name',
   },
   {
-    id: 'major',
-    numeric: false,
-    disablePadding: false,
-    label: 'Professor major',
-  },
-  {
     id: 'courses',
     numeric: false,
     disablePadding: false,
     label: 'Professor courses',
   },
   {
-    id: 'type',
-    numeric:false,
-    disablePadding: false,
-    label: 'Professor type',
-  },
-  {
     id: 'notes',
     numeric: false,
     disablePadding: false,
-    label: 'Course notes',
+    label: 'Professor notes',
   },
 ];
 
@@ -157,17 +149,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
+        
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -303,6 +285,7 @@ export default function ProfessorsList({coursesList}) {
   };
 
   const handleClick = (event, id) => {
+    return []
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
@@ -376,15 +359,7 @@ export default function ProfessorsList({coursesList}) {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell style={{borderLeft:"1px solid black"}} padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
+                  
                     <TableCell
                      style={{borderLeft:"1px solid black"}}
                       component="th"
@@ -395,12 +370,12 @@ export default function ProfessorsList({coursesList}) {
                       {row.name}
                     </TableCell>
 
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left">{row.major}</TableCell>
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left"> <RenderCourses coursesList={coursesList} profCourses={row.courses}/></TableCell>
-                    <TableCell  style={{borderLeft:"1px solid black"}} align="left">{row.type==1?"Full time":"Part time"} </TableCell>
+                    
+                     <TableCell  style={{borderLeft:"1px solid black"}} align="left"> <RenderCourses coursesList={coursesList} profCourses={row.courses}/></TableCell>
                    
                       <TableCell   style={{borderLeft:"1px solid black"}} align="left">{row.notes}</TableCell>
-                  </TableRow>
+                    
+                      </TableRow>
                 );
               })}
               {emptyRows > 0 && (

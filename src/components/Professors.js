@@ -106,7 +106,7 @@ const downArrow=(index)=>{
         </Box>
       </Modal>
 
-        <SortingIcon   onClick={handleOpen} />
+        {/*<SortingIcon   onClick={handleOpen} />*/}
         
         <Divider textAlign="left">Professors </Divider>
        

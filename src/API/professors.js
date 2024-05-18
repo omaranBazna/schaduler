@@ -12,16 +12,17 @@ export const addProfessor=async(professor_name,
     professor_type ,
     professor_notes)=>{
     try{
-     await axios.post(serverlURL+"/professors",{
-        professor_name,
-        professor_major ,
+    const {data}= await axios.post(serverlURL+"/professors",{
+        professor_name: professor_name+" "+professor_major,
+        professor_major:"" ,
         professor_courses ,
         availabilities ,
         professor_type ,
         professor_notes
      })
+     return data
     }catch(err){
-
+     throw new Error("");
     }
 }
 export const getProfessors=async(all=true,params)=>{

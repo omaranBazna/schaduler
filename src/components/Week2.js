@@ -18,7 +18,8 @@ import toast,{Toaster} from "react-hot-toast";
 import DeleteIcon from '@mui/icons-material/Delete';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import dayjs from 'dayjs';
 import { DeleteForever } from "@mui/icons-material";
 import ModeIcon from '@mui/icons-material/Mode';
@@ -110,6 +111,7 @@ const Day=({setCurrentDay,setOpen,day,setSelectedStart,setSelectedEnd,setDuratio
     }
 
     return <div className="day">
+   
 
         {range.map(item=>{
         return <div onClick={()=>{handleClick(item)}} className="slot">  </div>
@@ -301,13 +303,16 @@ const EventBoxEl=({searchTerm, startTrackingStart,setInitialStart,setSelectedEve
    opacity:searchTerm!=""?(test(item.title,searchTerm))?1:0.1:1
 
   }}>  
-  <span className="expand top-e" onClick={()=>{
+
+<ArrowUpwardIcon 
+className="expand top-e"
+onClick={()=>{
    
    startTrackingStart();
    setInitialStart(dayjs(item.selectedStart))
    setSelectedEvent(index)
 
-}}></span>
+}}/>
    <div className="event-box" onClick={()=>{
    
      setMoidfyEnd(false)
@@ -328,7 +333,9 @@ const EventBoxEl=({searchTerm, startTrackingStart,setInitialStart,setSelectedEve
           break;
          }
         }
-     }}></span>
+     }}
+    style={{display:"flex",justifyContent:"center",alignItems:"center"}}
+     ><ArrowCircleLeftIcon/></span>
   
      <div style={{width:"100%",height:"100%", display:"flex",flexDirection:"column",alignItems:"flex-start",justifyContent:"flex-start"}}>
        <div>
@@ -336,10 +343,11 @@ const EventBoxEl=({searchTerm, startTrackingStart,setInitialStart,setSelectedEve
          let new_events=events.filter((_item)=>{
               return item !=_item
          })
-         updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged)
+         let schedule=localStorage.getItem("schedule_id")
+         updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged,true)
        }}/>
-       <ModeIcon/>
-       <DatasetLinkedIcon/>
+       {/*<ModeIcon/>
+       <DatasetLinkedIcon/>*/}
        </div>
        <div>
         {item.title}
@@ -367,15 +375,16 @@ const EventBoxEl=({searchTerm, startTrackingStart,setInitialStart,setSelectedEve
       }
     }
   }}
-   ></span>
+  style={{display:"flex",justifyContent:"center",alignItems:"center"}}
+     ><ArrowCircleRightIcon/></span>
   </div>
-   <span className="expand bottom-e" onClick={()=>{
+   <ArrowDownwardIcon className="expand bottom-e" onClick={()=>{
    
       startTrackingEnd();
       setInitialEnd(dayjs(item.selectedEnd))
       setSelectedEvent(index)
 
-   }}></span>
+   }} />
     </div>
 }
 
@@ -432,7 +441,31 @@ const handleDurationChange = (event) => {
     }
   };
 
-
+function Header(){
+  return <div 
+  className="t-header"
+  style={{
+    textAlign:"left",
+    position:"absolute",
+    top:"-25px",
+    display:"flex",justifyContent:"space-around",alignItems:"cneter"}}>
+    <div>
+      Monday
+    </div>
+    <div>
+      Tuesday
+    </div>
+    <div>
+      Wensday
+    </div>
+    <div>
+      Thursday
+    </div>
+    <div>
+      Friday
+    </div>
+  </div>
+}
 function addEvent(){
     if(!coursesList[selectedCourse] || !professorsList[selectedProfessor]){
       return;
@@ -463,9 +496,23 @@ function addEvent(){
     toast.error("Unsuitable time")
     }
 }
-    return <div  className="schedule">
+    return <div style={{position:"relative"}}  className="schedule">
            <Times/>
-           <Modal
+          <div style={{width:"100%",height:"100%"}}>
+           <Header />
+           <div ref={weekRef} className="week">
+            
+            {[0,1,2,3,4].map(day=>{
+                return  <Day coursesList={coursesList} selectedCourse={selectedCourse} professorsList={professorsList} selectedProfessor={selectedProfessor}   day={day} setOpen={setOpen} setDuration={setDuration} setSelectedStart={setSelectedStart} setSelectedEnd={setSelectedEnd} setCurrentDay={setCurrentDay} />
+         
+            })}
+           <EventsComp  searchTerm={searchTerm} setChanged={setChanged} year={year} major={major} semester={semester} updateEvents={updateEvents} weekRef={weekRef}  setEvents={setEvents} events={events} />
+           </div>
+            
+           </div>
+           
+            <Toaster/>
+             <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
@@ -480,10 +527,8 @@ function addEvent(){
       >
         <Fade in={open}>
           <Box sx={style}>
-          <FormControl>
-  <InputLabel htmlFor="my-input">Course name: </InputLabel>
-  <Input id="my-input" aria-describedby="my-helper-text" />
-  
+         <FormControl>
+
   <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['TimePicker']}>
       <TimePicker
@@ -535,7 +580,7 @@ function addEvent(){
           labelId="demo-simple-select-helper-label"
           id="demo-simple-select-helper"
           value={eventColor}
-          label="Color"
+          label="Type"
           onChange={(e)=>{
            
             setEventColor(e.target.value)
@@ -554,38 +599,16 @@ function addEvent(){
         </Select>
       
       </FormControl>
-<Typography>
-    Duration : 
-    {(selectedEnd.diff(selectedStart,"minute"))}
-</Typography>
 
-<TextField
-      label="Duration"
-      type="number"
-      value={duration}
-      onChange={handleDurationChange}
-      inputProps={{
-        inputMode: 'numeric',
-        pattern: '[0-9]*', // Only allow digits
-      }}
-    />
-
-<Button onClick={addEvent}>Add event</Button>
+<div style={{display:"flex",gap:"20px",margin:"10px",alignItems:"center",justifyContent:"space-around"}}>
+<Button variant="contained" onClick={addEvent}>Add event</Button>
+<Button color="error" onClick={()=>{
+  setOpen(false)
+}} variant="contained" >Cancel</Button>
+</div>
           </Box>
         </Fade>
       </Modal>
-           <div ref={weekRef} className="week">
-            {[0,1,2,3,4].map(day=>{
-                return  <Day coursesList={coursesList} selectedCourse={selectedCourse} professorsList={professorsList} selectedProfessor={selectedProfessor}   day={day} setOpen={setOpen} setDuration={setDuration} setSelectedStart={setSelectedStart} setSelectedEnd={setSelectedEnd} setCurrentDay={setCurrentDay} />
-         
-            })}
-           <EventsComp  searchTerm={searchTerm} setChanged={setChanged} year={year} major={major} semester={semester} updateEvents={updateEvents} weekRef={weekRef}  setEvents={setEvents} events={events} />
-           </div>
-            
-
-           
-            <Toaster/>
-            
     </div>
 
 }

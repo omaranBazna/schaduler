@@ -20,18 +20,27 @@ CREATE TABLE Professors (
     professor_notes TEXT
 );
 
-CREATE TABLE Availability (
+CREATE TABLE Availabilities (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     day INTEGER,
     hours INTEGER,
     minutes INTEGER,
-    duration INTEGER
+    duration INTEGER,
+    professor_id INTEGER
 );
 
 CREATE TABLE Schedules(
-     id INTEGER PRIMARY KEY AUTOINCREMENT,
-     name TEXT
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    last_modified DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TRIGGER update_last_modified
+AFTER UPDATE ON Schedules
+FOR EACH ROW
+BEGIN
+    UPDATE Schedules SET last_modified = CURRENT_TIMESTAMP WHERE id = old.id;
+END;
 
 CREATE TABLE Events(
    id INTEGER PRIMARY KEY AUTOINCREMENT,

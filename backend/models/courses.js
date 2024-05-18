@@ -63,18 +63,20 @@ function getCourses(req,res){
 
 function getCoursesList(req,res){
 
-    const query="select  id,course_name,course_code  from course"
+    const query="select * from course"
     db.all(query,(err,rows)=>{
         console.log(err)
         if(err){
             return res.send([])
         }
+ 
         res.send(rows)
     })
 
 }
 
 function getCourse(req,res){
+    console.log("request 2")
   let {id}=req.params
   let query="select * from course where id=(?)"
   db.all(query,[id],(err,rows)=>{
@@ -86,9 +88,23 @@ function getCourse(req,res){
   })
 }
 
+function deleteCourse(req,res){
+    let {id}=req.params
+    console.log(id)
+    let query="delete from course where id=(?)"
+    db.run(query,[id],(err)=>{
+        console.log(err)
+        let query="delete from events where course_id=(?)"
+        db.run(query,[id],(err)=>{
+            console.log(err)
+            res.send("Done")
+        })
+    })
+}
 module.exports={
     addCourse,
     getCourses,
     getCoursesList,
-    getCourse
+    getCourse,
+    deleteCourse
 }

@@ -99,7 +99,7 @@ const yearsMap={
   5:"Grad"
 }
 
-function updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged){
+function updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged,deleteItem,delete_id){
 
   let copy=[...new_events]
   copy.sort((event1,event2)=>{
@@ -148,9 +148,11 @@ function updateEvents(setEvents,new_events,year,major,semester,schedule,setChang
     return false;
   }
   if(valid){
+    console.log("valid ",valid)
   setEvents(new_events)
   let localEvents=localStorage.getItem("schedules")
   let obj=JSON.parse(localEvents)
+  console.log(new_events.filter(item=>!item.dead && !item.professor))
   obj[schedule+" "+major+" "+year+" "+semester]=new_events.filter(item=>!item.dead && !item.professor)
   localStorage.setItem("schedules",JSON.stringify(obj))
   setChanged(true)

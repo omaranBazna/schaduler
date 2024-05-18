@@ -14,11 +14,10 @@ const majorsMap={
 }
 
 const yearsMap={
-   "1":"First",
-   "2":"Second",
-   "3":"Third",
-   "4":"Fourth",
-   "5":"Graduate"
+   "1":"Freshman",
+   "2":"Sophemore",
+   "3":"Jenior",
+   "4":"Senior"
 }
 
 const semestersMap={
@@ -120,7 +119,6 @@ const AddCourse=()=>{
 </FormControl>
 </FormGroup>
 
-<Divider textAlign="left">Course major(s) </Divider>
 
 <FormControl style={{display:"flex",flexDirection:"row",gap:"10px",padding:"20px"}}>
    
@@ -131,10 +129,10 @@ const AddCourse=()=>{
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={0}
-          label="Age"
+      
           onChange={ handleSelectMajor}
         >
-          <MenuItem value={0}><i>Select major</i></MenuItem>
+          <MenuItem value={0}><i>Course major</i></MenuItem>
           <MenuItem value={1}>Electrical engineering</MenuItem>
           <MenuItem value={2}>Robotics</MenuItem>
           <MenuItem value={3}>Computer science</MenuItem>
@@ -145,7 +143,6 @@ const AddCourse=()=>{
         
 </FormControl>
 
-<Divider textAlign="left">Course year(s) </Divider>
 
 <FormControl style={{display:"flex",flexDirection:"row",gap:"10px",padding:"20px"}}>
    
@@ -156,20 +153,18 @@ const AddCourse=()=>{
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={0}
-          label="Age"
+        
+          
           onChange={ handleSelectYear}
         >
-          <MenuItem value={0}><i>Select year</i></MenuItem>
-          <MenuItem value={1}>First</MenuItem>
-          <MenuItem value={2}>Second</MenuItem>
-          <MenuItem value={3}>Third</MenuItem>
-          <MenuItem value={4}>Fourth</MenuItem>
-          <MenuItem value={5}>Graduate</MenuItem>
+          <MenuItem value={0}><i>Course year</i></MenuItem>
+          <MenuItem value={1}>Freshman</MenuItem>
+          <MenuItem value={2}>Sophemore</MenuItem>
+          <MenuItem value={3}>Jenior</MenuItem>
+          <MenuItem value={4}>Senior</MenuItem>
         </Select>
   
 </FormControl>
-
-<Divider textAlign="left">Course semester(s) </Divider>
 
 <FormControl style={{display:"flex",flexDirection:"row",gap:"10px",padding:"20px"}}>
    
@@ -180,10 +175,9 @@ const AddCourse=()=>{
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={0}
-          label="Age"
           onChange={ handleSelectSemester}
         >
-          <MenuItem value={0}><i>Select semester</i></MenuItem>
+          <MenuItem value={0}><i>Course semester</i></MenuItem>
           <MenuItem value={1}>Fall</MenuItem>
           <MenuItem value={2}>Winter</MenuItem>
           <MenuItem value={3}>Summer</MenuItem>

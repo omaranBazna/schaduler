@@ -38,6 +38,7 @@ export const getCoursesList=async()=>{
 
   try{
     const {data}=await axios.get(serverlURL+"/courses/list")
+ 
     return data
   }catch(err){
     return []
@@ -51,6 +52,14 @@ export const getCourseDetails=async(course_id)=>{
        return data[0]
   }catch(err){
     return "Wrong loading"
+  }
+}
+export const deleteCourse=async(course_id)=>{
+  try{
+    await axios.delete(serverlURL+"/courses/"+course_id)
+
+  }catch{
+    
   }
 }
 

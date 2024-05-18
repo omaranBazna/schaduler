@@ -113,21 +113,21 @@ const downArrow=(index)=>{
         </Box>
       </Modal>
 
-        <SortingIcon   onClick={handleOpen} />
+       
         
         <Divider textAlign="left">Courses  </Divider>
        
       <Stack  gap={3}>
         {coursesList.map((course,index)=>{
           if(index===selectedCourse) {
-           return <Item  sx={{background:"#FFB525"}}>{course.course_name} <CheckCircleIcon/></Item>
+           return <Item  sx={{background:"#FFB525"}}>{course.course_name} </Item>
           }else{
             return <Item onClick={()=>{
               setSelectedCourse(index)
               setSelectedProfessor(0)
               loadLists(params,index,0)
               
-            }}>{course.course_name} <CheckCircleIcon/></Item>
+            }}>{course.course_name} </Item>
           }
         })}
         

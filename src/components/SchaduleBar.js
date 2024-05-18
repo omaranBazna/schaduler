@@ -49,7 +49,7 @@ function SchaduleBar({events,params,setParams,scheduleId,
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const labels=["Year","Major","Semester"]
   const options=[
-    ["First","Second","Third","Fourth","Graduate"],
+    ["Freshman","Sophemore","Jenior","Senior"],
     ["EE","Robotic","CS"],
     ["Fall","Winter","Summer"]
   ]
@@ -198,7 +198,7 @@ function SchaduleBar({events,params,setParams,scheduleId,
          {colors.map(color=>{
           return <Box sx={{m:2, gap:1, display:'flex',alignItems:"center",justifyContent:"center"}}> <Box sx={{height:30,width:30,borderRadius:"10px",background:color.color}}></Box> <Box>{color.label}</Box></Box>
          })}
-         <FlagCircleIcon sx={{ml:3,height:40,width:40,cursor:"pointer"}}/>
+         {/*<FlagCircleIcon sx={{ml:3,height:40,width:40,cursor:"pointer"}}/>*/}
         </Toolbar>
       </Container>
     </AppBar>
