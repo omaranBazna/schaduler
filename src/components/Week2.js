@@ -24,6 +24,8 @@ import dayjs from 'dayjs';
 import { DeleteForever } from "@mui/icons-material";
 import ModeIcon from '@mui/icons-material/Mode';
 import DatasetLinkedIcon from '@mui/icons-material/DatasetLinked';
+import Tooltip from '@mui/material/Tooltip';
+
 
 const style = {
   position: 'absolute',
@@ -362,9 +364,11 @@ onClick={()=>{
        {/*<ModeIcon/>
        <DatasetLinkedIcon/>*/}
        </div>
-       <div>
+       <Tooltip title={item.title}>
+       <div style={{height:"100%",overflowY:"hidden"}}>
         {item.title}
         </div>
+        </Tooltip>
      </div>
     
      
