@@ -121,7 +121,7 @@ const Day=({setCurrentDay,setOpen,day,setSelectedStart,setSelectedEnd,setDuratio
 }
 
 
-function EventsComp({searchTerm, setChanged,events,setEvents,weekRef,updateEvents,year,major,semester,schedule}){
+function EventsComp({searchTerm, setChanged,events,setEvents,weekRef,updateEvents,year,major,semester,schedule,open}){
   
   const [mouseY,setMouseY]=useState(0)
   const [markY,setMarkY]=useState(0)
@@ -204,10 +204,10 @@ function EventsComp({searchTerm, setChanged,events,setEvents,weekRef,updateEvent
             const {x,y,height} =drawEvent(item)
           
             if(item.availability){
-              return <div className="event preference" 
+              return <div className={"event preference pc"} 
               style={
                {top:y,left:x,height:height 
-              ,border:"5px dashed lightgreen",borderRadius:0,
+              ,border:open?"":"5px dashed lightgreen",borderRadius:0,
               
              
               }
@@ -520,7 +520,7 @@ function addEvent(){
                 return  <Day coursesList={coursesList} selectedCourse={selectedCourse} professorsList={professorsList} selectedProfessor={selectedProfessor}   day={day} setOpen={setOpen} setDuration={setDuration} setSelectedStart={setSelectedStart} setSelectedEnd={setSelectedEnd} setCurrentDay={setCurrentDay} />
          
             })}
-           <EventsComp  searchTerm={searchTerm} setChanged={setChanged} year={year} major={major} semester={semester} updateEvents={updateEvents} weekRef={weekRef}  setEvents={setEvents} events={events} />
+           <EventsComp open={open}  searchTerm={searchTerm} setChanged={setChanged} year={year} major={major} semester={semester} updateEvents={updateEvents} weekRef={weekRef}  setEvents={setEvents} events={events} />
            </div>
             
            </div>
@@ -538,6 +538,7 @@ function addEvent(){
             timeout: 500,
           },
         }}
+        
       >
         <Fade in={open}>
           <Box sx={style}>

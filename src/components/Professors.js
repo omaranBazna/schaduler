@@ -97,6 +97,7 @@ const downArrow=(index)=>{
   new_criteria[index+1]=temp
   setCriteria(new_criteria)
 }
+console.log(professorsList)
   return (
     <Box sx={{ width: '100%' }}>
 
@@ -138,8 +139,8 @@ const downArrow=(index)=>{
 
       <Divider textAlign="left">Professor Notes  </Divider>
        <Box margin={2}>
-          Some professor notes
-
+         {professorsList && professorsList[selectedProfessor] && professorsList[selectedProfessor].professor_notes !=""?<>{professorsList[selectedProfessor].professor_notes}</>:<>No notes</>}
+         
        </Box>
     </Box>
   );

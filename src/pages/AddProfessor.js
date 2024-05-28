@@ -88,6 +88,12 @@ const AddProfessorC=()=>{
 
       let id=  await addProfessor(name,major,courses,availabilities,professorType,notes)
        await addAvailabilities(availabilities,id)
+       setName("")
+       setMajor("")
+       setCourses([])
+       setAvailabilities([])
+       setProfessorType(1)
+       setNotes("")
           toast.success("Professor added successfully")
           
       }catch{

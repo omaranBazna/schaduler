@@ -246,6 +246,14 @@ const AddCourse=()=>{
       }
    await addCourse(courseName,courseCode,majors,years,semesters,hasLab,courseType,courseNotes)
  toast.success("Course added successfully")   
+ setCourseName("")
+ setCourseCode("")
+ setMajors([])
+ setYears([])
+ setSemesters([])
+ setHasLab(false)
+ setCourseType(1)
+ setCourseNotes("")
 }catch(err){
 toast.error("Error adding the course")
    }
