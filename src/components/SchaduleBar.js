@@ -40,6 +40,14 @@ const colors=[
     value:2,
     color:"orange",
     label:"Lab"
+  },
+  {
+    color:"lightgreen",
+    label:"Professor preferences"
+  },
+  {
+    color:"linear-gradient(45deg, #ffffff 25%, #ffaaaa 25%, #ffaaaa 50%, #ffffff 50%, #ffffff 75%, #ffaaaa 75%, #ffaaaa 100%)",
+    label:"Dead time"
   }
 ]
 

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { addCourse } from '../API/courses';
 import CoursesList from '../components/CoursesList';
+import toast,{Toaster} from 'react-hot-toast';
 
 const majorsMap={
    "1":"Electrical engineering",
@@ -225,14 +226,37 @@ const AddCourse=()=>{
   maxRows={6}
 />
 <Button  onClick={async()=>{
+   try{
+   
+      if(courseName.trim()==""){
+         toast.error("Course must have a name")
+         return;
+      }else if(courseCode.trim()==""){
+         toast.error("Course must have a code")
+         return;
+      }else if(majors.length==0){
+         toast.error("You should select at least one major")
+         return 
+      }else if(years.length==0){
+         toast.error("You should select at least one year")
+         return;
+      }else if(semesters.length==0){
+         toast.error("You should select at least one semester")
+         return
+      }
    await addCourse(courseName,courseCode,majors,years,semesters,hasLab,courseType,courseNotes)
+ toast.success("Course added successfully")   
+}catch(err){
+toast.error("Error adding the course")
+   }
+
 }}
 
 
 
 variant="contained">Add course</Button>
 </div>
-
+<Toaster/>
 <CoursesList />
   </div>
 }

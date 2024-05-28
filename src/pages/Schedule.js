@@ -12,7 +12,7 @@ import { getProfessors } from '../API/professors';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { getEvents, getProfessorsEvents } from '../API/events';
-
+import { getProfAvailabitlies } from '../API/availabilities';
 let professorBusy=[
   {
    
@@ -100,8 +100,10 @@ const yearsMap={
 }
 
 function updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged,deleteItem,delete_id){
-
+  
   let copy=[...new_events]
+  console.log(copy.length)
+  copy=copy.filter(item=> !item.availability)
   copy.sort((event1,event2)=>{
     
     if(event1.currentDay === event2.currentDay){
@@ -110,6 +112,7 @@ function updateEvents(setEvents,new_events,year,major,semester,schedule,setChang
     return event1.currentDay - event2.currentDay
   })
   let valid=true
+  console.log(copy)
   for(let i=0;i<copy.length-1;i++){
     let event1=copy[i];
     let event2=copy[i+1];
@@ -120,16 +123,20 @@ function updateEvents(setEvents,new_events,year,major,semester,schedule,setChang
 
         if(event1.professor || event2.professor){
           valid=false
-
+          
           let id1,id2
           if(event1.professor_id){ 
             id1=event1.professor_id
-          }else id1=event1.event_professor.id
+          }else if(event1.event_professor) id1=event1.event_professor.id
+
           if(event2.professor_id){ 
             id2=event2.professor_id
-          }else id2=event2.event_professor.id
-          
-          valid = id1 !=id2
+          }else if(event2.event_professor){
+           id2=event2.event_professor.id
+          }
+
+          valid = id1 != id2 
+         
          // 
          /*
            should add more complex logic to handle the case that only busy professor
@@ -152,8 +159,8 @@ function updateEvents(setEvents,new_events,year,major,semester,schedule,setChang
   setEvents(new_events)
   let localEvents=localStorage.getItem("schedules")
   let obj=JSON.parse(localEvents)
-  console.log(new_events.filter(item=>!item.dead && !item.professor))
-  obj[schedule+" "+major+" "+year+" "+semester]=new_events.filter(item=>!item.dead && !item.professor)
+
+  obj[schedule+" "+major+" "+year+" "+semester]=new_events.filter(item=>!item.dead && !item.professor && !item.availability)
   localStorage.setItem("schedules",JSON.stringify(obj))
   setChanged(true)
   return true
@@ -217,7 +224,7 @@ const Schedule=()=>{
      data1=await getProfessorsEvents(semester_p,id,prof.id)
     
      data1=data1.filter(item=>item.major != major_p || item.year!=year_p)
-     
+    
      let localSchedules=localStorage.getItem("schedules")
    
      if(localSchedules && JSON.parse(localSchedules) !=null){
@@ -232,7 +239,25 @@ const Schedule=()=>{
       for(let event of events){
        
         if(event.professor_id==prof.id || event.event_professor.id==prof.id){
-          if(data1.find(item=>item.id==event.id)) continue
+          console.log("*********print*************")
+         console.log(event)
+         console.log(data1)
+         console.log("FFFF")
+         let a=data1.find(item=>{
+          return (item.id==event.id) || (item.endDate==event.selectedEnd && item.startDate==event.selectedStart)
+         }
+        
+        )
+         console.log("a:"+a)
+        
+         console.log("Fuck")
+         /* a=data1.find(item=>{
+          return item.selected_start==event.selected_start
+         })*/
+          if(a){
+            console.log("skip it")
+            continue
+          } 
           if(event.selectedStart){
           data1.push({
             startDate:event.selectedStart,
@@ -260,7 +285,7 @@ const Schedule=()=>{
   
      data1=data1.map(item=>{
     
-      return {...item,professor:true,
+      return {...item,professor:true,professor_id:prof.id,
         selectedStart: dayjs(item.startDate),
         selectedEnd:dayjs(item.endDate),
         currentDay:item.day,
@@ -294,10 +319,20 @@ const Schedule=()=>{
      }
      })
     }
+    let data2=await getProfAvailabitlies(prof.id)
+
+    data2=data2.map(item=>{
+      return {
+        currentDay:item.day-1,
+        selectedStart:dayjs().hour(item.hours).minute(item.minutes),
+        selectedEnd:dayjs().hour(item.hours).minute(item.minutes).add(item.duration,"minutes"),
+        availability:true,
+      }
+    })
     
      //updateEvents(setEvents,[...initialEvents,...data1,...data],params.Year,params.Major,params.Semester,id)
-   
-     setEvents([...initialEvents,...data1,...data])
+     
+     setEvents([...initialEvents,...data1,...data,...data2])
 
 
    }catch(err){
@@ -332,7 +367,7 @@ const Schedule=()=>{
         <Item width={"100%"}>
 
      
-      <Week2 searchTerm={searchTerm} setChanged={setChanged} schedule={id} year={params.Year} major={params.Major} semester={params.Major} {...{setEvents,updateEvents,events,selectedCourse,selectedProfessor,coursesList,professorsList}} />
+      <Week2 searchTerm={searchTerm} setChanged={setChanged} schedule={id} year={params.Year} major={params.Major} semester={params.Semester} {...{setEvents,updateEvents,events,selectedCourse,selectedProfessor,coursesList,professorsList}} />
         </Item>
       </Stack>
 

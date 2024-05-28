@@ -65,7 +65,7 @@ function deleteSchedule(req,res){
 }
 function uploadSchedule(req, res) {
     const { schedule ,name} = req.body;
-  
+     
     if (!Array.isArray(schedule)) {
       return res.status(400).send("Invalid schedule data");
     }

@@ -203,7 +203,20 @@ function EventsComp({searchTerm, setChanged,events,setEvents,weekRef,updateEvent
          
             const {x,y,height} =drawEvent(item)
           
-            
+            if(item.availability){
+              return <div className="event preference" 
+              style={
+               {top:y,left:x,height:height 
+              ,border:"5px dashed lightgreen",borderRadius:0,
+              
+             
+              }
+              } 
+              >
+
+                
+              </div>
+            }
             if(item.dead){
               return <div className="event" 
               style={
@@ -489,6 +502,7 @@ function addEvent(){
         currentDay,
         color:colors[eventColor]
     }]
+   
     if( updateEvents(setEvents,new_events,year,major,semester,schedule,setChanged)){
     setOpen(false)
     toast.success("Added successfully") 

@@ -37,7 +37,19 @@ const addAvailabilities=(req,res)=>{
 }
 
 const getAvailabilities=(req,res)=>{
-
+    console.log("request")
+ let {id}=req.params
+ console.log(id)
+ let query ="select * from Availabilities  where professor_id=(?)"
+ db.all(query,[id],(err,rows)=>{
+    if(err){
+        console.log(err)
+        return res.send([])
+    }
+    console.log(err)
+    console.log(rows)
+    res.send(rows)
+ })
 }
 module.exports={
     addAvailabilities,getAvailabilities

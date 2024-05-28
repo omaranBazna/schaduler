@@ -23,7 +23,7 @@ import { visuallyHidden } from '@mui/utils';
 import { deleteCourse, getCourses } from '../API/courses';
 import { useState ,useEffect} from 'react';
 import { Button,Modal } from '@mui/material';
-
+import toast from 'react-hot-toast';
 function createData({course_name,course_code,course_majors,course_years,course_semesters,has_lab,course_type,course_notes,id}) {
   return {
     name:course_name,
@@ -404,8 +404,10 @@ export default function CoursesList() {
                  try{
                   await deleteCourse(selected_id)
                   loadCourses();
+                  toast.success("Class deleted")
                   
                  }catch(err){
+                  toast.error("Error deleted the class")
                  
                  }
                  setOpen(false)

@@ -80,6 +80,17 @@ function getProfessor(req,res){
       res.send(rows)
     })
   }
+function removeProfessor(req,res){
+    let {id}=req.params
+    console.log(id)
+    db.run("delete from Professors where id=?",[id],(err)=>{
+        console.log(err)
+        if(err){
+           return res.status(501).end();
+        }
+        res.status(200).end();
+    })
+}
 module.exports={
-    addProfessor,getProfessors,getProfessor
+    addProfessor,getProfessors,getProfessor,removeProfessor
 }

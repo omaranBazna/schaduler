@@ -5,13 +5,16 @@ function addEvents(req,res){
 const { events } =req.body
 const {major,year,semester,schedule} = req.query
 
-
+console.log(events)
 db.serialize(() => {
 let query= "delete from events where major=(?) and year=(?) and semester=(?) and schedule_id=(?)"
 
 db.run(query,[major,year,semester,schedule])
+
     for(let event of events){
-       
+        if(!event.event_professor){
+            continue
+        }
     const insertQuery = `
     INSERT INTO events (professor_id ,
         course_id ,

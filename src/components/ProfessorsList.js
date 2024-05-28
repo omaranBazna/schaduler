@@ -21,15 +21,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { useState ,useEffect} from 'react';
-
+import { Button,Modal } from '@mui/material';
 import { getProfessors } from '../API/professors';
+import { removeProfessor } from '../API/professors';
+import toast from 'react-hot-toast';
 function createData({
     professor_name,
     professor_major ,
     professor_courses ,
     availabilities ,
     professor_type ,
-    professor_notes
+    professor_notes,
+    id
 
 }) {
   return {
@@ -38,7 +41,8 @@ major: professor_major ,
 courses:professor_courses,
 type:professor_type,
 availabilities,
-notes:professor_notes
+notes:professor_notes,
+id:id
   };
 }
 
@@ -171,6 +175,9 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell>
+          Action
+        </TableCell>
       </TableRow>
     </TableHead>
   );
@@ -248,6 +255,9 @@ export default function ProfessorsList({coursesList}) {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] =useState(5);
 
+  const [open,setOpen]=useState(false)
+  const [s_id,setSID]=useState("")
+
   const [rows,setRows]=useState([])
   const [visibleRows,setVisibleRows]=useState([])
   const loadProfessors=async()=>{
@@ -267,7 +277,20 @@ export default function ProfessorsList({coursesList}) {
   useEffect(()=>{
     loadProfessors();
   
-  },[order, orderBy, page, rowsPerPage])
+  },[order, orderBy, page, rowsPerPage,loadProfessors])
+
+  const handleDelete=async(id)=>{
+ 
+      try{
+        await removeProfessor(id)
+        toast.success("Removed successfully")
+        loadProfessors();
+      }catch(err){
+        console.log(err)
+        toast.error("Error while removing the professor")
+      }
+  }
+  
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -323,10 +346,63 @@ export default function ProfessorsList({coursesList}) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
- 
+    const style = {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: 400,
+      bgcolor: 'background.paper',
+      border: '2px solid #000',
+      boxShadow: 24,
+      p: 4,
+      display:"flex",
+      flexDirection:"column",
+      gap:5
+    };
 
   return (
     <Box sx={{ width: '100%' }}>
+      <Modal
+        open={open}
+        onClose={()=>{setOpen(false)}}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Are you sure you want to delete the course (this action will delete the 
+            course from any schedule that use it )?
+          </Typography>
+          
+
+           <Button
+           variant='contained'
+           color="error"
+           onClick={
+            async()=>{
+             
+                 try{
+                  await handleDelete(s_id)
+                
+                  
+                 }catch(err){
+                 
+                 }
+                 setOpen(false)
+             }
+
+
+           }
+           >Delete</Button>
+           <Button
+           variant='contained'
+           color="info"
+           onClick={()=>{setOpen(false)}}
+           >Cancel</Button>
+          
+        </Box>
+      </Modal>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
@@ -374,7 +450,12 @@ export default function ProfessorsList({coursesList}) {
                      <TableCell  style={{borderLeft:"1px solid black"}} align="left"> <RenderCourses coursesList={coursesList} profCourses={row.courses}/></TableCell>
                    
                       <TableCell   style={{borderLeft:"1px solid black"}} align="left">{row.notes}</TableCell>
-                    
+                      <TableCell>
+                      <DeleteIcon  onClick={()=>{
+                        setSID(row.id)
+                        setOpen(true)
+                      }}/>
+                      </TableCell>
                       </TableRow>
                 );
               })}

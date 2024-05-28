@@ -1,3 +1,4 @@
+import { CompareSharp } from "@mui/icons-material";
 import axios from "axios";
 const serverlURL="http://localhost:8080"
 //const serverlURL="https://schaduler.onrender.com"
@@ -53,8 +54,13 @@ export  const handleUpload = async (jsonData,name="uploaded") => {
     if (!jsonData) {
       alert("No JSON data to upload");
       return;
+    }  
+
+    
+    let obj={
+      schedule:jsonData,
+    name:name
     }
-    jsonData["name"]=name
   
     try {
       const response = await fetch(serverlURL+'/schedules/upload', {
@@ -62,7 +68,7 @@ export  const handleUpload = async (jsonData,name="uploaded") => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(jsonData),
+        body: JSON.stringify(obj),
       });
   
       if (!response.ok) {

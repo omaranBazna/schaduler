@@ -74,11 +74,22 @@ const AddProfessorC=()=>{
   useEffect(()=>{
      loadCoursesList()
   },[])
+
+  
    const handleAddProfessor=async()=>{
     try{
+      if(name=="" || major==""){
+        toast.error("Enter first and last name")
+        return
+      }else if(courses.length==0){
+        toast.error("Professor must teach at least one course");
+        return;
+      }
+
       let id=  await addProfessor(name,major,courses,availabilities,professorType,notes)
        await addAvailabilities(availabilities,id)
           toast.success("Professor added successfully")
+          
       }catch{
         toast.error("Error adding professor")
     }
@@ -195,7 +206,7 @@ const AddProfessorC=()=>{
         }}  label="Start time" />
       </DemoContainer>
     </LocalizationProvider>
-{/*minTime={startTime} maxTime={endTimeS}*/} 
+
 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['TimePicker']}>

@@ -13,9 +13,14 @@ export const getEvents=async(major,year,semester,schedule)=>{
     if(localSchedules){
        let obj=JSON.parse(localSchedules)
        if(obj){
+        console.log(obj)
+        console.log(schedule+" "+major+" "+year+" "+semester)
+        console.log(obj[schedule+" "+major+" "+year+" "+semester])
        let events= obj[schedule+" "+major+" "+year+" "+semester]
      
        if(events){
+        console.log("Events::"+events)
+        console.log(events)
         return events
        } 
     }

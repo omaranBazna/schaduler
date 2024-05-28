@@ -9,12 +9,29 @@ import Modal from '@mui/material/Modal';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { styled } from '@mui/material/styles';
+import {Editor } from '@monaco-editor/react';
+
+const CodeEditor = () => {
+  return (
+    <div >
+      <Editor
+        height="500px"
+        defaultLanguage="javascript"
+        defaultValue="// Start coding here!"
+        theme="vs-dark"
+      />
+    </div>
+  );
+};
+
+
+
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
+    transform: 'translate(-10%, -50%)',
+    width: "100%",
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -88,25 +105,19 @@ const downArrow=(index)=>{
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{width:"1000px"}}
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Select sorting criteria
+            Sorting algorithm
           </Typography>
-           <Typography id="modal-modal-title" variant="h7" component="h3">
-            More / Top
-          </Typography>
-          {criteria.map((item,index)=> {
-            return <Item><ArrowDownwardIcon onClick={()=>{downArrow(index)}}/>  <div>{item}</div><ArrowUpwardIcon onClick={()=>{upArrow(index)}}/></Item>
-          })}
-
-           <Typography id="modal-modal-title" variant="h7" component="h3">
-            Less / Bottom
-          </Typography>
+          {"function sort(course1,course2){"}
+           <CodeEditor/>
+         {"}"}
         </Box>
       </Modal>
 
-        {/*<SortingIcon   onClick={handleOpen} />*/}
+       {/*<SortingIcon   onClick={handleOpen} />*/}
         
         <Divider textAlign="left">Professors </Divider>
        

@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 
 import {MenuItem,Typography} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-function NavbarCo() {
+function NavbarCo({setUser}) {
  const navigator=useNavigate()
 
    
@@ -25,7 +25,17 @@ function NavbarCo() {
                 <MenuItem  onClick={()=>{ navigator("/addprofessor")}}>
                   <Typography textAlign="center">{"Professors"}</Typography>
                 </MenuItem>
+                 <MenuItem onClick={()=>{
+            setUser(false)
+            window.localStorage.setItem("logged","false")
+            
+            }}>
+          <Typography textAlign="center">{"LogOut"}</Typography>
+          </MenuItem>
+        
         </Toolbar>
+
+         
       </Container>
     </AppBar>
   );

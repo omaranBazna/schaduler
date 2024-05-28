@@ -5,7 +5,7 @@ const serverlURL="http://localhost:8080"
 
 export const addAvailabilities=async(availabilities,id)=>{
     try{
-        console.log(availabilities)
+      
         availabilities=availabilities.map(ava=>{
             return {...ava,
                 fTime:ava.time.format("HH:mm"),
@@ -17,5 +17,14 @@ export const addAvailabilities=async(availabilities,id)=>{
        })
     }catch(err){
      
+    }
+}
+export const getProfAvailabitlies=async(id)=>{
+    try{
+      
+      const {data}= await axios.get(serverlURL+"/availabilities/"+id)
+      return data
+    }catch(err){
+      return []
     }
 }

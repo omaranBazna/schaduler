@@ -44,3 +44,14 @@ export const getProfessorDetails=async(prof_id)=>{
     return "Wrong loading"
   }
 }
+
+
+export const removeProfessor=async(prof_id)=>{
+  
+  try{
+     await axios.delete(serverlURL+"/professors/"+prof_id)
+  }catch(err){
+    console.log(err)
+    throw new Error();
+  }
+}
