@@ -1,7 +1,7 @@
 import { CompareSharp } from "@mui/icons-material";
 import axios from "axios";
-const serverlURL="http://localhost:8080"
-//const serverlURL="https://schaduler.onrender.com"
+//const serverlURL="http://localhost:8080"
+const serverlURL="https://schaduler.onrender.com"
 
 
 
