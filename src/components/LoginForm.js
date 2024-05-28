@@ -5,8 +5,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 
-const serverlURL="http://localhost:8080"
-//const serverlURL="https://schaduler.onrender.com"
+//const serverlURL="http://localhost:8080"
+const serverlURL="https://schaduler.onrender.com"
 
 const theme = createTheme();
 
